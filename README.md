@@ -5,8 +5,17 @@ Proyecto para la materia Ingeniería de Software II de la Facultad de Informáti
 * Django (backend)
 * Html, CSS3, JavaScript y Bootstrap (frontend)
 
-___
-
-El servidor es hosteado por [Heroku](https://www.heroku.com "Heroku's Homepage").
-
-**[Link a la página](https://is2-unlp.herokuapp.com/)**
+## Ejecución
+### Local
+1. Instale las dependencias   
+```pip3 install -r requirements.txt```
+2. Haga las migraciones  
+```python3 manage.py migrate```  
+```python3 manage.py makemigrations```
+3. Corra el servidor  
+``` python3 manage.py runserver```
+4. ***Acceda a su localhost en el navegador***
+### Servidor
+**[Link a la página](https://is2-unlp.herokuapp.com/)**  
+  
+*El servidor es hosteado mediante [Heroku](https://www.heroku.com "Heroku's Homepage").*
