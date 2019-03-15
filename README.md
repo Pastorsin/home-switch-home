@@ -15,7 +15,7 @@ Proyecto para la materia Ingeniería de Software II de la Facultad de Informáti
 3. Corra el servidor  
 ``` python3 manage.py runserver```
 4. ***Acceda a su localhost en el navegador***
-### Servidor
+### Web
 **[Link a la página](https://is2-unlp.herokuapp.com/)**  
   
 *El servidor es hosteado mediante [Heroku](https://www.heroku.com "Heroku's Homepage").*
