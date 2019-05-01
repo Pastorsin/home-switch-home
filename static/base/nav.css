@@ -1,0 +1,26 @@
+/* Logo */
+
+#logo{
+	background-color: #b6cfff;
+	border-radius: 0% 0% 6% 6%;
+}
+#logo img{
+	padding: 1px 2px 1px 2px;						
+}
+#logo :hover{
+	transition: background-color 0.5s;
+	background-color: #dae2f1;
+}
+.navbar-brand{
+	height: 41px;
+}
+
+/* Botones del nav */
+
+.nav-pills .nav-link.active, 
+.nav-pills .nav-item :hover,
+.navbar-nav > li > .dropdown-menu :hover {
+	background-color: #32569e; 
+	transition: background-color 0.5s;
+	color: white;
+}
