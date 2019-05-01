@@ -1,15 +1,15 @@
 /* Logo */
 
 #logo{
-	background-color: #b6cfff;
+	background: linear-gradient(to bottom, rgb(50, 86, 158) 0%, rgb(188, 212, 247) 100%);
 	border-radius: 0% 0% 6% 6%;
 }
 #logo img{
 	padding: 1px 2px 1px 2px;						
 }
 #logo :hover{
-	transition: background-color 0.5s;
-	background-color: #dae2f1;
+	background: linear-gradient(to bottom, rgb(50, 86, 158) -10%, white 100%);
+	transition: background 0.5s;
 }
 .navbar-brand{
 	height: 41px;
