@@ -3,3 +3,4 @@ db.sqlite3
 staticfiles/*
 Pipfile
 Pipfile.lock
+apps/*/migrations/*
