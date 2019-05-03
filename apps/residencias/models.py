@@ -31,7 +31,7 @@ class Residencia(models.Model):
     nombre = models.CharField(
         max_length=255
     )
-    semana_ocupacion = models.IntegerField()
+    semana_ocupacion = models.IntegerField(default=None)
     fecha_publicacion = models.DateField(
         default=datetime.date.today
     )
