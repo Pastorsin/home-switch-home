@@ -9,7 +9,7 @@
 }
 #logo :hover{
 	background: linear-gradient(to bottom, rgb(50, 86, 158) -10%, white 100%);
-	transition: background 0.5s;
+	transition: background-color 0.5s;
 }
 .navbar-brand{
 	height: 41px;

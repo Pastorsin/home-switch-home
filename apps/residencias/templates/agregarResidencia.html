@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Agregar residencia{% endblock title %}
+{% block content %}
+<style type="text/css">
+	h6{
+		font-family: 'Open Sans', sans-serif;
+		user-select: none;
+		color: #c3cbd8
+	}
+	h6:hover{
+		color: #306ba7;
+		transition: color 0.5s;
+	}
+</style>
+<form>
+	<section id="cover">
+		<div id="cover-caption">
+			<div id="container" class="container">
+				<div class="row">
+					<div class="col-sm-6 offset-sm-3 p-4 text-center">
+						<div class="m-0 pb-2 bg-dark rounded-top">
+							<h6 class="display-4">Agregar residencia</h6>
+						</div>
+						<div class="info-form bg-contenido-form m-0 p-4 rounded">
+							<form action="" class="form-inlin justify-content-center">
+								{% csrf_token %}	
+								{% for field in form %}
+									<div class="form-group">
+										<p class="m-0 bg-dark rounded-top">{{field.label}}</p>
+										{% if field.name == "precio_base" %}
+      										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+											<span class="input-group-text">$</span>
+											</div>
+											{{field}}
+											<div class="input-group-append">
+											<span class="input-group-text">.00</span>
+											</div>
+											</div>
+      									{% else %}
+											{{field}}
+    									{% endif %}
+									</div>
+									
+								{% endfor %}
+								<div>
+									<button type="submit" class="btn btn-success">Agregar</button>
+									<button type="cancel" class="btn btn-danger ">Cancelar</button>
+								</div>								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</form>
+{% endblock content %}

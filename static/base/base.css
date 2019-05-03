@@ -1,5 +1,7 @@
 body{
 	color: #bec5ca;
+	/* Posicionamiento para la navbar */
+	padding-top: 100px;
 }
 
 /* Colores */
@@ -9,4 +11,12 @@ body{
 
 .bg-secundario{
 	background-color: #32569e;
+}
+
+.bg-encabezado-form{
+	background-color: #32569e;
+}
+
+.bg-contenido-form{
+	background-color: #306ba7;
 }
