@@ -5,6 +5,8 @@ from django.shortcuts import get_object_or_404
 from .forms import ResidenciaForm, UbicacionForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.views.generic import ListView
+from .models import Residencia
 
 
 class AgregarResidenciaView(UpdateView):
@@ -45,3 +47,10 @@ class AgregarResidenciaView(UpdateView):
 
     def get_success_url(self):
         return reverse('agregarResidencia')
+
+
+class ListadoResidenciasView(ListView):
+    template_name = 'listadoResidencias.html'
+    model = Residencia
+    objetos = model.objects.order_by('precio_base')
+    """context_object_name = 'residencias'"""

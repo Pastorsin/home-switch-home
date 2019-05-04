@@ -50,3 +50,9 @@ class Residencia(models.Model):
 
     def __str__(self):
         return self.nombre
+
+    def get_nombre(self):
+        return self.nombre    
+
+    class Meta:
+        ordering = ['-fecha_publicacion', 'precio_base']

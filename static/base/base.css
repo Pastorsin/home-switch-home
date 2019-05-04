@@ -20,3 +20,9 @@ body{
 .bg-contenido-form{
 	background-color: #306ba7;
 }
+
+/*Footer*/
+
+footer{background-color: #222;
+		color: white;}
+}
