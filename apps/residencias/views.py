@@ -11,7 +11,6 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.urls import reverse
 from django.views.generic import ListView
-from .models import Residencia
 
 
 class AgregarResidenciaView(UpdateView):
@@ -53,16 +52,15 @@ class AgregarResidenciaView(UpdateView):
     def get_success_url(self):
         return reverse('agregarResidencia')
 
-<<<<<<< HEAD
 
 class ListadoResidenciasView(ListView):
     template_name = 'listadoResidencias.html'
     model = Residencia
     objetos = model.objects.order_by('precio_base')
     """context_object_name = 'residencias'"""
-=======
+
+
 class MostrarResidenciaView(DetailView):
-    
+
     model = Residencia
     template_name = 'detalle_residencia.html'
->>>>>>> 9ef629c4b2c2efb1b4638a7d3ab7b844f785e2cd

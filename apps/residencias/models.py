@@ -29,6 +29,9 @@ class Ubicacion(models.Model):
 
 
 class Residencia(models.Model):
+    class Meta:
+        ordering = ['-fecha_publicacion', 'precio_base']
+
     nombre = models.CharField(
         max_length=255
     )
@@ -52,13 +55,8 @@ class Residencia(models.Model):
     def __str__(self):
         return self.nombre
 
-<<<<<<< HEAD
     def get_nombre(self):
-        return self.nombre    
+        return self.nombre
 
-    class Meta:
-        ordering = ['-fecha_publicacion', 'precio_base']
-=======
     def get_absolute_url(self):
         return reverse('detalle_residencia', args=[str(self.id)])
->>>>>>> 9ef629c4b2c2efb1b4638a7d3ab7b844f785e2cd
