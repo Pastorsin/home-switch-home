@@ -1,9 +1,14 @@
-from django.views.generic import UpdateView
+# Views
+from django.views.generic import UpdateView, DetailView
+# Models
 from django.contrib.auth.models import User
-from django.contrib import messages
-from django.shortcuts import get_object_or_404
+from .models import Residencia
+# Forms
 from .forms import ResidenciaForm, UbicacionForm
+# Utility
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
+from django.contrib import messages
 from django.urls import reverse
 
 
@@ -45,3 +50,8 @@ class AgregarResidenciaView(UpdateView):
 
     def get_success_url(self):
         return reverse('agregarResidencia')
+
+class MostrarResidenciaView(DetailView):
+    
+    model = Residencia
+    template_name = 'detalle_residencia.html'
