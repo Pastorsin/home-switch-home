@@ -1,9 +1,14 @@
-from django.views.generic import UpdateView
+# Views
+from django.views.generic import UpdateView, DetailView
+# Models
 from django.contrib.auth.models import User
-from django.contrib import messages
-from django.shortcuts import get_object_or_404
+from .models import Residencia
+# Forms
 from .forms import ResidenciaForm, UbicacionForm
+# Utility
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
+from django.contrib import messages
 from django.urls import reverse
 from django.views.generic import ListView
 from .models import Residencia
@@ -48,9 +53,16 @@ class AgregarResidenciaView(UpdateView):
     def get_success_url(self):
         return reverse('agregarResidencia')
 
+<<<<<<< HEAD
 
 class ListadoResidenciasView(ListView):
     template_name = 'listadoResidencias.html'
     model = Residencia
     objetos = model.objects.order_by('precio_base')
     """context_object_name = 'residencias'"""
+=======
+class MostrarResidenciaView(DetailView):
+    
+    model = Residencia
+    template_name = 'detalle_residencia.html'
+>>>>>>> 9ef629c4b2c2efb1b4638a7d3ab7b844f785e2cd

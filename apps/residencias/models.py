@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 import datetime
 
 
@@ -31,7 +32,7 @@ class Residencia(models.Model):
     nombre = models.CharField(
         max_length=255
     )
-    semana_ocupacion = models.IntegerField()
+    semana_ocupacion = models.IntegerField(default=None)
     fecha_publicacion = models.DateField(
         default=datetime.date.today
     )
@@ -51,8 +52,13 @@ class Residencia(models.Model):
     def __str__(self):
         return self.nombre
 
+<<<<<<< HEAD
     def get_nombre(self):
         return self.nombre    
 
     class Meta:
         ordering = ['-fecha_publicacion', 'precio_base']
+=======
+    def get_absolute_url(self):
+        return reverse('detalle_residencia', args=[str(self.id)])
+>>>>>>> 9ef629c4b2c2efb1b4638a7d3ab7b844f785e2cd

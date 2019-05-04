@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     # My apps
     'residencias.apps.ResidenciasConfig',
     'home.apps.HomeConfig',
+    # Default apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
