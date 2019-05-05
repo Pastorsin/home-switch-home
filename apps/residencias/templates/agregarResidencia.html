@@ -2,12 +2,15 @@
 {% block title %}Agregar residencia{% endblock title %}
 {% block content %}
 <style type="text/css">
-	h6, p{
+	h2, p{
 		font-family: 'Open Sans', sans-serif;
 		user-select: none;
-		color: #c3cbd8
+		color: white
 	}
-	h6:hover{
+	p{
+		color: #c3cbd8;
+	}
+	h2:hover{
 		color: #306ba7;
 		transition: color 0.5s;
 	}
@@ -18,10 +21,10 @@
 		<div id="container" class="container mt-2">
 			<div class="row">
 				<div class="col-sm-8 offset-sm-2 p-4 text-center">
-					<div class="m-0 pb-2 bg-dark rounded-top">
-						<h6 class="display-4">Agregar residencia</h6>
+					<div class="m-0 pb-2 bg-dark rounded-top shadow">
+						<h2>Agregar residencia</h2>
 					</div>
-					<div class="info-form bg-contenido-form m-0 p-4 rounded">
+					<div class="info-form bg-contenido-form m-0 p-4 rounded shadow">
 						<form action="{% url 'agregarResidencia' %}" method="post" class="form-inlin justify-content-center">
 							{% csrf_token %}
 

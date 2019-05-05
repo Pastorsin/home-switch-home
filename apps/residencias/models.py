@@ -51,9 +51,10 @@ class Residencia(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
+    estado = 'Compra directa'
 
     def __str__(self):
         return self.nombre
 
     def get_absolute_url(self):
-         return reverse('detalle_residencia', args=[str(self.pk)])
+        return reverse('detalle_residencia', args=[str(self.pk)])

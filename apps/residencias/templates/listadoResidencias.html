@@ -10,17 +10,23 @@
     h2 {
       font-family: 'Open Sans', sans-serif;
       user-select: none;
-      color: #c3cbd8
+      color: white;
     }						
+    h2:hover{
+      color: #306ba7;
+    transition: color 0.5s;
+    }
   </style>
   <main>
+
+
   	<br>
  	<div class="container mt-2">
 	<div class="row"> 		
 	<div class="col-sm-2"> </div>
-	<div class="col-sm-8 rounded p-0" style="background-color: #306ba7;">
+	<div class="col-sm-8 rounded p-0 shadow" style="background-color: #306ba7;">
   	
-    <div class="bg-dark rounded-top"><h2 class="text-center" style="color: white;">Residencias</h2></div>
+    <div class="bg-dark rounded-top pb-2"><h2 class="text-center">Residencias</h2></div>
 		{% for i in object_list %}
 			<!-- Lista Residencias -->
 				<div class="container">
@@ -30,12 +36,16 @@
         						<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
           							<img class="d-block float-right img-thumbnail img-fluid" src={{i.foto}} width="250" height="250" >
           							<div class="w-100">
-            							<h4 class="mb-0 ">${{i.precio_base}}</h4><hr>	
+            							<h4 class="mb-0 ">${{i.precio_base}}</h4>
+                          <hr>	
             							<h5 class="mb-0 ">{{i.nombre}}</h5>
             							<h6 class="mb-0 ">{{i.ubicacion.ciudad}}, {{i.ubicacion.provincia}}, 
             							{{i.ubicacion.pais}}.</h6>
-            							<h6 class="mb-0"><small class="text-muted">Desde el {{i.fecha_publicacion}}</small></h6><br>
-            							<button type="button" class="btn btn-outline-primary">Ver detalles
+            							<h6 class="mb-0"><small class="text-muted">Desde el {{i.fecha_publicacion}}</small></h6>
+                          <div>
+                            <span class="badge badge-success">Compra directa</span>
+                          </div>
+            							<button type="button" class="btn btn-outline-primary mt-3">Ver detalles
             							</button>
 										<!-- El modificar va dentro del detalle, pero quien sabe xd
 										<button type="button" class="btn btn-outline-danger">Modificar
