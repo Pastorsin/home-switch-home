@@ -57,7 +57,7 @@ class ListadoResidenciasView(ListView):
     template_name = 'listadoResidencias.html'
     model = Residencia
     objetos = model.objects.order_by('precio_base')
-    """context_object_name = 'residencias'"""
+    # context_object_name = 'residencias'
 
 
 class MostrarResidenciaView(DetailView):
