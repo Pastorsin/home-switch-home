@@ -2,7 +2,7 @@
 from django.views.generic import UpdateView, DetailView
 # Models
 from django.contrib.auth.models import User
-from .models import Residencia
+from .models import Residencia, CompraDirecta
 # Forms
 from .forms import ResidenciaForm, UbicacionForm
 # Utility
@@ -42,12 +42,19 @@ class AgregarResidenciaView(UpdateView):
             ubicacion_data.save()
             residencia_data = form.save(commit=False)
             residencia_data.ubicacion = ubicacion_data
+            residencia_data.content_object = CompraDirecta()
+            residencia_data.object_id = self.poner_en_estado_directa()
             residencia_data.save()
             messages.success(self.request, 'Residencia agregada exitosamente!')
             return HttpResponseRedirect(self.get_success_url())
         else:
             return self.render_to_response(
                 self.get_context_data(form=form, form2=form2))
+
+    def poner_en_estado_directa(self):
+        d = CompraDirecta()
+        d.save()
+        return d.id
 
     def get_success_url(self):
         return reverse('agregarResidencia')

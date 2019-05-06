@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 import datetime
 
 
@@ -28,6 +30,17 @@ class Ubicacion(models.Model):
         )
 
 
+class Estado(models.Model):
+    pass
+
+
+class CompraDirecta(Estado):
+    nombre = models.CharField(max_length=255, default='Compra directa')
+
+    def __str__(self):
+        return self.nombre
+
+
 class Residencia(models.Model):
     class Meta:
         ordering = ['-fecha_publicacion', 'precio_base']
@@ -51,7 +64,11 @@ class Residencia(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
-    estado = 'Compra directa'
+    content_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE, null=True, blank=True)
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    estado = GenericForeignKey(
+        'content_type', 'object_id')
 
     def __str__(self):
         return self.nombre

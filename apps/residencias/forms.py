@@ -31,7 +31,8 @@ class ResidenciaForm(forms.ModelForm):
 
     class Meta:
         model = Residencia
-        exclude = ['fecha_publicacion', 'ubicacion']
+        exclude = ['fecha_publicacion', 'ubicacion',
+                   'estado', 'content_type', 'object_id']
 
     def __init__(self, *args, **kwargs):
         super(ResidenciaForm, self).__init__(*args, **kwargs)
