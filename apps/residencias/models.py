@@ -31,14 +31,18 @@ class Ubicacion(models.Model):
 
 
 class Estado(models.Model):
-    pass
-
-
-class CompraDirecta(Estado):
-    nombre = models.CharField(max_length=255, default='Compra directa')
+    class Meta:
+        abstract = True
 
     def __str__(self):
         return self.nombre
+
+
+class CompraDirecta(Estado):
+    nombre = models.CharField(
+        max_length=255,
+        default='Compra directa'
+    )
 
 
 class Residencia(models.Model):
@@ -48,11 +52,11 @@ class Residencia(models.Model):
     nombre = models.CharField(
         max_length=255
     )
-    semana_ocupacion = models.IntegerField(default=None)
     fecha_publicacion = models.DateField(
         default=datetime.date.today
     )
-    foto = models.URLField()
+    foto = models.URLField(
+    )
     precio_base = models.FloatField(
         verbose_name="Precio"
     )
@@ -65,10 +69,19 @@ class Residencia(models.Model):
         primary_key=True,
     )
     content_type = models.ForeignKey(
-        ContentType, on_delete=models.CASCADE, null=True, blank=True)
-    object_id = models.PositiveIntegerField(null=True, blank=True)
+        ContentType,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+    estado_id = models.PositiveIntegerField(
+        null=True,
+        blank=True
+    )
     estado = GenericForeignKey(
-        'content_type', 'object_id')
+        'content_type',
+        'estado_id'
+    )
 
     def __str__(self):
         return self.nombre
