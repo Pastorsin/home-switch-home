@@ -36,15 +36,15 @@ class AgregarResidenciaView(UpdateView):
         self.object = self.get_object()
         residencia_form = self.form_class(request.POST)
         ubicacion_form = self.ubicacion_form_class(request.POST)
-
         if self.formulario_es_valido(residencia_form, ubicacion_form):
             self.guardar_formulario(residencia_form, ubicacion_form)
             messages.success(self.request, 'Residencia agregada exitosamente!')
             return HttpResponseRedirect(self.get_success_url())
         else:
-            messages.error(self.request, 'Error!')
-            context = self.get_context_data(residencia_form=residencia_form,
-                                            ubicacion_form=ubicacion_form)
+            error = 'Error! Ya existe otra residencia con la misma ubicación'
+            messages.error(self.request, error)
+            context = self.get_context_data(residencia=residencia_form,
+                                            ubicacion=ubicacion_form)
             return self.render_to_response(context)
 
     def formulario_es_valido(self, residencia_form, ubicacion_form):
@@ -80,7 +80,6 @@ class ListadoResidenciasView(ListView):
     template_name = 'listadoResidencias.html'
     model = Residencia
     objetos = model.objects.order_by('precio_base')
-    # context_object_name = 'residencias'
 
 
 class MostrarResidenciaView(DetailView):

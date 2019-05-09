@@ -6,6 +6,9 @@ import datetime
 
 
 class Ubicacion(models.Model):
+    class Meta:
+        unique_together = ('pais', 'provincia', 'ciudad', 'calle', 'numero')
+
     pais = models.CharField(
         max_length=255
     )
