@@ -30,8 +30,3 @@ class ResidenciaForm(forms.ModelForm):
         for field in self.base_fields.values():
             field.widget.attrs['placeholder'] = field.label
             field.widget.attrs['class'] = 'form-control'
-
-    def clean(self):
-        cleaned_data = super(ResidenciaForm, self).clean()
-        print(cleaned_data)
-        print('hola!')
