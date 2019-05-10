@@ -36,8 +36,9 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # My apps
-    'residencias.apps.ResidenciasConfig',
     'home.apps.HomeConfig',
+    'residencias.apps.ResidenciasConfig',
+    'adquisiciones.apps.AdquisicionesConfig',
     # Default apps
     'django.contrib.admin',
     'django.contrib.auth',

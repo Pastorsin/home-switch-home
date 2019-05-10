@@ -33,21 +33,6 @@ class Ubicacion(models.Model):
         )
 
 
-class Estado(models.Model):
-    class Meta:
-        abstract = True
-
-    def __str__(self):
-        return self.nombre
-
-
-class CompraDirecta(Estado):
-    nombre = models.CharField(
-        max_length=255,
-        default='Compra directa'
-    )
-
-
 class Residencia(models.Model):
     class Meta:
         ordering = ['-fecha_publicacion', 'precio_base']
@@ -85,6 +70,9 @@ class Residencia(models.Model):
         'content_type',
         'estado_id'
     )
+
+    def esta_en_subasta(self):
+        return self.estado.es_subasta()
 
     def __str__(self):
         return self.nombre

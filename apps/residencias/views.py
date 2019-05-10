@@ -2,7 +2,8 @@
 from django.views.generic import UpdateView, DetailView
 # Models
 from django.contrib.auth.models import User
-from .models import Residencia, CompraDirecta
+from .models import Residencia
+from adquisiciones.models import CompraDirecta
 # Forms
 from .forms import ResidenciaForm, UbicacionForm
 # Utility
