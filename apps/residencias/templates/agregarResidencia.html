@@ -7,15 +7,22 @@
 		user-select: none;
 		color: white
 	}
+	h2 {
+		color: #84a2c1;
+	}
 	p{
 		color: #c3cbd8;
 	}
-	h2:hover{
-		color: #306ba7;
-		transition: color 0.5s;
-	}
 	
 </style>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("input, textarea").focus(function(){
+			$("p").css("color", "#c3cbd8");
+			$(this).parent().siblings("p").css("color", "#00e3ff")
+		})
+	})
+</script>
 <section id="cover">
 	<div id="cover-caption">
 		<div id="container" class="container mt-2">
@@ -53,11 +60,11 @@
 											{{field}}
 										</div>
   									{% else %}
-										{{field}}
+  										<div>
+											{{field}}
+										</div>
 									{% endif %}
-									<div class="bg-info rounded-bottom">
-										<p class="text-black-50">{{field.help_text}}</p>
-									</div>
+									
 														
 								</div>									
 							{% endfor %}
@@ -68,7 +75,9 @@
 								{% for field in ubicacion %}
 									    <div class="form-group">
 											<p class="m-0 bg-primary rounded-top">{{field.label}}</p>
-											{{field}}
+											<div>
+												{{field}}
+											</div>
 										</div>
 								{% endfor %}								
 							</div>
