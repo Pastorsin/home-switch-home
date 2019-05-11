@@ -17,10 +17,17 @@
 
 /* Botones del nav */
 
-.nav-pills .nav-link.active, 
+.nav-pills .nav-link.active,
 .nav-pills .nav-item :hover,
 .navbar-nav > li > .dropdown-menu :hover {
 	background-color: #32569e; 
 	transition: background-color 0.5s;
 	color: white;
+}
+
+/* Dropdown center */
+#dropdown-residencia {
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  top: 100% !important;
 }
