@@ -50,4 +50,8 @@ class Subasta(Estado):
         # Query
         # 1º Reusar Estado>>residencia
         # 2º Filtrar la reserva por la residencia de 1º
-        pass
+        return "200000"
+
+    def ganador_actual(self):
+        # Query
+        return "Goffredo"
