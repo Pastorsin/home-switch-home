@@ -55,3 +55,7 @@ class Subasta(Estado):
     def ganador_actual(self):
         # Query
         return "Goffredo"
+
+    def hay_ganador(self):
+        # Query
+        return True
