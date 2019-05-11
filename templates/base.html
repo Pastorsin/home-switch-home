@@ -35,10 +35,10 @@
 				<!-- Items izquierda -->
 				<ul class="navbar-nav ml-auto nav-pills">
 					<li class="nav-item mx-1">
-						<a class="nav-link active" href="#">Item 1</a>
+						<a class="nav-link active" href="{% url 'agregarResidencia' %}">Agregar Residencia</a>
 					</li>
 					<li class="nav-item mx-1">
-						<a class="nav-link" href="#">Item 2</a>
+						<a class="nav-link" href="{% url 'listadoResidencias' %}">Listar Residencias</a>
 					</li>
 				</ul>		
 
@@ -49,7 +49,6 @@
 							<img id="logo" src="{% static 'logo/HSH-Complete.svg' %}" width="150px">
 						</a>
 					</li>
-					
 				</ul>
 				
 				<!-- Items derecha -->	

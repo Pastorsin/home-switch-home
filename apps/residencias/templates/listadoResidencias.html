@@ -33,7 +33,7 @@
   					<div class="row text-center text-lg-left">
     					<div class="col-md-12">
       						<div class="list-group my-3">
-        						<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+        						<a href="{% url 'detalle_residencia' i.pk %}" class="list-group-item list-group-item-action flex-column align-items-start">
           							<img class="d-block float-right img-thumbnail img-fluid" src={{i.foto}} width="250" height="250" >
           							<div class="w-100">
             							<h4 class="mb-0 ">${{i.precio_base}}</h4>
