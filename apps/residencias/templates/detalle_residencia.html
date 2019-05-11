@@ -74,9 +74,13 @@
     </div>
     <div class="row pb-3">
       <div class="col">
-        <p class="text-muted">La residencia se encuentra en {{ residencia.estado|lower }}</p>
+        <p class="text-muted">La residencia se encuentra en {{ residencia.estado|lower }}
+        </p>
         {% if residencia.estado.es_subasta %}
             <button type="button" class="btn btn-danger">Cerrar Subasta</button>
+            
+            <!-- Provisorio hasta encontrar una mejor manera -->
+            <a class="btn btn-info" href="{% url 'mostrar_subasta' residencia.estado_id %}">Ir a la subasta</a>
         {% elif residencia.estado.es_compra_directa %}
             <button type="button" class="btn btn-success">Abrir Subasta</button>
             <button type="button" class="btn btn-info">Modificar</button>

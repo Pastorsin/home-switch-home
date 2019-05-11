@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.contrib.contenttypes.models import ContentType
 from residencias.models import Residencia
 import datetime
@@ -13,7 +14,7 @@ class Estado(models.Model):
         estado_actual = ContentType.objects.get_for_model(self.__class__)
         residencias = Residencia.objects.filter(
             estado_id=self.id, content_type=estado_actual)
-        primera_residencia = residencias.values()[0]
+        primera_residencia = residencias[0]  # antes tenia .values() está en observación
         return primera_residencia
 
     def es_compra_directa(self):
@@ -59,3 +60,6 @@ class Subasta(Estado):
     def hay_ganador(self):
         # Query
         return True
+
+    def get_absolute_url(self):
+        return reverse('mostrar_subasta', args=[str(self.pk)])

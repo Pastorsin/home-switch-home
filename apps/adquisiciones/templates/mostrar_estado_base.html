@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}{{ subasta.residencia.nombre }} Subasta{% endblock title %}
+
+{% block style %}
+<style type="text/css">
+  h2, h4, a#residencia-link{
+    font-family: 'Open Sans', sans-serif;
+    user-select: none;
+    color: #84a2c1;
+  }
+
+  h4, a#residencia-link{
+    color: #b7d7ef;
+  }
+
+  a#residencia-link{
+    text-decoration: none;
+  }
+  
+  .list-group-item{
+    border: 1.2px solid #343940;
+  }
+</style>
+{% endblock style %}
+
+{% block content %}
+<section id="cover">
+  <div id="cover-caption">
+    <div id="container" class="container mt-2">
+      <div class="row">
+        <div class="col-sm-8 offset-sm-2 p-4 text-center">
+          <div class="m-0 bg-dark rounded-top shadow">
+            <div class="bg-contenido-form m-0 p-2 rounded shadow">
+              <div class="rounded text-center bg-dark p-2">
+                {% block estado_content %}{% endblock estado_content %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
