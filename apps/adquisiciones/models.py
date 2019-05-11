@@ -41,7 +41,7 @@ class Subasta(Estado):
     )
 
     def __str__(self):
-        return 'En subasta'
+        return 'Subasta'
 
     def es_subasta(self):
         return True

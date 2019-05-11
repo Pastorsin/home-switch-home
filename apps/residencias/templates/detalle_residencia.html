@@ -5,13 +5,21 @@
 {% block style %}
 <style type="text/css">
   section {
-    margin-top: 3em;
-    height: 80vh;
+    margin-top: 2em;
     background-color: #306ba7;
   }
 
   h2 {
     color: #bec5ca;
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  img {
+    max-height: 450px;
+    max-width: 1000px;
   }
 
   .row {
@@ -21,6 +29,11 @@
   #img-section {
     background-color: #1b4065;
   }
+
+  #precio {
+    font-size: 1.5em;
+  }
+
 </style>
 {% endblock style %}
 
@@ -38,6 +51,12 @@
         <h3>Descripción:</h3>
         <p class="mx-5 text-break"> {{ residencia.descripcion }} </p>
       </div>
+      <div class="col-3 border-left">
+        <h3>Precio Base:</h3>
+        <span id="precio" class="text-success ml-3">
+          $ {{ residencia.precio_base }}
+        </span>
+      </div>
     </div>
     <hr>
     <div class="row">
@@ -53,8 +72,17 @@
         </ul>
       </div>
     </div>
-    <div class="row">
-      
+    <div class="row pb-3">
+      <div class="col">
+        <p class="text-muted">La residencia se encuentra en {{ residencia.estado|lower }}</p>
+        {% if residencia.estado.es_subasta %}
+            <button type="button" class="btn btn-danger">Cerrar Subasta</button>
+        {% elif residencia.estado.es_compra_directa %}
+            <button type="button" class="btn btn-success">Abrir Subasta</button>
+            <button type="button" class="btn btn-info">Modificar</button>
+            <button type="button" class="btn btn-danger">Eliminar</button>
+        {% endif %}
+      </div>
     </div>
   </section>
 

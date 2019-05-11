@@ -71,9 +71,6 @@ class Residencia(models.Model):
         'estado_id'
     )
 
-    def esta_en_subasta(self):
-        return self.estado.es_subasta()
-
     def __str__(self):
         return self.nombre
 
