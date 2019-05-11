@@ -4,10 +4,10 @@ from .views import ListadoResidenciasView
 from .views import MostrarResidenciaView
 
 urlpatterns = [
-    path('agregarResidencia.html',
+    path('agregarResidencia',
          AgregarResidenciaView.as_view(),
          name='agregarResidencia'),
-    path('listadoResidencias.html',
+    path('listadoResidencias',
          ListadoResidenciasView.as_view(),
          name='listadoResidencias'),
     path('residencia/<int:pk>/',
