@@ -9,8 +9,23 @@
     background-color: #306ba7;
   }
 
+  li {
+    color: #6db4d2;
+  }
+
+  h6 {
+    font-family: 'Open Sans', sans-serif;
+    user-select: none;
+    color: white;
+  }
+
   h2 {
+    font-family: 'Open Sans', sans-serif;
     color: #bec5ca;
+  }
+
+  h3{
+    font-family: 'Open Sans', sans-serif;
   }
 
   ul {
@@ -39,7 +54,7 @@
 
 {% block content %}
 
-  <section class="container p-0 bg-light rounded text-dark">
+  <section class="container p-0 bg-light rounded text-dark shadow">
     <div class="row justify-content-center bg-dark">
       <h2 class="my-2"> {{ residencia.nombre }} </h2>
     </div>
@@ -60,18 +75,30 @@
     </div>
     <hr>
     <div class="row">
-      <div class="col">
-        <h3 class="text-center">Ubicación:</h3>
+      <div class="col-sm-12">
+        <h3 class="text-center bg-dark m-0" style="color: white;">Ubicación</h3>
       </div>
-      <div class="col">
-        <ul>
-          <li>Pais: {{ residencia.ubicacion.pais }} </li>
-          <li>Provincia: {{ residencia.ubicacion.provincia }} </li>
-          <li>Ciudad: {{ residencia.ubicacion.ciudad }} </li>
-          <li>Calle y número: {{ residencia.ubicacion.calle }} - {{ residencia.ubicacion.numero }} </li>
+      <div class="col-sm-12 m-0">
+        <ul class="text-center bg-secundario w-100 d-inline-flex justify-content-between">
+          <li class="mx-1">
+            <h6>Pais:</h6>
+            {{ residencia.ubicacion.pais }}
+          </li>
+          <li class="mx-1">
+            <h6>Provincia:</h6> 
+            {{ residencia.ubicacion.provincia }} 
+          </li>
+          <li class="mx-1">
+            <h6>Ciudad:</h6> 
+            {{ residencia.ubicacion.ciudad }} 
+          </li>
+          <li class="mx-1">
+            <h6>Calle y número:</h6> 
+            {{ residencia.ubicacion.calle }} - {{ residencia.ubicacion.numero }} </li>
         </ul>
       </div>
     </div>
+    <hr>
     <div class="row pb-3">
       <div class="col">
         <p class="text-muted">La residencia se encuentra en {{ residencia.estado|lower }}
