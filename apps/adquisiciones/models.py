@@ -2,26 +2,29 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.contenttypes.models import ContentType
 from residencias.models import Residencia
-import datetime
+from datetime import date, timedelta
 
 
 class Estado(models.Model):
-    class Meta:
-        abstract = True
 
+    @property
     def residencia(self):
         """Devuelve la residencia que contiene este estado"""
         estado_actual = ContentType.objects.get_for_model(self.__class__)
-        residencias = Residencia.objects.filter(
-            estado_id=self.id, content_type=estado_actual)
-        primera_residencia = residencias[0]  # antes tenia .values() está en observación
-        return primera_residencia
+        try:
+            residencia = Residencia.objects.get(estado_id=self.id, content_type=estado_actual)
+        except Residencia.DoesNotExist:
+            return None
+        return residencia
 
     def es_compra_directa(self):
         return False
 
     def es_subasta(self):
         return False
+
+    class Meta:
+        abstract = True
 
 
 class CompraDirecta(Estado):
@@ -34,9 +37,10 @@ class CompraDirecta(Estado):
 
 class Subasta(Estado):
     fecha_inicio = models.DateField(
-        default=datetime.date.today
+        default=date.today
     )
     fecha_cierre = models.DateField(
+        default=date.today() + timedelta(days=3),
         null=True,
         blank=True
     )
