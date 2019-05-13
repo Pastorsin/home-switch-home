@@ -34,8 +34,6 @@ class Ubicacion(models.Model):
 
 
 class Residencia(models.Model):
-    class Meta:
-        ordering = ['-fecha_publicacion', 'precio_base']
 
     nombre = models.CharField(
         max_length=255
@@ -76,3 +74,16 @@ class Residencia(models.Model):
 
     def get_absolute_url(self):
         return reverse('detalle_residencia', args=[str(self.pk)])
+
+    def cambiar_estado(self, clase_estado):
+        estado = clase_estado.objects.create()
+
+        if self.estado is not None:
+            self.estado.delete()
+
+        self.estado = estado
+        self.estado_id = estado.pk
+        self.save()
+
+    class Meta:
+        ordering = ['-fecha_publicacion', 'precio_base']

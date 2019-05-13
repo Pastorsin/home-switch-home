@@ -1,17 +1,19 @@
 # Views
-from django.views.generic import UpdateView, DetailView
+from django.views.generic import UpdateView, DetailView, ListView
 # Models
 from django.contrib.auth.models import User
+from adquisiciones.models import CompraDirecta, Subasta
 from .models import Residencia
-from adquisiciones.models import CompraDirecta
 # Forms
 from .forms import ResidenciaForm, UbicacionForm
-# Utility
+# Utility Django
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.urls import reverse
-from django.views.generic import ListView
+from django.utils.text import camel_case_to_spaces as humanize
+# Utility python
+from datetime import date, timedelta
 
 
 class AgregarResidenciaView(UpdateView):
@@ -85,5 +87,22 @@ class ListadoResidenciasView(ListView):
 
 class MostrarResidenciaView(DetailView):
 
+    SEMANAS_MINIMAS = 26 # 6 meses = 26 semanas
     model = Residencia
     template_name = 'detalle_residencia.html'
+
+    def post(self, request, *args, **kwargs):
+        residencia = self.get_object()
+        # tiempo_transcurrido = date.today() - residencia.fecha_publicacion
+        # subastable = tiempo_transcurrido >= timedelta(weeks=self.SEMANAS_MINIMAS)
+        if request.POST['action'] == 'subastar':
+            clase_estado = Subasta
+            if not True:        # Cambiar en la version oficial
+                messages.error(self.request, 'La residencia debe estar como minimo 6 meses en compra directa')
+                return HttpResponseRedirect(residencia.get_absolute_url())
+        else:
+            clase_estado = CompraDirecta
+        residencia.cambiar_estado(clase_estado)
+        messages.success(self.request, 'Se ha puesto la residencia en {} correctamente'
+                         .format(humanize(clase_estado.__name__)))
+        return HttpResponseRedirect(residencia.get_absolute_url())
