@@ -2,6 +2,7 @@ from django.urls import path
 from .views import AgregarResidenciaView
 from .views import ListadoResidenciasView
 from .views import MostrarResidenciaView
+from .views import ModificarResidenciaView
 
 urlpatterns = [
     path('agregarResidencia',
@@ -12,5 +13,8 @@ urlpatterns = [
          name='listadoResidencias'),
     path('residencia/<int:pk>/',
          MostrarResidenciaView.as_view(),
-         name='detalle_residencia')
+         name='detalle_residencia'),
+    path('modificarResidencia/<int:pk>/',
+         ModificarResidenciaView.as_view(),
+         name='modificarResidencia')
 ]

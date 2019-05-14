@@ -120,7 +120,7 @@
         {% elif residencia.estado.es_compra_directa %}
             <input type="hidden" name="action" value="subastar">
             <input type="submit" type="button" value="Abrir Subasta" class="btn btn-success"/>
-            <button type="button" class="btn btn-info">Modificar</button>
+            <a class="btn btn-info" href="{% url 'modificarResidencia' residencia.pk %}">Modificar</a>
             <button type="button" class="btn btn-danger">Eliminar</button>
         {% endif %}
         </form>     

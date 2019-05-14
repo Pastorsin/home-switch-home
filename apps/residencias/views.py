@@ -14,6 +14,7 @@ from django.urls import reverse
 from django.utils.text import camel_case_to_spaces as humanize
 # Utility python
 from datetime import date, timedelta
+import json
 
 
 class AgregarResidenciaView(UpdateView):
@@ -79,6 +80,30 @@ class AgregarResidenciaView(UpdateView):
         return reverse('agregarResidencia')
 
 
+class ModificarResidenciaView(UpdateView):
+
+    model = Residencia
+    template_name = 'modificarResidencia.html'
+    form_class = ResidenciaForm
+    ubicacion_form_class = UbicacionForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ModificarResidenciaView,
+                        self).get_context_data(**kwargs)
+        context['ubicacion'] = self.ubicacion_form_class(
+            instance=context['residencia'].ubicacion)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        # Acá va el guardado de residencia y ubicación
+        # guiate por el post de agregarResidencia.
+        # También hay que verificar que no esté en subasta
+        # y que no tenga la misma ubicación
+        self.object = self.get_object()
+        # Página a la que va en el éxito ↓
+        return HttpResponseRedirect(self.object.get_absolute_url())
+
+
 class ListadoResidenciasView(ListView):
     template_name = 'listadoResidencias.html'
     model = Residencia
@@ -87,7 +112,7 @@ class ListadoResidenciasView(ListView):
 
 class MostrarResidenciaView(DetailView):
 
-    SEMANAS_MINIMAS = 26 # 6 meses = 26 semanas
+    SEMANAS_MINIMAS = 26  # 6 meses = 26 semanas
     model = Residencia
     template_name = 'detalle_residencia.html'
 
@@ -98,7 +123,8 @@ class MostrarResidenciaView(DetailView):
         if request.POST['action'] == 'subastar':
             clase_estado = Subasta
             if not True:        # Cambiar en la version oficial
-                messages.error(self.request, 'La residencia debe estar como minimo 6 meses en compra directa')
+                messages.error(
+                    self.request, 'La residencia debe estar como minimo 6 meses en compra directa')
                 return HttpResponseRedirect(residencia.get_absolute_url())
         else:
             clase_estado = CompraDirecta
