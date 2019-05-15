@@ -108,20 +108,20 @@
     <hr>
     <div class="row pb-3">
       <div class="col">
-        <p class="text-muted">La residencia se encuentra en {{ residencia.estado|lower }}
+        <p class="text-muted">La residencia se encuentra en estado {{ residencia.estado|lower }}
         </p>
         <form action="{% url 'detalle_residencia' residencia.pk %}" method="post">
           {% csrf_token %}
         {% if residencia.estado.es_subasta %}
-            <input type="hidden" name="action" value="cerrar_subasta">
-            <input type="submit" type="button" value="Cerrar Subasta" class="btn btn-danger"/>
+            <input type="submit" type="button" name="cerrar_subasta" value="Cerrar Subasta" class="btn btn-danger"/>
             <!-- Provisorio hasta encontrar una mejor manera -->
             <a class="btn btn-info" href="{% url 'mostrar_subasta' residencia.estado_id %}">Ir a la subasta</a>
         {% elif residencia.estado.es_compra_directa %}
-            <input type="hidden" name="action" value="subastar">
-            <input type="submit" type="button" value="Abrir Subasta" class="btn btn-success"/>
+            <input type="submit" name="abrir_subasta" type="button" value="Abrir Subasta" class="btn btn-success"/>
             <a class="btn btn-info" href="{% url 'modificarResidencia' residencia.pk %}">Modificar</a>
-            <button type="button" class="btn btn-danger">Eliminar</button>
+            <input type="submit" type="button" class="btn btn-danger" name="eliminar" value="Eliminar"></input>
+        {% elif residencia.estado.es_no_disponible %}
+            <!-- Nada por ahora -->
         {% endif %}
         </form>     
       </div>
