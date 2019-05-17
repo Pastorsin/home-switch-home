@@ -2,7 +2,7 @@
 from django.views.generic import UpdateView, DetailView, ListView
 # Models
 from django.contrib.auth.models import User
-from adquisiciones.models import CompraDirecta, Subasta, NoDisponible
+from adquisiciones.models import CompraDirecta
 from adquisiciones.models import EventoNoPermitido
 from .models import Residencia
 # Forms
@@ -12,7 +12,6 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.urls import reverse
-from django.utils.text import camel_case_to_spaces as humanize
 
 
 class AgregarResidenciaView(UpdateView):
@@ -138,7 +137,8 @@ class MostrarResidenciaView(DetailView):
         self.eventos = {
             'abrir_subasta': self.residencia.abrir_subasta,
             'eliminar': self.residencia.eliminar,
-            'cerrar_subasta': self.residencia.cerrar_subasta
+            'cerrar_subasta': self.residencia.cerrar_subasta,
+            'hotsale': self.residencia.establecer_hotsale
         }
 
     def post(self, request, *args, **kwargs):

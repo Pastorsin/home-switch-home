@@ -92,5 +92,8 @@ class Residencia(models.Model):
     def cerrar_subasta(self):
         return self.estado.cerrar_subasta()
 
+    def establecer_hotsale(self):
+        pass
+
     class Meta:
         ordering = ['-fecha_publicacion', 'precio_base']

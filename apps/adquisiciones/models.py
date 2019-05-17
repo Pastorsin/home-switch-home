@@ -11,6 +11,9 @@ class EventoNoPermitido(Exception):
 
 class Estado(models.Model):
 
+    class Meta:
+        abstract = True
+
     @property
     def residencia(self):
         """Devuelve la residencia que contiene este estado"""
@@ -22,6 +25,7 @@ class Estado(models.Model):
             return None
         return residencia
 
+    # Querys
     def es_compra_directa(self):
         return False
 
@@ -31,6 +35,13 @@ class Estado(models.Model):
     def es_no_disponible(self):
         return False
 
+    def es_en_espera(self):
+        return False
+
+    def es_reservada(self):
+        return False
+
+    # Eventos
     def eliminar(self):
         raise Exception('Método abstracto, implementame')
 
@@ -39,9 +50,6 @@ class Estado(models.Model):
 
     def cerrar_subasta(self):
         raise Exception('Método abstracto, implementame')
-
-    class Meta:
-        abstract = True
 
 
 class NoDisponible(Estado):
@@ -129,7 +137,6 @@ class Subasta(Estado):
         self.save()
 
     def hay_ganador(self):
-        # Query
         return bool(self.ganador_actual)
 
     def get_absolute_url(self):
@@ -142,6 +149,48 @@ class Subasta(Estado):
         pass
 
     def cerrar_subasta(self):
-        compra_directa = CompraDirecta.objects.create()
-        self.residencia.cambiar_estado(compra_directa)
+        if self.residencia.estado.hay_ganador():
+            reservada = Reservada.objects.create()
+            self.residencia.cambiar_estado(reservada)
+        else:
+            en_espera = EnEspera.objects.create()
+            self.residencia.cambiar_estado(en_espera)
         return 'Se ha cerrado la subasta correctamente'
+
+
+class EnEspera(Estado):
+
+    def __str__(self):
+        return 'En espera'
+
+    def es_en_espera(self):
+        return True
+
+    def eliminar(self):
+        no_disponible = NoDisponible.objects.create()
+        self.residencia.cambiar_estado(no_disponible)
+        return 'Se ha eliminado la residencia correctamente'
+
+    def abrir_subasta(self):
+        pass
+
+    def cerrar_subasta(self):
+        pass
+
+
+class Reservada(Estado):
+
+    def __str__(self):
+        return 'Reservada'
+
+    def es_reservada(self):
+        return True
+
+    def eliminar(self):
+        pass
+
+    def abrir_subasta(self):
+        pass
+
+    def cerrar_subasta(self):
+        pass
