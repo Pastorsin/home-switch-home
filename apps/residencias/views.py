@@ -90,18 +90,28 @@ class ModificarResidenciaView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(ModificarResidenciaView,
                         self).get_context_data(**kwargs)
-        context['ubicacion'] = self.ubicacion_form_class(
-            instance=context['residencia'].ubicacion)
+        context['ubicacion'] = self.ubicacion_form_class(instance=context['residencia'].ubicacion)
         return context
 
     def post(self, request, *args, **kwargs):
-        # Acá va el guardado de residencia y ubicación
-        # guiate por el post de agregarResidencia.
-        # También hay que verificar que no esté en subasta
-        # y que no tenga la misma ubicación
-        self.object = self.get_object()
-        # Página a la que va en el éxito ↓
-        return HttpResponseRedirect(self.object.get_absolute_url())
+        residencia=self.get_object()
+        if residencia.estado.es_subasta():
+            error='Error! No se ha podido modificar la residencia. Actualmente se encuentra en subasta.'    
+            messages.error(self.request, error)
+            return HttpResponseRedirect(residencia.get_absolute_url())
+        ubicacion_form = UbicacionForm(request.POST, instance=residencia.ubicacion)
+        form = ResidenciaForm(request.POST, instance=residencia)          
+        if self.formulario_es_valido(form,ubicacion_form):    
+            ubicacion_form.save()
+            form.save()
+            messages.success(self.request, 'Residencia modificada exitosamente!')
+        else:
+            error='Error! No se puede modificar porque la ubicacion ya existe para otra residencia.'
+            messages.error(self.request,error)
+        return HttpResponseRedirect(residencia.get_absolute_url())
+
+    def formulario_es_valido(self, residencia_form, ubicacion_form):
+        return residencia_form.is_valid() and ubicacion_form.is_valid()  
 
 
 class ListadoResidenciasView(ListView):
