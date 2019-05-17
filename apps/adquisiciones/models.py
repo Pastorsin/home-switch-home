@@ -80,7 +80,8 @@ class CompraDirecta(Estado):
         # tiempo_transcurrido = date.today() - residencia.fecha_publicacion
         # tiempo_transcurrido >= timedelta(weeks=self.SEMANAS_MINIMAS)
         if True:
-            subasta = Subasta.objects.create()
+            precio_base = self.residencia.precio_base
+            subasta = Subasta.objects.create(precio_actual=precio_base)
             self.residencia.cambiar_estado(subasta)
             return 'Se ha puesto la residencia en subasta correctamente'
         else:
@@ -101,7 +102,7 @@ class Subasta(Estado):
         null=True,
         blank=True
     )
-    puja_actual = models.FloatField(
+    precio_actual = models.FloatField(
         null=True,
         blank=True
     )
@@ -117,21 +118,13 @@ class Subasta(Estado):
     def es_subasta(self):
         return True
 
-    def precio_actual(self):
-        # Query
-        # 1º Reusar Estado>>residencia
-        # 2º Filtrar la reserva por la residencia de 1º
-        precio_actual = self.puja_actual
-        precio_base = self.residencia.precio_base
-        return precio_actual if precio_actual else precio_base
-
     def precio_minimo(self):
-        return self.precio_actual() + 0.1
+        return self.precio_actual + 0.1
 
     def nueva_puja(self, nuevo_pujador, nuevo_precio):
         # self.ganador_actual.incrementar_credito()
         self.ganador_actual = nuevo_pujador
-        self.puja_actual = nuevo_precio
+        self.precio_actual = nuevo_precio
         # nuevo_pujador.decrementar_credito()
         self.save()
 
