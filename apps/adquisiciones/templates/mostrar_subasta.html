@@ -23,7 +23,7 @@
   <div class="col-md-12 m-0 p-0 mt-2 d-flex justify-content-center">
 
     <!-- Izquierda (Usuario) -->
-    <div class="col-lg-4 col-md-6 col-sm-12" style="background-color: #1b2d3e;">
+    <div class="col-lg-4 rounded" style="background-color: #1b2d3e;">
       <div class="d-inline-flex justify-content-center mt-2">
         <div class="mt-1">
           <p class="m-0"><strong>Ganador actual:</strong></p> 
@@ -46,14 +46,25 @@
     </div>
 
     <!-- Derecha (Detalle) -->
-    <ul class="col-lg-8 col-md-6 col-sm-12 m-0 p-0 list-group">
-      <li class="list-group-item p-2 m-0 text-center" style="background-color: #314456;">
-        <strong>Precio inicial:</strong> ${{ subasta.residencia.precio_base }}
-      </li>
-      <li class="list-group-item p-2 m-0 bg-primary text-center">
+    <ul class="col-lg-8 m-0 p-0 list-group">
+
+
+      <div class="col-md-12 list-group-item bg-transparent p-0" style="flex-basis: 0%;">
+        <li class="list-group-item p-2 m-0 text-left" style="background-color: #314456;">
+          <strong>Precio inicial:</strong> ${{ subasta.residencia.precio_base }}                        
+        </li>
+      </div> 
+      <div class="d-inline-flex col-md-12 p-0" style="flex-basis: 0%;">
+        <li class="bg-primary col-md-8 list-group-item p-2 m-0 text-center" style="background-color: #314456; text-align: left!important;">
           <strong>Precio actual:</strong> ${{ subasta.precio_actual }}                        
-          <input type="button" class="position-absolute r-4 w-25 btn btn-light p-0" value="Pujar!" style="right: 8px;"></input>
-      </li>
+        </li>
+        <li class="col-md-4 list-group-item p-2 m-0 text-center" style="background-color: #31445685">
+          <input class="btn btn-success py-1" type="submit" name="pujar" value="Pujar!" style="color: #d0ffcc">
+        </li>
+      </div>
+
     </ul>
   </div>
+  
+
 {% endblock estado_content %}
