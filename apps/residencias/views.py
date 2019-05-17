@@ -133,7 +133,7 @@ class MostrarResidenciaView(DetailView):
             if nombre_boton in request.POST.keys():
                 return nombre_boton
 
-    def inicializar_acciones(self):
+    def inicializar_eventos(self):
         self.residencia = self.get_object()
         self.eventos = {
             'abrir_subasta': self.residencia.abrir_subasta,
@@ -142,7 +142,7 @@ class MostrarResidenciaView(DetailView):
         }
 
     def post(self, request, *args, **kwargs):
-        self.inicializar_acciones()
+        self.inicializar_eventos()
         evento = self.eventos[self.boton_presionado(request)]
         try:
             mensaje_exito = evento()
