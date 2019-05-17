@@ -2,7 +2,7 @@
 from django.views.generic import UpdateView, DetailView, ListView
 # Models
 from django.contrib.auth.models import User
-from adquisiciones.models import CompraDirecta, Subasta
+from adquisiciones.models import CompraDirecta, Subasta, NoDisponible
 from .models import Residencia
 # Forms
 from .forms import ResidenciaForm, UbicacionForm
@@ -120,25 +120,93 @@ class ListadoResidenciasView(ListView):
     objetos = model.objects.order_by('precio_base')
 
 
-class MostrarResidenciaView(DetailView):
+class Accion():
+
+    def __init__(self, residencia):
+        self.residencia = residencia
+
+    def exito(self):
+        raise Exception('Método abstracto, implementame')
+
+    def estado(self):
+        raise Exception('Método abstracto, implementame')
+
+    def mensaje_exito(self):
+        raise Exception('Método abstracto, implementame')
+
+    def mensaje_error(self):
+        raise Exception('Método abstracto, implementame')
+
+
+class AccionAbrirSubasta(Accion):
 
     SEMANAS_MINIMAS = 26  # 6 meses = 26 semanas
+
+    def exito(self):
+        # tiempo_transcurrido = date.today() - residencia.fecha_publicacion
+        # tiempo_transcurrido >= timedelta(weeks=self.SEMANAS_MINIMAS)
+        return True
+
+    def mensaje_error(self):
+        return 'La residencia debe estar como minimo 6 meses en compra directa'
+
+    def estado(self):
+        return Subasta
+
+    def mensaje_exito(self):
+        return 'Se ha puesto la residencia en {} correctamente'.format(
+            humanize(self.estado().__name__))
+
+
+class AccionCerrarSubasta(AccionAbrirSubasta):
+
+    def estado(self):
+        return CompraDirecta
+
+
+class AccionEliminar(Accion):
+
+    def exito(self):
+        return True
+
+    def mensaje_error(self):
+        return 'No se pudo eliminar la residencia'
+
+    def estado(self):
+        return NoDisponible
+
+    def mensaje_exito(self):
+        return 'Se ha eliminado la residencia correctamente'
+
+
+class MostrarResidenciaView(DetailView):
+
     model = Residencia
     template_name = 'detalle_residencia.html'
+    acciones = {
+        'abrir_subasta': AccionAbrirSubasta,
+        'eliminar': AccionEliminar,
+        'cerrar_subasta': AccionCerrarSubasta
+    }
+
+    def se_presiono_algun_boton(self, request):
+        return bool(self.boton_presionado(request))
+
+    def boton_presionado(self, request):
+        for nombre_boton in self.acciones:
+            if nombre_boton in request.POST.keys():
+                return nombre_boton
 
     def post(self, request, *args, **kwargs):
         residencia = self.get_object()
-        # tiempo_transcurrido = date.today() - residencia.fecha_publicacion
-        # subastable = tiempo_transcurrido >= timedelta(weeks=self.SEMANAS_MINIMAS)
-        if request.POST['action'] == 'subastar':
-            clase_estado = Subasta
-            if not True:        # Cambiar en la version oficial
-                messages.error(
-                    self.request, 'La residencia debe estar como minimo 6 meses en compra directa')
-                return HttpResponseRedirect(residencia.get_absolute_url())
+        if self.se_presiono_algun_boton(request):
+            boton_presionado = self.boton_presionado(request)
+            accion = self.acciones[boton_presionado](residencia)
+            if accion.exito():
+                residencia.cambiar_estado(accion.estado())
+                messages.success(self.request, accion.mensaje_exito())
+            else:
+                messages.error(self.request, accion.mensaje_error())
+            return HttpResponseRedirect(residencia.get_absolute_url())
         else:
-            clase_estado = CompraDirecta
-        residencia.cambiar_estado(clase_estado)
-        messages.success(self.request, 'Se ha puesto la residencia en {} correctamente'
-                         .format(humanize(clase_estado.__name__)))
-        return HttpResponseRedirect(residencia.get_absolute_url())
+            raise Exception('No se presionó ningún botón y entró acá')

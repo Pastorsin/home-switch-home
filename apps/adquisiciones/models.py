@@ -12,7 +12,8 @@ class Estado(models.Model):
         """Devuelve la residencia que contiene este estado"""
         estado_actual = ContentType.objects.get_for_model(self.__class__)
         try:
-            residencia = Residencia.objects.get(estado_id=self.id, content_type=estado_actual)
+            residencia = Residencia.objects.get(
+                estado_id=self.id, content_type=estado_actual)
         except Residencia.DoesNotExist:
             return None
         return residencia
@@ -23,11 +24,24 @@ class Estado(models.Model):
     def es_subasta(self):
         return False
 
+    def es_no_disponible(self):
+        return False
+
     class Meta:
         abstract = True
 
 
+class NoDisponible(Estado):
+
+    def __str__(self):
+        return 'No disponible'
+
+    def es_no_disponible(self):
+        return True
+
+
 class CompraDirecta(Estado):
+
     def __str__(self):
         return 'Compra directa'
 
