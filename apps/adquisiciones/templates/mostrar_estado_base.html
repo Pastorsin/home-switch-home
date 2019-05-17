@@ -34,6 +34,22 @@
             <div class="bg-contenido-form m-0 p-2 rounded shadow">
               <div class="rounded text-center bg-dark p-2">
                 {% block estado_content %}{% endblock estado_content %}
+
+                <!-- Mensajes -->
+                <div class="mt-2 p-0">
+                {% for message in messages %}
+                  {% if message.tags == "error" %}
+                    <div class="alert alert-danger alert-dismissible fade show m-0">
+                  {% else %}
+                    <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %} alert-dismissible fade show m-0">
+                  {% endif %}
+                      <strong>{{ message }}</strong>
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                {% endfor %}                
+                </div>
               </div>
             </div>
           </div>

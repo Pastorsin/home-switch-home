@@ -58,6 +58,15 @@ class Subasta(Estado):
         null=True,
         blank=True
     )
+    puja_actual = models.FloatField(
+        null=True,
+        blank=True
+    )
+    ganador_actual = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return 'Subasta'
@@ -69,15 +78,23 @@ class Subasta(Estado):
         # Query
         # 1º Reusar Estado>>residencia
         # 2º Filtrar la reserva por la residencia de 1º
-        return "200000"
+        precio_actual = self.puja_actual
+        precio_base = self.residencia.precio_base
+        return precio_actual if precio_actual else precio_base
 
-    def ganador_actual(self):
-        # Query
-        return "Goffredo"
+    def precio_minimo(self):
+        return self.precio_actual() + 0.1
+
+    def nueva_puja(self, nuevo_pujador, nuevo_precio):
+        # self.ganador_actual.incrementar_credito()
+        self.ganador_actual = nuevo_pujador
+        self.puja_actual = nuevo_precio
+        # nuevo_pujador.decrementar_credito()
+        self.save()
 
     def hay_ganador(self):
         # Query
-        return True
+        return bool(self.ganador_actual)
 
     def get_absolute_url(self):
         return reverse('mostrar_subasta', args=[str(self.pk)])

@@ -55,16 +55,27 @@
         </li>
       </div> 
       <div class="d-inline-flex col-md-12 p-0" style="flex-basis: 0%;">
-        <li class="bg-primary col-md-8 list-group-item p-2 m-0 text-center" style="background-color: #314456; text-align: left!important;">
+        <li class="bg-primary col-md-6 list-group-item p-2 m-0 text-center" style="background-color: #314456; text-align: left!important;">
           <strong>Precio actual:</strong> ${{ subasta.precio_actual }}                        
         </li>
-        <li class="col-md-4 list-group-item p-2 m-0 text-center" style="background-color: #31445685">
-          <input class="btn btn-success py-1" type="submit" name="pujar" value="Pujar!" style="color: #d0ffcc">
-        </li>
+        <div class="col-md-6 p-2 m-0 text-center" style="background-color: #31445685">
+
+            <!-- Pujar -->
+            <form method="post">
+            {% csrf_token %}
+              <div class="d-inline-flex input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">$</span>
+                </div>
+                  <input type="number" class="form-control rounded-right" min="{{ subasta.precio_minimo| stringformat:'E' }}" required name="monto" placeholder="{{subasta.precio_actual}}" step="0.1">
+                  <input type="submit" class="btn btn-success ml-2 py-1" name="pujar" value="Pujar!" style="color: #d0ffcc">
+              </div>
+            </form>
+
+        </div>
       </div>
 
     </ul>
   </div>
-  
 
 {% endblock estado_content %}

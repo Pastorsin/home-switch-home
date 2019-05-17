@@ -201,7 +201,7 @@ class MostrarResidenciaView(DetailView):
         residencia = self.get_object()
         if self.se_presiono_algun_boton(request):
             boton_presionado = self.boton_presionado(request)
-            accion = self.acciones[boton_presionado](residencia)
+            accion = self.acciones[boton_presionado]()
             if accion.exito():
                 residencia.cambiar_estado(accion.estado())
                 messages.success(self.request, accion.mensaje_exito())
