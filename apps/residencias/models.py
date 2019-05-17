@@ -75,15 +75,22 @@ class Residencia(models.Model):
     def get_absolute_url(self):
         return reverse('detalle_residencia', args=[str(self.pk)])
 
-    def cambiar_estado(self, clase_estado):
-        estado = clase_estado.objects.create()
-
+    def cambiar_estado(self, estado):
         if self.estado is not None:
             self.estado.delete()
 
         self.estado = estado
         self.estado_id = estado.pk
         self.save()
+
+    def eliminar(self):
+        return self.estado.eliminar()
+
+    def abrir_subasta(self):
+        return self.estado.abrir_subasta()
+
+    def cerrar_subasta(self):
+        return self.estado.cerrar_subasta()
 
     class Meta:
         ordering = ['-fecha_publicacion', 'precio_base']

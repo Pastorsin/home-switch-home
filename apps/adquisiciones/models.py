@@ -5,6 +5,10 @@ from residencias.models import Residencia
 from datetime import date, timedelta
 
 
+class EventoNoPermitido(Exception):
+    pass
+
+
 class Estado(models.Model):
 
     @property
@@ -27,6 +31,15 @@ class Estado(models.Model):
     def es_no_disponible(self):
         return False
 
+    def eliminar(self):
+        raise Exception('Método abstracto, implementame')
+
+    def abrir_subasta(self):
+        raise Exception('Método abstracto, implementame')
+
+    def cerrar_subasta(self):
+        raise Exception('Método abstracto, implementame')
+
     class Meta:
         abstract = True
 
@@ -39,6 +52,15 @@ class NoDisponible(Estado):
     def es_no_disponible(self):
         return True
 
+    def eliminar(self):
+        pass
+
+    def abrir_subasta(self):
+        pass
+
+    def cerrar_subasta(self):
+        pass
+
 
 class CompraDirecta(Estado):
 
@@ -47,6 +69,27 @@ class CompraDirecta(Estado):
 
     def es_compra_directa(self):
         return True
+
+    def eliminar(self):
+        no_disponible = NoDisponible.objects.create()
+        self.residencia.cambiar_estado(no_disponible)
+        return 'Se ha eliminado la residencia correctamente'
+
+    def abrir_subasta(self):
+        # SEMANAS_MINIMAS = 26  # 6 meses = 26 semanas
+        # tiempo_transcurrido = date.today() - residencia.fecha_publicacion
+        # tiempo_transcurrido >= timedelta(weeks=self.SEMANAS_MINIMAS)
+        if True:
+            subasta = Subasta.objects.create()
+            self.residencia.cambiar_estado(subasta)
+            return 'Se ha puesto la residencia en subasta correctamente'
+        else:
+            error = 'La residencia debe estar como mínimo 6 meses ' +\
+                'en compra directa'
+            raise EventoNoPermitido(error)
+
+    def cerrar_subasta(self):
+        pass
 
 
 class Subasta(Estado):
@@ -98,3 +141,14 @@ class Subasta(Estado):
 
     def get_absolute_url(self):
         return reverse('mostrar_subasta', args=[str(self.pk)])
+
+    def eliminar(self):
+        raise EventoNoPermitido('No se puede eliminar en una subasta')
+
+    def abrir_subasta(self):
+        pass
+
+    def cerrar_subasta(self):
+        compra_directa = CompraDirecta.objects.create()
+        self.residencia.cambiar_estado(compra_directa)
+        return 'Se ha cerrado la subasta correctamente'
