@@ -116,18 +116,16 @@ class ModificarResidenciaView(LoginRequiredMixin, UpdateView):
         return residencia_form.is_valid() and ubicacion_form.is_valid()
 
 
-class ListadoResidenciasView(LoginRequiredMixin, ListView):
+class ListadoResidenciasView(ListView):
     template_name = 'listadoResidencias.html'
     model = Residencia
     objetos = model.objects.order_by('precio_base')
-    login_url = 'login'
 
 
-class MostrarResidenciaView(LoginRequiredMixin, DetailView):
+class MostrarResidenciaView(DetailView):
 
     model = Residencia
     template_name = 'detalle_residencia.html'
-    login_url = 'login'
 
     def boton_presionado(self, request):
         for nombre_boton in self.eventos:

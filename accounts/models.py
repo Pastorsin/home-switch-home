@@ -2,4 +2,12 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class CustomUser(AbstractUser):
-    edad = models.PositiveIntegerField(null=True, blank=True)
+
+    edad = models.PositiveIntegerField(
+            null=True,
+            blank=True
+    )
+    foto = models.URLField(
+            null=True,
+            blank=True
+    ) 
