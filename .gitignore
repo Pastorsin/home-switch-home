@@ -5,4 +5,4 @@ Pipfile
 Pipfile.lock
 apps/*/migrations/*
 accounts/migrations/*
-.swp
+*.swp

@@ -13,12 +13,15 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.urls import reverse
+# Mixins
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class AgregarResidenciaView(UpdateView):
+class AgregarResidenciaView(LoginRequiredMixin, UpdateView):
     template_name = 'agregarResidencia.html'
     form_class = ResidenciaForm
     ubicacion_form_class = UbicacionForm
+    login_url = 'login'
 
     def get_context_data(self, **kwargs):
         context = super(AgregarResidenciaView, self).get_context_data(**kwargs)
@@ -80,12 +83,13 @@ class AgregarResidenciaView(UpdateView):
         return reverse('agregarResidencia')
 
 
-class ModificarResidenciaView(UpdateView):
+class ModificarResidenciaView(LoginRequiredMixin, UpdateView):
 
     model = Residencia
     template_name = 'modificarResidencia.html'
     form_class = ResidenciaForm
     ubicacion_form_class = UbicacionForm
+    login_url = 'login'
 
     def get_context_data(self, **kwargs):
         context = super(ModificarResidenciaView,
@@ -119,16 +123,18 @@ class ModificarResidenciaView(UpdateView):
         return residencia_form.is_valid() and ubicacion_form.is_valid()
 
 
-class ListadoResidenciasView(ListView):
+class ListadoResidenciasView(LoginRequiredMixin, ListView):
     template_name = 'listadoResidencias.html'
     model = Residencia
     objetos = model.objects.order_by('precio_base')
+    login_url = 'login'
 
 
-class MostrarResidenciaView(DetailView):
+class MostrarResidenciaView(LoginRequiredMixin, DetailView):
 
     model = Residencia
     template_name = 'detalle_residencia.html'
+    login_url = 'login'
 
     def boton_presionado(self, request):
         for nombre_boton in self.eventos:
