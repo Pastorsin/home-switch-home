@@ -11,3 +11,13 @@ class CustomUser(AbstractUser):
             null=True,
             blank=True
     ) 
+    es_premium = models.BooleanField(
+            default=False
+    )
+
+    def cambiar_categoria(self):
+        if self.es_premium:
+            self.es_premium = False
+        else:
+            self.es_premium = True
+        self.save()
