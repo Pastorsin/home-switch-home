@@ -1,7 +1,6 @@
 # Views
-from django.views.generic import UpdateView, DetailView, ListView
+from django.views.generic import UpdateView, DetailView, ListView, CreateView
 # Models
-# from django.contrib.auth.models import User    # cambie acá
 from accounts.models import CustomUser
 from adquisiciones.models import CompraDirecta
 from adquisiciones.models import EventoNoPermitido
@@ -17,7 +16,7 @@ from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class AgregarResidenciaView(LoginRequiredMixin, UpdateView):
+class AgregarResidenciaView(LoginRequiredMixin, CreateView):
     template_name = 'agregarResidencia.html'
     form_class = ResidenciaForm
     ubicacion_form_class = UbicacionForm
@@ -31,16 +30,10 @@ class AgregarResidenciaView(LoginRequiredMixin, UpdateView):
             context['ubicacion'] = self.ubicacion_form_class()
         return context
 
-    def get_object(self):
-        # return get_object_or_404(User)          # antes estaba esto
-        return get_object_or_404(CustomUser)
-
-
     def form_invalid(self, **kwargs):
         return self.render_to_response(self.get_context_data(**kwargs))
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
         residencia_form = self.form_class(request.POST)
         ubicacion_form = self.ubicacion_form_class(request.POST)
         if self.formulario_es_valido(residencia_form, ubicacion_form):
