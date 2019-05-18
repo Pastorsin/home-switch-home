@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'residencias.apps.ResidenciasConfig',
     'adquisiciones.apps.AdquisicionesConfig',
+    'accounts.apps.AccountsConfig',
     # Default apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -137,3 +138,5 @@ django_heroku.settings(locals())
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+AUTH_USER_MODEL = 'accounts.CustomUser'

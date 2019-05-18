@@ -1,7 +1,8 @@
 # Views
 from django.views.generic import UpdateView, DetailView, ListView
 # Models
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User    # cambie acá
+from accounts.models import CustomUser
 from adquisiciones.models import CompraDirecta
 from adquisiciones.models import EventoNoPermitido
 from .models import Residencia
@@ -28,7 +29,9 @@ class AgregarResidenciaView(UpdateView):
         return context
 
     def get_object(self):
-        return get_object_or_404(User)
+        # return get_object_or_404(User)          # antes estaba esto
+        return get_object_or_404(CustomUser)
+
 
     def form_invalid(self, **kwargs):
         return self.render_to_response(self.get_context_data(**kwargs))
