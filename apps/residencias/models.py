@@ -95,5 +95,8 @@ class Residencia(models.Model):
     def establecer_hotsale(self):
         pass
 
+    def comprar(self):
+        pass
+
     class Meta:
         ordering = ['-fecha_publicacion', 'precio_base']

@@ -1,14 +1,12 @@
 # Views
 from django.views.generic import UpdateView, DetailView, ListView, CreateView
 # Models
-from accounts.models import CustomUser
 from adquisiciones.models import CompraDirecta
 from adquisiciones.models import EventoNoPermitido
 from .models import Residencia
 # Forms
 from .forms import ResidenciaForm, UbicacionForm
 # Utility Django
-from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.urls import reverse
@@ -138,7 +136,8 @@ class MostrarResidenciaView(DetailView):
             'abrir_subasta': self.residencia.abrir_subasta,
             'eliminar': self.residencia.eliminar,
             'cerrar_subasta': self.residencia.cerrar_subasta,
-            'hotsale': self.residencia.establecer_hotsale
+            'hotsale': self.residencia.establecer_hotsale,
+            'comprar': self.residencia.comprar
         }
 
     def post(self, request, *args, **kwargs):
