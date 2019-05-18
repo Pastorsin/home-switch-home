@@ -4,3 +4,4 @@ staticfiles/*
 Pipfile
 Pipfile.lock
 apps/*/migrations/*
+.swp

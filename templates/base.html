@@ -89,19 +89,22 @@
 					</li>
 
 					<!-- Usuario -->
-					<li class="nav-item avatar dropdown">
-						<a class="nav-link dropdown-toggle" data-toggle="dropdown"
-							aria-haspopup="true" aria-expanded="false" href="#">
-							<img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" class="rounded-circle z-depth-0"
-							height="20px" width="20px" alt="avatar image">
-							<span>Usuario</span>
-						</a>
-						<div class="dropdown-menu dropdown-menu-right dropdown-secondary">
-							<a class="dropdown-item" href="#">Mi perfil</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#">Cerrar sesión</a>
-						</div>
-					</li>
+                      
+                    <li class="nav-item avatar dropdown">
+                      {% if user.is_authenticated %}
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+                            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" class="rounded-circle z-depth-0" height="20px" width="20px" alt="avatar image">
+                            <span>{{ user.username }}</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-secondary">
+                            <a class="dropdown-item" href="#">Mi perfil</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
+                        </div>
+                      {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-primary">Log In</a>
+                      {% endif %}
+                    </li>
 
 				</ul>
 			</div>

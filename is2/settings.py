@@ -133,3 +133,7 @@ STATICFILES_DIRS = [
 ]
 
 django_heroku.settings(locals())
+
+
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
