@@ -108,27 +108,12 @@
     <hr>
     <div class="row pb-3">
       <div class="col">
-        <p class="text-muted">La residencia se encuentra en estado {{ residencia.estado|lower }}
-        </p>
-        <form action="{% url 'detalle_residencia' residencia.pk %}" method="post">
-          {% csrf_token %}
-        {% if residencia.estado.es_subasta %}
-            <input type="submit" type="button" name="cerrar_subasta" value="Cerrar Subasta" class="btn btn-danger"/>
-            <a class="btn btn-info" href="{% url 'mostrar_subasta' residencia.estado_id %}">Ir a la subasta</a>
-        {% elif residencia.estado.es_compra_directa %}
-            <input type="submit" name="abrir_subasta" type="button" value="Abrir Subasta" class="btn btn-success"/>
-            <a class="btn btn-info" href="{% url 'modificarResidencia' residencia.pk %}">Modificar</a>
-            <input type="submit" type="button" class="btn btn-danger" name="eliminar" value="Eliminar"></input>
-        {% elif residencia.estado.es_no_disponible %}
-            <!-- Nada por ahora -->
-        {% elif residencia.estado.es_en_espera %}
-            <a class="btn btn-info" href="{% url 'modificarResidencia' residencia.pk %}">Modificar</a>
-            <input type="submit" type="button" class="btn btn-danger" name="eliminar" value="Eliminar"></input>
-            <input type="submit" type="button" class="btn btn-warning" name="hotsale" value="Poner en HotSale"></input>
-        {% elif residencia.estado.es_reservada %}
-            <a class="btn btn-info" href="{% url 'modificarResidencia' residencia.pk %}">Modificar</a>
-        {% endif %}
-        </form>     
+        <p class="text-muted">La residencia se encuentra en estado {{ residencia.estado|lower }} </p>
+        {% if user.is_staff %}
+          {% include "botones_admin_detalle_residencia.html" %}
+        {% else %}
+          {% include "botones_usuarios_detalle_residencia.html" %}
+        {% endif %}     
       </div>
       <!-- Mensajes -->
         {% for message in messages %}

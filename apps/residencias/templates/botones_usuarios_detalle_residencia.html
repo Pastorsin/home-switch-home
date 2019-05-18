@@ -1,0 +1,7 @@
+<form action="{% url 'detalle_residencia' residencia.pk %}" method="post"> {% csrf_token %}
+  {% if residencia.estado.es_subasta %}
+      <a class="btn btn-info" href="{% url 'mostrar_subasta' residencia.estado_id %}">Ir a la subasta</a>
+  {% elif residencia.estado.es_compra_directa %}
+      <input type="submit" type="button" class="btn btn-success" name="comprar" value="Comprar"></input>
+  {% endif %}
+</form>
