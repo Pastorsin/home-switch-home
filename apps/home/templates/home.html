@@ -3,10 +3,45 @@
 {% block title %}Home Page{% endblock title %}
 
 {% block content %}
-  <main>
-  	<p>
-  		{% for i in i|rjust:5000 %}
-    		Esto works!
-    	{% endfor %}
-  </main>
+
+		<style type="text/css">
+			#container{
+		    position: absolute;
+		    top: 50%;
+		    left: 50%;
+		    transform: translateX(-50%) translateY(-50%);
+			}
+			body{
+				background-image: linear-gradient(to bottom, rgba(86,102,125,0.9) 0%,rgba(86,102,125,0.9) 100%), url("https://a-static.besthdwallpaper.com/casa-en-una-residencia-papel-pintado-1920x1080-4500_48.jpg");
+			}
+		</style>
+		<main>
+	    <div id="container" class="container">
+	      <div class="row">
+	        <div class="col-sm-8 offset-sm-2 p-4 text-center">
+	          <div class="m-0 pb-2 bg-dark rounded-top shadow">
+	            <h2 style="font-family: 'Open Sans', sans-serif;">Bienvenido!</h2>
+	          </div >
+	          <div class="bg-contenido-form m-0 p-4 rounded shadow">
+	          	<div class="col-md-8 d-inline-flex">
+		          	<div class="col-md-6 ml-auto mr-auto">
+		          		<button class="btn btn-light shadow">Entrar como Usuario Visitante</button>
+		          	</div>
+		          	<div class="col-md-6 ml-auto mr-auto">
+		          		<button class="btn btn-info shadow">Entrar como Usuario Registrado</button>
+		          	</div>
+		          </div>
+	          	<div class="col-md-8 d-inline-flex mt-4">
+		          	<div class="col-md-6 ml-auto mr-auto">
+		          		<button class="btn btn-danger shadow">Entrar como Usuario Premium</button>
+		          	</div>
+		          	<div class="col-md-6 ml-auto mr-auto">
+		          		<button class="btn btn-warning shadow">Entrar como Administrador</button>
+		          	</div>
+	          	</div>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+    </main>
 {% endblock content %}
