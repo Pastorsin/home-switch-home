@@ -12,6 +12,7 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 # Mixins
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -125,6 +126,17 @@ class ListadoResidenciasView(ListView):
     model = Residencia
     objetos = model.objects.order_by('precio_base')
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(ListadoResidenciasView,
+                        self).get_context_data(*args, **kwargs)
+        if not (self.request.user.is_staff):
+            context['object_list'] = (Residencia.objects.filter(
+                Q(content_type__model='compradirecta') |
+                Q(content_type__model='subasta') |
+                Q(content_type__model='hotsale')
+            ))
+        return context
+
 
 class MostrarResidenciaView(DetailView):
 
@@ -155,5 +167,3 @@ class MostrarResidenciaView(DetailView):
         except EventoNoPermitido as mensaje_error:
             messages.error(self.request, mensaje_error)
         return HttpResponseRedirect(self.residencia.get_absolute_url())
-
-
