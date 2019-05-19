@@ -39,8 +39,10 @@
 							Residencias
 						</a>
 						<div class="dropdown-menu dropdown-secondary" id="dropdown-residencia">
+							{% if user.is_staff %}
 							<a class="dropdown-item" href="{% url 'agregarResidencia' %}">Agregar</a>
 							<div class="dropdown-divider"></div>
+							{% endif %}
 							<a class="dropdown-item" href="{% url 'listadoResidencias' %}">Listado</a>							
 						</div>
 					</li>
@@ -62,18 +64,21 @@
 			<div class="collapse navbar-collapse w-100 order-1 order-lg-0">
 				<!-- Items -->
 				<ul class="navbar-nav ml-4 mr-auto nav-pills">
+					<!-- Demo
 					<li class="nav-item mx-1">
 						<a class="nav-link active" href="#">Item 1</a>
 					</li>
 					<li class="nav-item mx-1">
 						<a class="nav-link" href="#">Item 2</a>
 					</li>
+					-->
 				</ul>	
 
 				<!-- Usuario -->
 				<ul class="navbar-nav m-0 nav-flex-icons position-absolute r-0" style="right: 0%;">
 
 					<!-- Notificaciones -->
+					<!-- Demo
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
 							<span id="notificador">1</span>
@@ -87,6 +92,7 @@
 							<a class="dropdown-item" href="#">Notificación 3</a>
 						</div>
 					</li>
+					-->
 
 					<!-- Perfil Usuario -->
                       
@@ -102,14 +108,18 @@
                                class="rounded-circle z-depth-0" height="20px" width="20px">
                           <span>{{ user.username }}</span>
                         </a>
+                        <!-- Demo
                         <div class="dropdown-menu dropdown-menu-right dropdown-secondary">
                           <a class="dropdown-item" href="#">Mi perfil</a>
                           <div class="dropdown-divider"></div>
                           <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
                         </div>
+                    	-->
                       {% else %}
+                      <!-- Demo
                         <a href="{% url 'login' %}" class="btn btn-primary">Log In</a>
                         <a href="{% url 'signup' %}" class="btn btn-secondary">Sign Up</a>
+                      -->
                       {% endif %}
                     </li>
 
