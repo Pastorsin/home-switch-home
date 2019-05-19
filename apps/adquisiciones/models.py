@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib.contenttypes.models import ContentType
 from residencias.models import Residencia
 from datetime import date, timedelta
+from accounts.models import CustomUser
 
 
 class EventoNoPermitido(Exception):
@@ -41,6 +42,9 @@ class Estado(models.Model):
     def es_reservada(self):
         return False
 
+    def detalle(self):
+        raise Exception('Método abstracto, implementame')
+
     # Eventos
     def eliminar(self):
         raise Exception('Método abstracto, implementame')
@@ -68,6 +72,9 @@ class NoDisponible(Estado):
 
     def cerrar_subasta(self):
         pass
+
+    def detalle(self):
+        return ''
 
 
 class CompraDirecta(Estado):
@@ -100,6 +107,9 @@ class CompraDirecta(Estado):
     def cerrar_subasta(self):
         pass
 
+    def detalle(self):
+        return ''
+
 
 class Subasta(Estado):
     fecha_inicio = models.DateField(
@@ -114,8 +124,9 @@ class Subasta(Estado):
         null=True,
         blank=True
     )
-    ganador_actual = models.CharField(
-        max_length=255,
+    ganador_actual = models.OneToOneField(
+        CustomUser,
+        on_delete=models.CASCADE,
         null=True,
         blank=True
     )
@@ -150,12 +161,18 @@ class Subasta(Estado):
 
     def cerrar_subasta(self):
         if self.residencia.estado.hay_ganador():
-            reservada = Reservada.objects.create()
+            reservada = Reservada.objects.create(
+                precio_actual=self.precio_actual,
+                ganador_actual=self.ganador_actual
+            )
             self.residencia.cambiar_estado(reservada)
         else:
             en_espera = EnEspera.objects.create()
             self.residencia.cambiar_estado(en_espera)
         return 'Se ha cerrado la subasta correctamente'
+
+    def detalle(self):
+        return ''
 
 
 class EnEspera(Estado):
@@ -177,8 +194,20 @@ class EnEspera(Estado):
     def cerrar_subasta(self):
         pass
 
+    def detalle(self):
+        return ''
+
 
 class Reservada(Estado):
+    precio_actual = models.FloatField(
+        null=True,
+        blank=True
+    )
+    ganador_actual = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return 'Reservada'
@@ -194,3 +223,8 @@ class Reservada(Estado):
 
     def cerrar_subasta(self):
         pass
+
+    def detalle(self):
+        return 'por {} con un monto de ${}'.format(
+            self.ganador_actual,
+            self.precio_actual)

@@ -27,17 +27,17 @@
       <div class="d-inline-flex justify-content-center mt-2">
         <div class="mt-1">
           <p class="m-0"><strong>Ganador actual:</strong></p> 
-          <h4>
+          <h6>
           {% if subasta.hay_ganador %}
-            {{ subasta.ganador_actual }}
+            {{ subasta.ganador_actual.username }}
           {% else %}
             Sin ganador
           {% endif %}
-          </h4>
+          </h6>
         </div>
         <div class="ml-2 mt-1">
           {% if subasta.hay_ganador %}
-            <img src="https://scontent.faep9-2.fna.fbcdn.net/v/t1.0-9/33814026_10216478836464271_2788733419322867712_n.jpg?_nc_cat=105&_nc_ht=scontent.faep9-2.fna&oh=7f720a9637cefd3d4de8999cc11098fe&oe=5D6DEDF1" style="max-height: 60px;">    
+            <img src="{{ subasta.ganador_actual.foto }}" style="max-height: 60px;">    
           {% else %}
             <img src="https://afribary.com/authors/anonymous-user/photo" style="max-height: 60px;">   
           {% endif %}

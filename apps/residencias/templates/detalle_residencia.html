@@ -110,7 +110,7 @@
     <hr>
     <div class="row pb-3">
       <div class="col">
-        <p class="text-muted">La residencia se encuentra en estado {{ residencia.estado|lower }} </p>
+        <p class="text-muted">La residencia se encuentra en estado {{ residencia.estado|lower }} {{ residencia.detalle_estado }}</p>
         {% if user.is_staff %}
           {% include "botones_admin_detalle_residencia.html" %}
         {% else %}

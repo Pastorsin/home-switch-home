@@ -98,5 +98,8 @@ class Residencia(models.Model):
     def comprar(self):
         pass
 
+    def detalle_estado(self):
+        return self.estado.detalle()
+
     class Meta:
         ordering = ['-fecha_publicacion', 'precio_base']
