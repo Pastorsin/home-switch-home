@@ -79,3 +79,11 @@
   </div>
 
 {% endblock estado_content %}
+
+{% block script %}
+  <script charset="utf-8">
+    $('input[type=submit]').click(function(){
+      return confirm('Seguro desea realizar esta acción?');
+    });
+  </script>
+{% endblock script %}

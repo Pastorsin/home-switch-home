@@ -155,3 +155,5 @@ class MostrarResidenciaView(DetailView):
         except EventoNoPermitido as mensaje_error:
             messages.error(self.request, mensaje_error)
         return HttpResponseRedirect(self.residencia.get_absolute_url())
+
+
