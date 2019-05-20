@@ -61,7 +61,7 @@
         <div class="col-md-6 p-2 m-0 text-center" style="background-color: #31445685">
 
             <!-- Pujar -->
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and not user.is_staff %}
               <form method="post">
               {% csrf_token %}
                 <div class="d-inline-flex input-group">
