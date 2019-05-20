@@ -91,9 +91,9 @@ class CompraDirecta(Estado):
         return 'Se ha eliminado la residencia correctamente'
 
     def abrir_subasta(self):
-        # SEMANAS_MINIMAS = 26  # 6 meses = 26 semanas
-        # tiempo_transcurrido = date.today() - residencia.fecha_publicacion
-        # tiempo_transcurrido >= timedelta(weeks=self.SEMANAS_MINIMAS)
+        SEMANAS_MINIMAS = 26  # 6 meses = 26 semanas
+        tiempo_transcurrido = date.today() - self.residencia.fecha_publicacion
+        tiempo_transcurrido >= timedelta(weeks=SEMANAS_MINIMAS)
         if True:
             precio_base = self.residencia.precio_base
             subasta = Subasta.objects.create(precio_actual=precio_base)
