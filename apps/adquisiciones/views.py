@@ -1,4 +1,4 @@
-from django.views.generic import DetailView
+from django.views.generic import DetailView, TemplateView
 from django.http import HttpResponseRedirect
 from .models import Subasta
 from django.contrib import messages
@@ -25,3 +25,7 @@ class MostrarSubastaView(DetailView):
             mensaje_error = 'Error! No tenés créditos suficientes para pujar'
             messages.error(request, mensaje_error)
         return HttpResponseRedirect(subasta.get_absolute_url())
+
+
+class SemanasView(TemplateView):
+    template_name = 'listado_semanas.html'
