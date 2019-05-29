@@ -68,12 +68,13 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                   </div>
-                    <input type="number" class="form-control rounded-right" min="{{ subasta.precio_minimo| stringformat:'E' }}" required name="monto" placeholder="{{subasta.precio_actual}}" step="0.1">
+                    <input type="number" class="form-control rounded-right" min="{{ subasta.precio_minimo| stringformat:'E' }}" required name="monto" placeholder="{{subasta.precio_actual}}" step="0.1" id="pujar">
                     <input type="submit" class="btn btn-success ml-2 py-1" name="pujar" value="Pujar!" style="color: #d0ffcc">
+                    <small class="text-danger bg-light rounded mt-1 w-100"><b id="advertencia"></b></small>
                 </div>
               </form>
             {% else %}
-              <small class="text-warning m-0">Para pujar regístrese!</small>
+              <small class="d-block text-warning m-0">Para pujar regístrese!</small>
               <input type="button" disabled class="btn btn-success ml-2 py-1" name="pujar" value="Pujar!" style="color: #d0ffcc">
             {% endif %}
 
@@ -89,6 +90,19 @@
   <script charset="utf-8">
     $('input[type=submit]').click(function(){
       return confirm('Seguro desea realizar esta acción?');
+    });
+
+    const precioMinimo = parseFloat($('#pujar').attr('min'));
+    const mensajeAdvertencia = 'El valor debe ser mayor a $' + precioMinimo.toFixed(2);
+    $('#advertencia').text(mensajeAdvertencia);
+
+    $('#pujar').keyup(function(){
+      let precioIngresado = parseFloat(this.value);
+
+      if ((precioIngresado <= precioMinimo) || (isNaN(precioIngresado)))
+        $('#advertencia').text(mensajeAdvertencia);
+      else
+        $('#advertencia').text('');
     });
   </script>
 {% endblock script %}
