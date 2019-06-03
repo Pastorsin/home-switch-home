@@ -108,18 +108,14 @@
                                class="rounded-circle z-depth-0" height="20px" width="20px">
                           <span>{{ user.username }}</span>
                         </a>
-                        <!-- Demo
                         <div class="dropdown-menu dropdown-menu-right dropdown-secondary">
                           <a class="dropdown-item" href="#">Mi perfil</a>
                           <div class="dropdown-divider"></div>
                           <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
                         </div>
-                    	-->
                       {% else %}
-                      <!-- Demo
                         <a href="{% url 'login' %}" class="btn btn-primary">Log In</a>
                         <a href="{% url 'signup' %}" class="btn btn-secondary">Sign Up</a>
-                      -->
                       {% endif %}
                     </li>
 
