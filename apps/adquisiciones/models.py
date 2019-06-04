@@ -1,30 +1,87 @@
-from django.db import models
-from django.urls import reverse
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
+
 from residencias.models import Residencia
-from datetime import date, timedelta
 from accounts.models import CustomUser
+
+from django.urls import reverse
+from django.db import models
+
+from datetime import date, timedelta
 
 
 class EventoNoPermitido(Exception):
     pass
 
 
+class Semana(models.Model):
+
+    residencia = models.ForeignKey(
+        Residencia,
+        on_delete=models.CASCADE
+    )
+    numero = models.PositiveIntegerField(
+        null=True,
+        blank=True
+    )
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+    estado_id = models.PositiveIntegerField(
+        null=True,
+        blank=True
+    )
+    estado = GenericForeignKey(
+        'content_type',
+        'estado_id'
+    )
+
+    def cambiar_estado(self, estado):
+        if self.estado is not None:
+            self.estado.delete()
+
+        self.estado = estado
+        self.estado_id = estado.pk
+        self.save()
+
+    def eliminar(self):
+        return self.estado.eliminar()
+
+    def abrir_subasta(self):
+        return self.estado.abrir_subasta()
+
+    def cerrar_subasta(self):
+        return self.estado.cerrar_subasta()
+
+    def establecer_hotsale(self):
+        pass
+
+    def comprar(self):
+        pass
+
+    def detalle_estado(self):
+        return self.estado.detalle()
+
+    def __str__(self):
+        return 'Semana {} con estado {}'.format(
+                self.numero, self.estado)
+
+
 class Estado(models.Model):
 
-    class Meta:
-        abstract = True
+    semanas = GenericRelation(
+        Semana,
+        content_type_field='estado',
+        object_id_field='estado_id'
+    )
 
     @property
-    def residencia(self):
-        """Devuelve la residencia que contiene este estado"""
-        estado_actual = ContentType.objects.get_for_model(self.__class__)
-        try:
-            residencia = Residencia.objects.get(
-                estado_id=self.id, content_type=estado_actual)
-        except Residencia.DoesNotExist:
-            return None
-        return residencia
+    def semana(self):
+        return self.semanas.first()
 
     # Querys
     def es_compra_directa(self):
@@ -42,18 +99,24 @@ class Estado(models.Model):
     def es_reservada(self):
         return False
 
-    def detalle(self):
-        raise Exception('Método abstracto, implementame')
-
     # Eventos
+    def detalle(self):
+        raise NotImplementedError('Método abstracto, implementame')
+
     def eliminar(self):
-        raise Exception('Método abstracto, implementame')
+        raise NotImplementedError('Método abstracto, implementame')
 
     def abrir_subasta(self):
-        raise Exception('Método abstracto, implementame')
+        raise NotImplementedError('Método abstracto, implementame')
 
     def cerrar_subasta(self):
-        raise Exception('Método abstracto, implementame')
+        raise NotImplementedError('Método abstracto, implementame')
+
+    def __str__(self):
+        raise NotImplementedError('Método abstracto, implementame')
+
+    class Meta:
+        abstract = True
 
 
 class NoDisponible(Estado):
@@ -87,19 +150,19 @@ class CompraDirecta(Estado):
 
     def eliminar(self):
         no_disponible = NoDisponible.objects.create()
-        self.residencia.cambiar_estado(no_disponible)
-        return 'Se ha eliminado la residencia correctamente'
+        self.semana.cambiar_estado(no_disponible)
+        return 'Se ha eliminado la semana correctamente'
 
     def abrir_subasta(self):
         SEMANAS_MINIMAS = 26  # 6 meses = 26 semanas
-        tiempo_transcurrido = date.today() - self.residencia.fecha_publicacion
+        tiempo_transcurrido = date.today() - self.semana.residencia.fecha_publicacion
         if tiempo_transcurrido >= timedelta(weeks=SEMANAS_MINIMAS):
-            precio_base = self.residencia.precio_base
+            precio_base = self.semana.residencia.precio_base
             subasta = Subasta.objects.create(precio_actual=precio_base)
-            self.residencia.cambiar_estado(subasta)
-            return 'Se ha puesto la residencia en subasta correctamente'
+            self.semana.cambiar_estado(subasta)
+            return 'Se ha puesto la semana en subasta correctamente'
         else:
-            error = 'La residencia debe estar como mínimo 6 meses ' +\
+            error = 'La semana debe estar como mínimo 6 meses ' +\
                 'en compra directa'
             raise EventoNoPermitido(error)
 
@@ -159,15 +222,15 @@ class Subasta(Estado):
         pass
 
     def cerrar_subasta(self):
-        if self.residencia.estado.hay_ganador():
+        if self.hay_ganador():
             reservada = Reservada.objects.create(
                 precio_actual=self.precio_actual,
                 ganador_actual=self.ganador_actual
             )
-            self.residencia.cambiar_estado(reservada)
+            self.semana.cambiar_estado(reservada)
         else:
             en_espera = EnEspera.objects.create()
-            self.residencia.cambiar_estado(en_espera)
+            self.semana.cambiar_estado(en_espera)
         return 'Se ha cerrado la subasta correctamente'
 
     def detalle(self):
@@ -184,8 +247,8 @@ class EnEspera(Estado):
 
     def eliminar(self):
         no_disponible = NoDisponible.objects.create()
-        self.residencia.cambiar_estado(no_disponible)
-        return 'Se ha eliminado la residencia correctamente'
+        self.semana.cambiar_estado(no_disponible)
+        return 'Se ha eliminado la semana correctamente'
 
     def abrir_subasta(self):
         pass
