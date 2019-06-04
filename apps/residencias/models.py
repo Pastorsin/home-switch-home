@@ -1,7 +1,5 @@
 from django.db import models
 from django.urls import reverse
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 import datetime
 
 
@@ -54,20 +52,6 @@ class Residencia(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
-    content_type = models.ForeignKey(
-        ContentType,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True
-    )
-    estado_id = models.PositiveIntegerField(
-        null=True,
-        blank=True
-    )
-    estado = GenericForeignKey(
-        'content_type',
-        'estado_id'
-    )
 
     def __str__(self):
         return self.nombre
@@ -75,31 +59,9 @@ class Residencia(models.Model):
     def get_absolute_url(self):
         return reverse('detalle_residencia', args=[str(self.pk)])
 
-    def cambiar_estado(self, estado):
-        if self.estado is not None:
-            self.estado.delete()
-
-        self.estado = estado
-        self.estado_id = estado.pk
-        self.save()
-
-    def eliminar(self):
-        return self.estado.eliminar()
-
-    def abrir_subasta(self):
-        return self.estado.abrir_subasta()
-
-    def cerrar_subasta(self):
-        return self.estado.cerrar_subasta()
-
-    def establecer_hotsale(self):
-        pass
-
-    def comprar(self):
-        pass
-
-    def detalle_estado(self):
-        return self.estado.detalle()
+    @property
+    def semanas(self):
+        return self.semana_set.all()
 
     class Meta:
         ordering = ['-fecha_publicacion', 'precio_base']
