@@ -1,18 +1,22 @@
 {% extends "mostrar_estado_base.html" %}
+{% block title %} Subasta {% endblock title %}
 
+<!-- Título -->
+{% block title_content %}
+    <h2>Información de la subasta</h2>
+  
+{% endblock title_content %}
 
 {% block estado_content %}
-	<!-- Título -->
-	<div class="m-0 p-2 bg-dark rounded-top shadow text-center">
-    <h2>Información de la subasta</h2>
-  </div>
 
   <div class="mr-1">
-	  <div class="rounded-top bg-primary">
-      <h4 class="m-0">
-        <strong>Residencia:</strong>
-        <a id="residencia-link" href="{% url 'detalle_residencia' subasta.residencia.pk %}">{{ subasta.residencia.nombre }}</a>
-      </h4>
+	  <div class="rounded-top ">
+      <div class="m-0">
+        <h4 class="text-dark bg-primary p-0 m-0">Residencia</h4>
+        <h6 class="bg-dark p-0 m-0">
+          <a id="residencia-link" href="{% url 'detalle_residencia' subasta.residencia.pk %}">{{ subasta.residencia.nombre }}</a>
+        </h6>
+      </div>
     </div>
     <div class="p-1 rounded-bottom bg-light">
       <img class="rounded-top w-100" src="{{ subasta.residencia.foto }}">                   

@@ -1,64 +1,43 @@
 {% extends 'base.html' %}
+
+
 {% block title %}
   Log In 
 {% endblock title %}
-{% block content %}
-<style type="text/css">
-  h2, p{
-    font-family: 'Open Sans', sans-serif;
-    user-select: none;
-    color: white
-  }
-  h2 {
-    color: #84a2c1;
-  }
-  p{
-    color: #c3cbd8;
-  }
-</style>
+
+
+{% block title_content %}
+  <h2>Iniciar sesión</h2>
+{% endblock title_content %}
+
+
+{% block body_content %}
+  <form method="post" class="form-inlin justify-content-center">
+  {% csrf_token %}
+  	<!-- Errores -->
+  	{% for error in form.non_field_errors %}
+  	<div class="alert alert-danger alert-dismissible fade show">
+			<strong>{{ error }}</strong>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+		{% endfor %}
+  	<!-- Campos -->
+  	{% for field in form %}
+  	<div class="form-group">
+      <p class="m-0 bg-dark rounded-top">{{field.label}}</p>
+			<div>{{field}}</div>
+    </div>
+  	{% endfor %}
+		<button class="btn btn-secondary" type="submit">Iniciar sesión!</button>
+  </form>          
+{% endblock body_content %}
+
+{% block script %}
 <script type="text/javascript">
   $(document).ready(function(){
-  	$("input").addClass("form-control");
-    $("input, textarea").focus(function(){
-      $("p").css("color", "#c3cbd8");
-      $(this).parent().siblings("p").css("color", "#00e3ff");
-    })
+    $("input").addClass("form-control");
   });
-</script>
-
-<section id="cover">
-  <div id="cover-caption">
-    <div id="container" class="container mt-2">
-      <div class="row">
-        <div class="col-sm-8 offset-sm-2 p-4 text-center">
-          <div class="m-0 pb-2 bg-dark rounded-top shadow">
-            <h2>Iniciar sesión</h2>
-          </div>
-          <div class="info-form bg-contenido-form m-0 p-4 rounded shadow">
-            <form method="post" class="form-inlin justify-content-center">
-            {% csrf_token %}
-            	<!-- Errores -->
-            	{% for error in form.non_field_errors %}
-            	<div class="alert alert-danger alert-dismissible fade show">
-								<strong>{{ error }}</strong>
-  	            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    	  	        <span aria-hidden="true">&times;</span>
-      	        </button>
-              </div>
-          		{% endfor %}
-            	<!-- Campos -->
-            	{% for field in form %}
-            	<div class="form-group">
-                <p class="m-0 bg-dark rounded-top">{{field.label}}</p>
-				  			<div>{{field}}</div>
-              </div>
-            	{% endfor %}
-							<button class="btn btn-secondary" type="submit">Iniciar sesión!</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-{% endblock content %}
+</script>        
+{% endblock script %}

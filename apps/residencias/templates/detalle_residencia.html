@@ -4,10 +4,6 @@
 
 {% block style %}
 <style type="text/css">
-  section {
-    margin-top: 2em;
-    background-color: #306ba7;
-  }
 
   li {
     color: #6db4d2;
@@ -61,23 +57,23 @@
 </style>
 {% endblock style %}
 
-{% block content %}
+{% block title_content %}
+  <h2>{{ residencia.nombre }} </h2>
+{% endblock title_content %}
+{% block body_content %}
 
-  <section class="container p-0 bg-light rounded text-dark shadow">
-    <div class="row justify-content-center bg-dark">
-      <h2 class="my-2"> {{ residencia.nombre }} </h2>
-    </div>
+  <div class="p-0 bg-light rounded text-dark shadow">
     <div class="row justify-content-center rounded-bottom border-bottom border-dark" id="img-section">
       <img class="img-fluid" src="{{ residencia.foto }}">
     </div>
     <div class="row my-2">
-      <div class="col">
+      <div class="col text-left">
         <h3>Descripción:</h3>
-        <p class="mx-5 text-break"> {{ residencia.descripcion }} </p>
+        <p class="mx-5 text-break" style="color:#444;"> {{ residencia.descripcion }} </p>
         <small class="text-muted" >Fecha de publicación:</small>
         <small class="text-break text-muted"> {{ residencia.fecha_publicacion }} </small>
       </div>
-      <div class="col-3 border-left">
+      <div class="col-3 border-left text-left">
         <h3>Precio Base:</h3>
         <span id="precio" class="text-success ml-3">
           $ {{ residencia.precio_base }}
@@ -133,7 +129,7 @@
             </div>
         {% endfor %}
     </div>
-  </section>
+  </div>
 
     <!-- Modal   <div class="modal fade" id="centered-modal" tabindex="-1" role="dialog" aria-labelledby="centered-modal-title" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -157,7 +153,7 @@
 
 
 
-{% endblock content %}
+{% endblock body_content %}
 
 
 {% block script %}

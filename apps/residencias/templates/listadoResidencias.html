@@ -2,43 +2,27 @@
 
 {% block title %}Home Page{% endblock title %}
 
-{% block content %}
   <style type="text/css">
   	#pagination :hover {background-color: #337ab7;
   						transition: background-color 0.5s;
   						color: white;}
-    h2 {
-      font-family: 'Open Sans', sans-serif;
-      user-select: none;
-      color: white;
-    }						
-    h2:hover{
-      color: #306ba7;
-    transition: color 0.5s;
-    }
   </style>
-  <main>
-
-
-  	<br>
- 	<div class="container mt-2">
-	<div class="row"> 		
-	<div class="col-sm-2"> </div>
-	<div class="col-sm-8 rounded p-0 shadow" style="background-color: #306ba7;">
-  	
-    <div class="bg-dark rounded-top py-1"><h2 class="text-center">Residencias</h2></div>
+{% block title_content %}
+  <h2 class="text-center">Residencias</h2>
+{% endblock title_content %}
+{% block body_content %}
 		{% for i in object_list %}
 			<!-- Lista Residencias -->
 				<div class="container">
   					<div class="row text-center text-lg-left">
     					<div class="col-md-12">
-      						<div class="list-group my-3">
+      						<div class="list-group my-1">
         						<a href="{% url 'detalle_residencia' i.pk %}" class="list-group-item list-group-item-action flex-column align-items-start">
           							<img class="d-block float-right img-thumbnail img-fluid" src={{i.foto}} width="250" height="250" >
           							<div class="w-100">
-            							<h4 class="mb-0 ">${{i.precio_base}}</h4>
+            							<h4 class="mb-0 text-secondary">${{i.precio_base}}</h4>
                           <hr>	
-            							<h5 class="mb-0 ">{{i.nombre}}</h5>
+            							<h5 class="mb-0 text-dark">{{i.nombre}}</h5>
             							<h6 class="mb-0 ">{{i.ubicacion.ciudad}}, {{i.ubicacion.provincia}}, 
             							{{i.ubicacion.pais}}.</h6>
             							<h6 class="mb-0"><small class="text-muted">Desde el {{i.fecha_publicacion}}</small></h6>
@@ -57,6 +41,8 @@
       				</div>
       			</div>		
 		{% endfor %}
+{% endblock body_content %}
+{% block footer_content %}
 	<nav aria-label="Page navigation example" class="bg-dark rounded-bottom" >
   	<ul class="pagination justify-content-center m-0 py-1" id="pagination">
   		<li class="page-item disabled">
@@ -76,10 +62,4 @@
     	</li>
   	</ul>
 	</nav>
-	</div>
-	</div>
-	</div>	
-	<br>
-	<!-- Paginador -->
-  </main>
-{% endblock content %}
+{% endblock footer_content %}

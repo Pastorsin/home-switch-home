@@ -64,21 +64,18 @@
 			<div class="collapse navbar-collapse w-100 order-1 order-lg-0">
 				<!-- Items -->
 				<ul class="navbar-nav ml-4 mr-auto nav-pills">
-					<!-- Demo
 					<li class="nav-item mx-1">
 						<a class="nav-link active" href="#">Item 1</a>
 					</li>
 					<li class="nav-item mx-1">
 						<a class="nav-link" href="#">Item 2</a>
 					</li>
-					-->
 				</ul>	
 
 				<!-- Usuario -->
 				<ul class="navbar-nav m-0 nav-flex-icons position-absolute r-0" style="right: 0%;">
 
 					<!-- Notificaciones -->
-					<!-- Demo
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
 							<span id="notificador">1</span>
@@ -92,7 +89,6 @@
 							<a class="dropdown-item" href="#">Notificación 3</a>
 						</div>
 					</li>
-					-->
 
 					<!-- Perfil Usuario -->
                       
@@ -120,17 +116,45 @@
                     </li>
 
 				</ul>
-			</div>
-
-			<!-- <div>
-				
-			</div> -->
+			</div>				
 		</nav>
 
-		{% block content %}
 
-
-		{% endblock content %}
+		<!-- Content -->
+		<style type="text/css">
+	  	h1, h2, h3, h4, h5, h6, p{
+	    	font-family: 'Open Sans', sans-serif;
+	    	user-select: none;
+	    	color: white
+	  	}
+	  	h1, h2, h3, h4, h5, h6 {
+	    	color: #84a2c1;
+	  	}
+	  	p{
+	    	color: #c3cbd8;
+	  	}
+		</style>
+		<section id="cover">
+		  <div id="cover-caption">
+		    <div id="container" class="container mt-5">
+		      <div class="row">
+		        <div class="col-sm-10 offset-sm-1 p-4 text-center">
+		        	<div class="m-0 pb-2 bg-dark rounded-top shadow">
+            			{% block title_content %}
+            			{% endblock title_content %}
+          			</div>
+          			<div class="info-form bg-contenido-form m-0 p-4 rounded shadow">
+		        		{% block body_content %}
+						{% endblock body_content %}
+					</div>
+					{% block footer_content %}
+					{% endblock footer_content %}
+				</div>
+		      </div>
+		    </div>
+		  </div>
+		</section>
+		
 
 		<!-- Footer -->
 		<footer class="page-footer fixed-bottom">
@@ -138,10 +162,19 @@
 				<a href="https://github.com/Pastorsin/ingenieria-de-software-ii"> MMM Development</a>
 			</div>
 		</footer>
+
 		<!-- Bootstrap -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	    <script type="text/javascript">
+	    	$(document).ready(function(){
+			    $("input, textarea").focus(function(){
+			      $("p").css("color", "#c3cbd8");
+			      $(this).parent().siblings("p").css("color", "#00e3ff");
+			    })
+		  	});
+	    </script>
 		{% block script %}{% endblock script %}
 	</body>
 </html>
