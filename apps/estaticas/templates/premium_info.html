@@ -2,10 +2,68 @@
 {% block title %}
   Convertite en Premium
 {% endblock title %}
-{% block title_content %}
-	<h1>Convertite en Premium!</h1>
-{% endblock title_content %}
 
+{% block style %}
+<style type="text/css">
+	@keyframes parpadeo {
+		0% {color: #07cbef;}
+		100% {color: white;}
+	}
+
+	#premium-title {
+		animation-name: parpadeo;
+		animation-duration: 1s;
+		animation-iteration-count: infinite;
+		animation-direction: alternate;
+	}
+</style>
+{% endblock style %}
+
+
+{% block title_content %}
+	<h1 id="premium-title" class="m-0 pt-2">Convertite en Premium!</h1>
+{% endblock title_content %}
+	
 {% block body_content %}
-	zaraza
+	<h3 style="color:#b8c7e0; text-shadow: 2px 0px 4px #444;"><b>¿Querés reservar una semana en tu residencia preferida sin tener que esperar largo tiempo a la subasta?</b></h3>
+	<h4 style="text-shadow: 2px 0px 4px #444;">Entonces.. <span class="text-warning">convertite en Premium!</span></h4>
+
+	<div class="bg-secondary dropdown-divider" style="border-color: #96b1cc"></div>
+	<h3 class="text-light" style="text-shadow: 0.5px 0px 4px #444;" >Requisitos</h3>
+	<div class="bg-secondary dropdown-divider" style="border-color: #96b1cc"></div>
+
+	<ul class="list-group">
+ 		<li class="list-group-item text-secondary my-1">Tenés que ir con una cuenta creada.. <span class="text-danger">Registrate!</span></li>
+ 		<li class="list-group-item text-secondary my-1">Acercate con <span class="text-danger">DNI!</span></li>
+ 		<li class="list-group-item text-secondary my-1">Tenés que ser mayor de <span class="text-danger">18 años</span></li>
+ 	</ul>
+
+	<div class="bg-secondary dropdown-divider" style="border-color: #96b1cc"></div>
+	<h5 class="text-light">Acercate a nuestras oficinas más cercanas:</h5>
+	<div class="bg-secondary dropdown-divider" style="border-color: #96b1cc"></div>
+
+	<div class="list-group">
+	  	<a href="#" class="list-group-item list-group-item-action flex-column align-items-start text-left my-1">
+	    <div class="d-flex w-100 justify-content-between">
+	      <h5 class="mb-1 text-primary">Argentina, Buenos Aires, Quilmes, Zola 1988</h5>
+	    </div>
+	    <p class="mb-1 text-secondary">Horarios de atención: Lunes a viernes 08:00hs. a 20:00hs.</p>
+	  	</a>
+  	</div>
+  	<div class="list-group">
+	  	<a href="#" class="list-group-item list-group-item-action flex-column align-items-start text-left my-1">
+	    <div class="d-flex w-100 justify-content-between">
+	      <h5 class="mb-1 text-primary">Argentina, Buenos Aires, Carlos Casares, Almirante Brown 438</h5>
+	    </div>
+	    <p class="mb-1 text-secondary">Horarios de atención: Lunes a viernes 08:00hs. a 20:00hs.</p>
+	  	</a>
+  	</div>
+  	<div class="list-group">
+	  	<a href="#" class="list-group-item list-group-item-action flex-column align-items-start text-left my-1">
+	    <div class="d-flex w-100 justify-content-between">
+	      <h5 class="mb-1 text-primary">Argentina, Buenos Aires, Don Bosco, Calle 165 Nº984 </h5>
+	    </div>
+	    <p class="mb-1 text-secondary">Horarios de atención: Lunes a viernes 08:00hs. a 20:00hs.</p>
+	  	</a>
+  	</div>
 {% endblock body_content %}
