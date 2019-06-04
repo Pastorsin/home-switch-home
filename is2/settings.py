@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'residencias.apps.ResidenciasConfig',
     'adquisiciones.apps.AdquisicionesConfig',
     'accounts.apps.AccountsConfig',
+    'estaticas.apps.EstaticasConfig',
     # Default apps
     'django.contrib.admin',
     'django.contrib.auth',
