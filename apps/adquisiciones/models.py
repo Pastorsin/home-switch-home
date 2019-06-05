@@ -21,9 +21,7 @@ class Semana(models.Model):
         Residencia,
         on_delete=models.CASCADE
     )
-    numero = models.PositiveIntegerField(
-        null=True,
-        blank=True
+    fecha_inicio = models.DateField(
     )
     content_type = models.ForeignKey(
         ContentType,
