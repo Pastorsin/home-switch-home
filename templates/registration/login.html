@@ -12,12 +12,12 @@
 
 
 {% block body_content %}
-  <form method="post" class="form-inlin justify-content-center">
+  <form method="post" class="justify-content-center">
   {% csrf_token %}
   	<!-- Errores -->
   	{% for error in form.non_field_errors %}
   	<div class="alert alert-danger alert-dismissible fade show">
-			<strong>{{ error }}</strong>
+			<strong>{{ error|escape }}</strong>
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
