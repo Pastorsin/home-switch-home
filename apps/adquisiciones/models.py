@@ -48,8 +48,8 @@ class Semana(models.Model):
         self.estado_id = estado.pk
         self.save()
 
-    def eliminar(self):
-        return self.estado.eliminar()
+    def dar_de_baja(self):
+        return self.estado.dar_de_baja()
 
     def abrir_subasta(self):
         return self.estado.abrir_subasta()
@@ -104,10 +104,12 @@ class Estado(models.Model):
         return False
 
     # Eventos
-    def detalle(self):
-        raise NotImplementedError('Método abstracto, implementame')
+    def dar_de_baja(self):
+        no_disponible = NoDisponible.objects.create()
+        self.semana.cambiar_estado(no_disponible)
+        return 'Se ha dado de baja la semana correctamente'
 
-    def eliminar(self):
+    def detalle(self):
         raise NotImplementedError('Método abstracto, implementame')
 
     def abrir_subasta(self):
@@ -131,8 +133,8 @@ class NoDisponible(Estado):
     def es_no_disponible(self):
         return True
 
-    def eliminar(self):
-        pass
+    def dar_de_baja(self):
+        raise EventoNoPermitido('La semana ya se encuentra dada de baja')
 
     def abrir_subasta(self):
         pass
@@ -152,10 +154,8 @@ class CompraDirecta(Estado):
     def es_compra_directa(self):
         return True
 
-    def eliminar(self):
-        no_disponible = NoDisponible.objects.create()
-        self.semana.cambiar_estado(no_disponible)
-        return 'Se ha eliminado la semana correctamente'
+    def dar_de_baja(self):
+        super().dar_de_baja()
 
     def abrir_subasta(self):
         SEMANAS_MINIMAS = 26  # 6 meses = 26 semanas
@@ -219,8 +219,8 @@ class Subasta(Estado):
     def get_absolute_url(self):
         return reverse('mostrar_subasta', args=[str(self.pk)])
 
-    def eliminar(self):
-        raise EventoNoPermitido('No se puede eliminar en una subasta')
+    def dar_de_baja(self):
+        raise EventoNoPermitido('No se puede dar de baja una subasta activa')
 
     def abrir_subasta(self):
         pass
@@ -249,10 +249,8 @@ class EnEspera(Estado):
     def es_en_espera(self):
         return True
 
-    def eliminar(self):
-        no_disponible = NoDisponible.objects.create()
-        self.semana.cambiar_estado(no_disponible)
-        return 'Se ha eliminado la semana correctamente'
+    def dar_de_baja(self):
+        super().dar_de_baja()
 
     def abrir_subasta(self):
         pass
@@ -281,8 +279,8 @@ class Reservada(Estado):
     def es_reservada(self):
         return True
 
-    def eliminar(self):
-        pass
+    def dar_de_baja(self):
+        raise EventoNoPermitido('La semana se encuentra reservada')
 
     def abrir_subasta(self):
         pass
