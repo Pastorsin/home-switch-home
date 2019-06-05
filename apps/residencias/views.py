@@ -129,12 +129,7 @@ class ListadoResidenciasView(ListView):
     def get_context_data(self, *args, **kwargs):
         context = super(ListadoResidenciasView,
                         self).get_context_data(*args, **kwargs)
-        if not (self.request.user.is_staff):
-            context['object_list'] = (Residencia.objects.filter(
-                Q(content_type__model='compradirecta') |
-                Q(content_type__model='subasta') |
-                Q(content_type__model='hotsale')
-            ))
+        context['object_list'] = Residencia.objects.all()
         return context
 
 
