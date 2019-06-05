@@ -70,12 +70,16 @@ class Semana(models.Model):
         return 'Semana {} con estado {}'.format(
                 self.numero, self.estado)
 
+    class Meta:
+         unique_together = ('content_type', 'estado_id')
+
+
 
 class Estado(models.Model):
 
     semanas = GenericRelation(
         Semana,
-        content_type_field='estado',
+        content_type_field='content_type',
         object_id_field='estado_id'
     )
 
