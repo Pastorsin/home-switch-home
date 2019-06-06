@@ -54,7 +54,7 @@ class Semana(models.Model):
 
     def estas_en_primer_mitad(self):
         semanas_totales = self.residencia.SEMANAS_TOTALES
-        semanas_mitad = semanas_totales / 2
+        semanas_mitad = semanas_totales // 2
         return self.fecha_inicio < self.generar_lunes(semanas_mitad)
 
     def cambiar_estado(self, estado):

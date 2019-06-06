@@ -52,7 +52,7 @@ class Residencia(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
-    SEMANAS_TOTALES = 52
+    SEMANAS_TOTALES = 53
 
     def __str__(self):
         return self.nombre
