@@ -2,8 +2,8 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 
-from residencias.models import Residencia
 from accounts.models import CustomUser
+from residencias.models import Residencia
 
 from django.urls import reverse
 from django.db import models
@@ -22,6 +22,8 @@ class Semana(models.Model):
         on_delete=models.CASCADE
     )
     fecha_inicio = models.DateField(
+        null=True,
+        blank=True
     )
     content_type = models.ForeignKey(
         ContentType,
@@ -37,6 +39,23 @@ class Semana(models.Model):
         'content_type',
         'estado_id'
     )
+
+    def inicializar_con(self, numero_semana):
+        self.fecha_inicio = self.generar_lunes(numero_semana)
+        Estado.crear(self)
+        self.save()
+
+    def generar_lunes(self, numero_semana):
+        return self.lunes_actual() + timedelta(weeks=numero_semana)
+
+    def lunes_actual(self):
+        hoy = date.today()
+        return hoy - timedelta(days=hoy.weekday())
+
+    def estas_en_primer_mitad(self):
+        semanas_totales = self.residencia.SEMANAS_TOTALES
+        semanas_mitad = semanas_totales / 2
+        return self.fecha_inicio < self.generar_lunes(semanas_mitad)
 
     def cambiar_estado(self, estado):
         if self.estado is not None:
@@ -66,11 +85,10 @@ class Semana(models.Model):
 
     def __str__(self):
         return 'Semana {} con estado {}'.format(
-                self.numero, self.estado)
+            self.fecha_inicio, self.estado)
 
     class Meta:
-         unique_together = ('content_type', 'estado_id')
-
+        unique_together = ('content_type', 'estado_id')
 
 
 class Estado(models.Model):
@@ -80,6 +98,14 @@ class Estado(models.Model):
         content_type_field='content_type',
         object_id_field='estado_id'
     )
+
+    @classmethod
+    def crear(cls, semana):
+        if semana.estas_en_primer_mitad():
+            estado = EnEspera.objects.create()
+        else:
+            estado = CompraDirecta.objects.create()
+        semana.cambiar_estado(estado)
 
     @property
     def semana(self):

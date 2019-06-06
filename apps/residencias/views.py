@@ -57,25 +57,18 @@ class AgregarResidenciaView(LoginRequiredMixin, CreateView):
 
     def guardar_formulario(self, residencia_form, ubicacion_form):
         ubicacion_data = self.guardar_ubicacion(ubicacion_form)
-        estado_data = self.guardar_estado()
-        self.guardar_residencia(ubicacion_data, estado_data, residencia_form)
+        self.guardar_residencia(ubicacion_data, residencia_form)
 
     def guardar_ubicacion(self, ubicacion_form):
         ubicacion_data = ubicacion_form.save(commit=False)
         ubicacion_data.save()
         return ubicacion_data
 
-    def guardar_estado(self):
-        estado_data = CompraDirecta()
-        estado_data.save()
-        return estado_data
-
-    def guardar_residencia(self, ubicacion_data, estado_data, residencia_form):
+    def guardar_residencia(self, ubicacion_data, residencia_form):
         residencia_data = residencia_form.save(commit=False)
         residencia_data.ubicacion = ubicacion_data
-        residencia_data.estado = estado_data
-        residencia_data.estado_id = estado_data.id
         residencia_data.save()
+        residencia_data.crear_semanas()
 
     def get_success_url(self):
         return reverse('agregarResidencia')

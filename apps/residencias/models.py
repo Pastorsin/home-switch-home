@@ -52,12 +52,21 @@ class Residencia(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
+    SEMANAS_TOTALES = 52
 
     def __str__(self):
         return self.nombre
 
     def get_absolute_url(self):
         return reverse('detalle_residencia', args=[str(self.pk)])
+
+    def crear_semanas(self):
+        from adquisiciones.models import Semana
+        for numero_semana in range(0, self.SEMANAS_TOTALES):
+            semana = Semana.objects.create(
+                residencia=self
+            )
+            semana.inicializar_con(numero_semana)
 
     @property
     def semanas(self):
