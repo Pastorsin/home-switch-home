@@ -109,7 +109,7 @@
     <div class="row pb-3">
       <div class="col">
         <h3 class="text-danger">¡Reservala ya!</h3>
-        <a href="./semanas">Ver semanas de reservación</a>
+        <a href="{% url 'listado_semanas' residencia.pk %}">Ver semanas de reservación</a>
         {% if user.is_staff %}
           {% include "botones_admin_detalle_residencia.html" %}
         {% else %}

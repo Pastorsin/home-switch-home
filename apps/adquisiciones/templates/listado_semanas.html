@@ -6,7 +6,7 @@
 
 {% block title_content %}
 	<h2>Semanas disponibles para la residencia 
-		<a href="residencia/{{residencia.pk}}" style="text-decoration: none;">{{residencia}}</a>
+		<a href=" {% url 'detalle_residencia' residencia.pk %}" style="text-decoration: none;">{{residencia}}</a>
 	<h2>
 {% endblock title_content %}
 
