@@ -14,12 +14,12 @@
       <div class="m-0">
         <h4 class="text-dark bg-primary p-0 m-0">Residencia</h4>
         <h6 class="bg-dark p-0 m-0">
-          <a id="residencia-link" href="{% url 'detalle_residencia' subasta.residencia.pk %}">{{ subasta.residencia.nombre }}</a>
+          <a id="residencia-link" href="{% url 'detalle_residencia' subasta.semana.residencia.pk %}">{{ subasta.semana.residencia.nombre }}</a>
         </h6>
       </div>
     </div>
     <div class="p-1 rounded-bottom bg-light">
-      <img class="rounded-top w-100" src="{{ subasta.residencia.foto }}">                   
+      <img class="rounded-top w-100" src="{{ subasta.semana.residencia.foto }}">                   
     </div>
 	</div>
 
@@ -55,7 +55,7 @@
 
       <div class="col-md-12 list-group-item bg-transparent p-0" style="flex-basis: 0%;">
         <li class="list-group-item p-2 m-0 text-left" style="background-color: #314456;">
-          <strong>Precio inicial:</strong> ${{ subasta.residencia.precio_base }}                        
+          <strong>Precio inicial:</strong> ${{ subasta.semana.residencia.precio_base }}                        
         </li>
       </div> 
       <div class="d-inline-flex col-md-12 p-0" style="flex-basis: 0%;">

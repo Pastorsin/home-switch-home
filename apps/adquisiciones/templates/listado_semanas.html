@@ -16,7 +16,7 @@
 </div>
 <div class="list-group">
 	{% for semana in listado_semanas %}
-	<a href="#" class="list-group-item bg-light list-group-item-action text-left">
+	<a href="{{semana.estado.get_absolute_url}}" class="list-group-item bg-light list-group-item-action text-left">
 		<div>
 			<span class="text-primary">Fecha de ocupación:</span> 
 			<span class="text-secondary">{{semana.fecha_inicio}} al {{semana.fecha_fin}}</span>

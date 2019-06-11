@@ -1,7 +1,7 @@
 from django.views.generic import DetailView
 from django.http import HttpResponseRedirect
 from residencias.models import Residencia
-from .models import Subasta
+from .models import Subasta, EnEspera, Reservada, CompraDirecta
 from django.contrib import messages
 
 # Create your views here.
@@ -26,6 +26,24 @@ class MostrarSubastaView(DetailView):
             mensaje_error = 'Error! No tenés créditos suficientes para pujar'
             messages.error(request, mensaje_error)
         return HttpResponseRedirect(subasta.get_absolute_url())
+
+
+class MostrarCompraDirectaView(DetailView):
+
+    model = CompraDirecta
+    template_name = 'mostrar_compra_directa.html'
+
+
+class MostrarEnEsperaView(DetailView):
+
+    model = EnEspera
+    template_name = 'mostrar_en_espera.html'
+
+
+class MostrarReservadaView(DetailView):
+
+    model = Reservada
+    template_name = 'mostrar_reservada.html'
 
 
 class SemanasView(DetailView):

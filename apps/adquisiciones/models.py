@@ -128,6 +128,9 @@ class Estado(models.Model):
         object_id_field='estado_id'
     )
 
+    class Meta:
+        abstract = True
+
     @classmethod
     def crear(cls, semana):
         if semana.estas_en_primer_mitad():
@@ -180,11 +183,15 @@ class Estado(models.Model):
     def es_adquirible(self):
         return self.es_subasta() or self.es_compra_directa()
 
+    # Modelo
     def __str__(self):
         raise NotImplementedError('Método abstracto, implementame')
 
-    class Meta:
-        abstract = True
+    def get_absolute_url(self):
+        return reverse(self.url(), args=[str(self.pk)])
+
+    def url(self):
+        raise NotImplementedError('Método abstracto, implementame')
 
 
 class NoDisponible(Estado):
@@ -206,6 +213,9 @@ class NoDisponible(Estado):
 
     def detalle(self):
         return 'Ha pasado la fecha de ocupación de la semana'
+
+    def get_absolute_url(self):
+        return ''
 
 
 class CompraDirecta(Estado):
@@ -240,6 +250,9 @@ class CompraDirecta(Estado):
 
     def actualizar(self):
         self.abrir_subasta()
+
+    def url(self):
+        return 'mostrar_compra_directa'
 
 
 class Subasta(Estado):
@@ -315,6 +328,9 @@ class Subasta(Estado):
     def actualizar(self):
         self.cerrar_subasta()
 
+    def url(self):
+        return 'mostrar_subasta'
+
 
 class EnEspera(Estado):
 
@@ -342,6 +358,9 @@ class EnEspera(Estado):
     def actualizar(self):
         no_disponible = NoDisponible.objects.create()
         self.semana.cambiar_estado(no_disponible)
+
+    def url(self):
+        return 'mostrar_en_espera'
 
 
 class Reservada(Estado):
@@ -374,3 +393,6 @@ class Reservada(Estado):
         return 'por {} con un monto de ${}'.format(
             self.ganador_actual,
             self.precio_actual)
+
+    def url(self):
+        return 'mostrar_reservada'
