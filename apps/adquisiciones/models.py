@@ -268,7 +268,7 @@ class Subasta(Estado):
         null=True,
         blank=True
     )
-    ganador_actual = models.OneToOneField(
+    ganador_actual = models.ForeignKey(
         CustomUser,
         on_delete=models.CASCADE,
         null=True,
