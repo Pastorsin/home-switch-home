@@ -96,7 +96,7 @@
       return confirm('Seguro desea realizar esta acción?');
     });
 
-    const precioMinimo = parseFloat($('#pujar').attr('min'));
+    const precioMinimo = parseFloat($('#pujar').attr('placeholder'));
     const mensajeAdvertencia = 'El valor debe ser mayor a $' + precioMinimo.toFixed(2);
     $('#advertencia').text(mensajeAdvertencia);
 
