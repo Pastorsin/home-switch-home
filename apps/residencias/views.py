@@ -139,11 +139,7 @@ class MostrarResidenciaView(DetailView):
     def inicializar_eventos(self):
         self.residencia = self.get_object()
         self.eventos = {
-            'abrir_subasta': self.residencia.abrir_subasta,
-            'eliminar': self.residencia.eliminar,
-            'cerrar_subasta': self.residencia.cerrar_subasta,
-            'hotsale': self.residencia.establecer_hotsale,
-            'comprar': self.residencia.comprar
+            'eliminar': self.residencia.eliminar
         }
 
     def post(self, request, *args, **kwargs):
@@ -151,6 +147,7 @@ class MostrarResidenciaView(DetailView):
         evento = self.eventos[self.boton_presionado(request)]
         try:
             mensaje_exito = evento()
+            self.residencia.save()
             messages.success(self.request, mensaje_exito)
         except EventoNoPermitido as mensaje_error:
             messages.error(self.request, mensaje_error)

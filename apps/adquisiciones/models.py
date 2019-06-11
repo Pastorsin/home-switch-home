@@ -112,6 +112,9 @@ class Semana(models.Model):
     def detalle_estado(self):
         return self.estado.detalle()
 
+    def esta_en_subasta(self):
+        return self.estado.es_subasta()
+
     def __str__(self):
         return 'Semana {} con estado {}'.format(
             self.fecha_inicio, self.estado)

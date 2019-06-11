@@ -51,6 +51,9 @@ class Residencia(models.Model):
         Ubicacion,
         on_delete=models.CASCADE,
         primary_key=True,
+    ),
+    eliminada = models.BooleanField(
+        default=False
     )
     SEMANAS_TOTALES = 52
 
@@ -87,6 +90,17 @@ class Residencia(models.Model):
     def semanas_adquiribles(self):
         return filter(lambda semana: semana.es_adquirible(),
                       self.semanas)
+
+    def esta_en_subasta(self):
+        return any(self.semanas_en_subasta())
+
+    def semanas_en_subasta(self):
+        return filter(lambda semana: semana.esta_en_subasta(),
+                      self.semanas)
+
+    def eliminar(self):
+        self.eliminada = True
+        return "Se ha eliminado la residencia correctamente"
 
     @property
     def semanas(self):
