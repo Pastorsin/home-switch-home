@@ -51,7 +51,7 @@ class Residencia(models.Model):
         Ubicacion,
         on_delete=models.CASCADE,
         primary_key=True,
-    ),
+    )
     eliminada = models.BooleanField(
         default=False
     )
