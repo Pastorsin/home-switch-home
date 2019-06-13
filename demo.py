@@ -81,7 +81,7 @@ def crear_residencias():
                                               )
     subasta_terrazas = Subasta.objects.create(precio_actual=9000,
                                               ganador_actual=CustomUser.objects.get(
-                                                  username='mauromolina@gmail.com')
+                                              username='mauromolina@gmail.com')
                                               )
     Residencia.objects.create(nombre='Terrazas al Mar',
                               foto='http://www.gsr.coop/gsr/usuariosFtp/conexion/imagenes69a.jpg',
