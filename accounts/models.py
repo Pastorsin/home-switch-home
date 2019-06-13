@@ -25,6 +25,7 @@ class CustomUser(AbstractUser):
         unique=True
     )
     username = models.CharField(
+        max_length=150,
         unique=False    # Ahora el mail es unico
     )
     REQUIRED_FIELDS = []
