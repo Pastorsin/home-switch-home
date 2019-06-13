@@ -39,6 +39,15 @@ class Semana(models.Model):
         'content_type',
         'estado_id'
     )
+    seguidores = models.ManyToManyField(
+            CustomUser,
+            related_name='seguidores',
+    )
+    comprador = models.ForeignKey(
+            CustomUser,
+            related_name='comprador',
+            on_delete=models.CASCADE
+    )
 
     def inicializar_con(self, numero_semana):
         self.incializar_fecha(numero_semana)

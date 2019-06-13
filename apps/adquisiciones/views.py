@@ -4,8 +4,6 @@ from residencias.models import Residencia
 from .models import Subasta, EnEspera, Reservada, CompraDirecta
 from django.contrib import messages
 
-# Create your views here.
-
 
 class MostrarSubastaView(DetailView):
 
