@@ -96,13 +96,9 @@
                       {% if user.is_authenticated %}
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
                           
-                          <img src="{% if user.foto %}
-                                       {{ user.foto }}
-                                    {% else %}
-                                      http://sport-werkt.nl/wp-content/uploads/2018/12/profile.png 
-                                    {% endif %}"
+                          <img src="{% if user.foto %} {{ user.foto }} {% else %} http://sport-werkt.nl/wp-content/uploads/2018/12/profile.png {% endif %}"
                                class="rounded-circle z-depth-0" height="20px" width="20px">
-                          <span>{{ user.username }}</span>
+                          <span>{{ user.email }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-secondary">
                           <a class="dropdown-item" href="#">Mi perfil</a>

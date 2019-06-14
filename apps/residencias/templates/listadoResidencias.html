@@ -13,33 +13,27 @@
 {% block body_content %}
 		{% for i in object_list %}
 			<!-- Lista Residencias -->
-				<div class="container">
-  					<div class="row text-center text-lg-left">
-    					<div class="col-md-12">
-      						<div class="list-group my-1">
-        						<a href="{% url 'detalle_residencia' i.pk %}" class="list-group-item list-group-item-action flex-column align-items-start">
-          							<img class="d-block float-right img-thumbnail img-fluid" src={{i.foto}} width="250" height="250" >
-          							<div class="w-100">
-            							<h4 class="mb-0 text-secondary">${{i.precio_base}}</h4>
-                          <hr>	
-            							<h5 class="mb-0 text-dark">{{i.nombre}}</h5>
-            							<h6 class="mb-0 ">{{i.ubicacion.ciudad}}, {{i.ubicacion.provincia}}, 
-            							{{i.ubicacion.pais}}.</h6>
-            							<h6 class="mb-0"><small class="text-muted">Desde el {{i.fecha_publicacion}}</small></h6>
-                          <div>
-                            <span class="badge badge-success">{{i.estado}}</span>
-                          </div>
-            				<!--	<button type="button" class="btn btn-outline-primary mt-3">Ver detalles
-            							</button>
-										 El modificar va dentro del detalle, pero quien sabe xd
-										<button type="button" class="btn btn-outline-danger">Modificar
-            							</button>  -->
-          							</div>
-        						</a>
-      						</div>
-      					</div>
-      				</div>
-      			</div>		
+          <div class="container">
+            <div class="row text-center text-lg-left">
+              <div class="col-md-12">
+                <div class="list-group my-1">
+                  <a href="{% url 'detalle_residencia' i.pk %}" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <img class="d-block float-right img-thumbnail img-fluid" src={{i.foto}} width="250" height="250" >
+                    <div class="w-100">
+                      <h4 class="mb-0 text-secondary">${{i.precio_base}}</h4>
+                      <hr>
+                      <h5 class="mb-0 text-dark">{{i.nombre}}</h5>
+                      <h6 class="mb-0 ">{{i.ubicacion.ciudad}}, {{i.ubicacion.provincia}}, {{i.ubicacion.pais}}.</h6>
+                      <h6 class="mb-0"><small class="text-muted">Desde el {{i.fecha_publicacion}}</small></h6>
+                      <div>
+                        <span class="badge badge-success">{{i.estado}}</span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
 		{% endfor %}
 {% endblock body_content %}
 {% block footer_content %}

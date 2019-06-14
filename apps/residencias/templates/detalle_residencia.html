@@ -70,7 +70,7 @@
       <div class="col text-left">
         <h3>Descripción:</h3>
         <p class="mx-5 text-break" style="color:#444;"> {{ residencia.descripcion }} </p>
-        <small class="text-muted" >Fecha de publicación:</small>
+        <small class="text-muted">Fecha de publicación:</small>
         <small class="text-break text-muted"> {{ residencia.fecha_publicacion }} </small>
       </div>
       <div class="col-3 border-left text-left">
@@ -152,18 +152,6 @@
   <script charset="utf-8">
     $('input[type=submit]').click(function(){
       return confirm('Seguro desea realizar esta acción?');
-      //$('#centered-modal').modal();
-
-      //$('.btn-yes').click(function(){
-        //handler(true);
-        //$('#centered-modal').modal('hide');
-      //});
-
-      //$('.btn-no').click(function(){
-        //handler(false);
-        //$('#centered-modal').modal('hide');
-      //});
-
     });
   </script>
 {% endblock script %}
