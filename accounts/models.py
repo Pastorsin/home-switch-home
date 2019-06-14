@@ -28,7 +28,7 @@ class CustomUser(AbstractUser):
         max_length=150,
         unique=False    # Ahora el mail es unico
     )
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
     USERNAME_FIELD = 'email'
 
     @property
