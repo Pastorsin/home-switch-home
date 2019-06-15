@@ -33,7 +33,8 @@
           <p class="m-0"><strong>Ganador actual:</strong></p> 
           <h6>
           {% if subasta.hay_ganador %}
-            {{ subasta.ganador_actual.email }}
+            {{ subasta.ganador_actual.first_name }}
+            {{ subasta.ganador_actual.last_name }}
           {% else %}
             Sin ganador
           {% endif %}

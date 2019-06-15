@@ -399,8 +399,9 @@ class Reservada(Estado):
         pass
 
     def detalle(self):
-        return 'por {} con un monto de ${}'.format(
-            self.semana.comprador.email,
+        return 'Semana reservada por {} {} con un monto de ${}'.format(
+            self.semana.comprador.first_name,
+            self.semana.comprador.last_name,
             self.precio_actual)
 
     def url(self):
