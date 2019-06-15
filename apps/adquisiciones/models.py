@@ -45,9 +45,9 @@ class Semana(models.Model):
     )
     comprador = models.ForeignKey(
         CustomUser,
-        null=True,
         related_name='comprador',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        null=True
     )
 
     def inicializar_con(self, numero_semana):
@@ -145,9 +145,6 @@ class Estado(models.Model):
         object_id_field='estado_id'
     )
 
-    class Meta:
-        abstract = True
-
     @classmethod
     def crear(cls, semana):
         if semana.estas_en_primer_mitad():
@@ -210,6 +207,8 @@ class Estado(models.Model):
     def url(self):
         raise NotImplementedError('Método abstracto, implementame')
 
+    class Meta:
+        abstract = True
 
 class NoDisponible(Estado):
 

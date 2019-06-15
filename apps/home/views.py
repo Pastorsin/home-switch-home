@@ -66,7 +66,8 @@ class HomePageView(TemplateView):
     template_name = 'home.html'
 
     def logear(self, request, username):
-        login(request, CustomUser.objects.get(username=username))
+        login(request, CustomUser.objects.get(username=username),
+              backend='django.contrib.auth.backends.ModelBackend')
 
     def post(self, request, *args, **kwargs):
         if 'visitante' in request.POST.keys():

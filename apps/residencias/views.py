@@ -41,15 +41,18 @@ class AgregarResidenciaView(LoginRequiredMixin, CreateView):
         self.object = self.get_object(request)
         residencia_form = self.form_class(request.POST)
         ubicacion_form = self.ubicacion_form_class(request.POST)
+
         if self.formulario_es_valido(residencia_form, ubicacion_form):
+
             self.guardar_formulario(residencia_form, ubicacion_form)
-            messages.success(self.request, 'Residencia agregada exitosamente!')
+            exito = 'Residencia agregada exitosamente!'
+            messages.success(self.request, exito)
             return HttpResponseRedirect(self.get_success_url())
         else:
             error = 'Error! Ya existe otra residencia con la misma ubicación'
             messages.error(self.request, error)
-            context = self.get_context_data(residencia=residencia_form,
-                                            ubicacion=ubicacion_form)
+
+            context = self.get_context_data(residencia=residencia_form, ubicacion=ubicacion_form)
             return self.render_to_response(context)
 
     def formulario_es_valido(self, residencia_form, ubicacion_form):
@@ -83,10 +86,8 @@ class ModificarResidenciaView(LoginRequiredMixin, UpdateView):
     login_url = 'login'
 
     def get_context_data(self, **kwargs):
-        context = super(ModificarResidenciaView,
-                        self).get_context_data(**kwargs)
-        context['ubicacion'] = self.ubicacion_form_class(
-            instance=context['residencia'].ubicacion)
+        context = super(ModificarResidenciaView, self).get_context_data(**kwargs)
+        context['ubicacion'] = self.ubicacion_form_class(instance=context['residencia'].ubicacion)
         return context
 
     def post(self, request, *args, **kwargs):
