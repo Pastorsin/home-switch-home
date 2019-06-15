@@ -33,7 +33,7 @@
           <p class="m-0"><strong>Ganador actual:</strong></p> 
           <h6>
           {% if subasta.hay_ganador %}
-            {{ subasta.ganador_actual.username }}
+            {{ subasta.ganador_actual.email }}
           {% else %}
             Sin ganador
           {% endif %}
@@ -96,8 +96,8 @@
       return confirm('Seguro desea realizar esta acción?');
     });
 
-    const precioMinimo = parseFloat($('#pujar').attr('placeholder'));
-    const mensajeAdvertencia = 'El valor debe ser mayor a $' + precioMinimo.toFixed(2);
+    const precioMinimo = parseFloat($('#pujar').attr('placeholder').replace(',','.'));
+    const mensajeAdvertencia = 'El valor debe ser mayor a $' + precioMinimo.toFixed(1);
     $('#advertencia').text(mensajeAdvertencia);
 
     $('#pujar').keyup(function(){

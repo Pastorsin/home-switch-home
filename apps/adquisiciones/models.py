@@ -40,13 +40,14 @@ class Semana(models.Model):
         'estado_id'
     )
     seguidores = models.ManyToManyField(
-            CustomUser,
-            related_name='seguidores',
+        CustomUser,
+        related_name='seguidores',
     )
     comprador = models.ForeignKey(
-            CustomUser,
-            related_name='comprador',
-            on_delete=models.CASCADE
+        CustomUser,
+        null=True,
+        related_name='comprador',
+        on_delete=models.CASCADE
     )
 
     def inicializar_con(self, numero_semana):
@@ -123,6 +124,10 @@ class Semana(models.Model):
 
     def esta_en_subasta(self):
         return self.estado.es_subasta()
+
+    def establecer_comprador(self, nuevo_comprador):
+        self.comprador = nuevo_comprador
+        self.save()
 
     def __str__(self):
         return 'Semana {} con estado {}'.format(
@@ -280,12 +285,6 @@ class Subasta(Estado):
         null=True,
         blank=True
     )
-    ganador_actual = models.ForeignKey(
-        CustomUser,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True
-    )
 
     def __str__(self):
         return 'Subasta'
@@ -298,13 +297,17 @@ class Subasta(Estado):
 
     def nueva_puja(self, nuevo_pujador, nuevo_precio):
         # self.ganador_actual.incrementar_credito()
-        self.ganador_actual = nuevo_pujador
+        self.semana.establecer_comprador(nuevo_pujador)
         self.precio_actual = nuevo_precio
         # nuevo_pujador.decrementar_credito()
         self.save()
 
     def hay_ganador(self):
         return bool(self.ganador_actual)
+
+    @property
+    def ganador_actual(self):
+        return self.semana.comprador
 
     def get_absolute_url(self):
         return reverse('mostrar_subasta', args=[str(self.pk)])
@@ -318,8 +321,7 @@ class Subasta(Estado):
     def cerrar_subasta(self):
         if self.hay_ganador():
             reservada = Reservada.objects.create(
-                precio_actual=self.precio_actual,
-                ganador_actual=self.ganador_actual
+                precio_actual=self.precio_actual
             )
             self.semana.cambiar_estado(reservada)
         else:
@@ -380,11 +382,6 @@ class Reservada(Estado):
         null=True,
         blank=True
     )
-    ganador_actual = models.CharField(
-        max_length=255,
-        null=True,
-        blank=True
-    )
 
     def __str__(self):
         return 'Reservada'
@@ -403,7 +400,7 @@ class Reservada(Estado):
 
     def detalle(self):
         return 'por {} con un monto de ${}'.format(
-            self.ganador_actual,
+            self.semana.comprador.email,
             self.precio_actual)
 
     def url(self):
