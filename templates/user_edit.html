@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}
+ Editar Perfil
+{% endblock title %}
+
+{% block title_content %}
+  <h3>Edición del perfil</h3>
+{% endblock title_content %}
+
+
+{% block body_content %}
+  <form method="post" accept-charset="utf-8"> {% csrf_token %}
+
+    {% if form.errors %}
+      {% for error in form.non_field_errors %}
+          <div class="alert alert-danger alert-dismissible fade show">
+              <strong>{{ error|escape }}</strong>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+      {% endfor %}
+    {% endif %}
+
+    {% for field in form %}
+     <div class="form-group text-left">
+       <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+       <input type="{{ field.field.widget.input_type }}" class="form-control" name="{{ field.html_name }}" id="{{ field.id_for_label }}">
+
+       {% if field.help_text %}
+         <small class="form-text">{{ field.help_text|safe }}</small>
+       {% endif %}
+     </div>
+
+      {% for error in field.errors %}
+        <div class="alert alert-danger alert-dismissible fade show">
+          <strong>{{ error|escape }}</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+
+    {% endfor %}
+    <button type="submit" class="btn btn-success">Editar!!</button>
+    <a href="{% url 'home' %}"><button type="button" class="btn btn-danger">Cancelar Pero acordarse de redirigir al perfil</button></a>
+  </form>
+{% endblock body_content %}
