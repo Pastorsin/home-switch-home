@@ -12,7 +12,7 @@ class CustomUserAdmin(UserAdmin):
     model = CustomUser
     fieldsets = (
         (('User'), {
-            'fields': ('first_name', 'last_name', 'password', 'email', 'is_staff', 'fecha_nacimiento', 'es_premium')
+            'fields': ('first_name', 'last_name', 'password', 'email', 'is_staff', 'fecha_nacimiento', 'es_premium', 'dni')
         }),
     )
     list_display = ['email', 'first_name', 'last_name', 'fecha_nacimiento', 'is_staff', 'es_premium', ]

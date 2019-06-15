@@ -14,7 +14,13 @@ class CustomUserForm:
         today = date.today()
         diferencia_de_años = today.year - data.year - ((today.month, today.day) < (data.month, data.day))
         if diferencia_de_años < 18:
-            raise ValidationError('Lo sentimos, para utilizar esta pagina debe ser mayor de edad')
+            raise ValidationError('Tenes que ser mayor de 18 años para acceder al sistema')
+        return data
+
+    def clean_dni(self):
+        data = self.cleaned_data['dni']
+        if not (len(data) == 8 and data.isdigit()):
+            raise ValidationError('El DNI debe tener 8 digitos sin separadores. Ej: 11222333')
         return data
 
 class CustomUserCreationForm(UserCreationForm, CustomUserForm):

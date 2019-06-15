@@ -6,8 +6,8 @@ from django.db import models
 class CustomUser(AbstractUser):
 
     fecha_nacimiento = models.DateField(
+        help_text='Debe ser mayor de 18 años para poder reservar!',
         null=True,
-        blank=True
     )
     foto = models.URLField(
         null=True,
@@ -18,8 +18,12 @@ class CustomUser(AbstractUser):
     )
     creditos = models.PositiveIntegerField(
         null=True,
-        blank=True,
         default=2
+    )
+    dni = models.CharField(
+        help_text='Ingrese los digitos sin separadores ni espacios por favor. Ej: 11222333',
+        max_length=8,
+        null=True,
     )
     email = models.EmailField(
         unique=True
