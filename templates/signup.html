@@ -27,7 +27,7 @@
     {% for field in form %}
      <div class="form-group text-left">
        <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
-       <input type="{{ field.field.widget.input_type }}" class="form-control" name="{{ field.html_name }}" id="{{ field.id_for_label }}">
+       {{field}}
 
        {% if field.help_text %}
          <small class="form-text">{{ field.help_text|safe }}</small>
@@ -48,3 +48,11 @@
   </form>
   
 {% endblock body_content %}
+
+{% block script %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input").addClass("form-control");
+  });
+</script>        
+{% endblock script %}
