@@ -91,13 +91,15 @@ class ModificarResidenciaView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(ModificarResidenciaView,
                         self).get_context_data(**kwargs)
-        context['ubicacion'] = self.ubicacion_form_class(
-            instance=context['residencia'].ubicacion)
+        if 'ubicacion' not in context:
+            context['ubicacion'] = self.ubicacion_form_class(
+                instance=context['residencia'].ubicacion)
         return context
 
     def post(self, request, *args, **kwargs):
         residencia = self.get_object()
-        if residencia.estado.es_subasta():
+        self.object = self.get_object()
+        if residencia.esta_en_subasta():
             error = 'Error! No se ha podido modificar la residencia. ' + \
                 'Actualmente se encuentra en subasta.'
             messages.error(self.request, error)
@@ -114,6 +116,9 @@ class ModificarResidenciaView(LoginRequiredMixin, UpdateView):
             error = 'Error! No se puede modificar porque la ubicación ' + \
                 'ya existe para otra residencia.'
             messages.error(self.request, error)
+            context = self.get_context_data(residencia=form,
+                                            ubicacion=ubicacion_form)
+            return self.render_to_response(context)
         return HttpResponseRedirect(residencia.get_absolute_url())
 
     def formulario_es_valido(self, residencia_form, ubicacion_form):
