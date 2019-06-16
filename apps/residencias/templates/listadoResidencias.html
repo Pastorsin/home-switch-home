@@ -27,12 +27,21 @@
           </div>
           <div class="form-row">
             {% for field in form.visible_fields|slice:"3:" %}
-            <div class="form-group col-md-6 pt-1">
-              <label class="bg-secondary w-100 m-0 rounded-top">{{field.label}}</label>
+            <div class="form-group col-md-6 pt-1 text-left">
+              <label class="bg-secondary w-100 m-0 rounded-top text-center">{{field.label}}</label>
               {{field}}
+              <small class="text-warning">{% if field.help_text %}* {{field.help_text}} {% endif %}</small>
             </div>
             {% endfor %}
           </div>
+        {% for error in form.non_field_errors %}
+        <div class="alert alert-danger alert-dismissible fade show">
+          <strong>{{ error|escape }}</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endfor %}
         </div>
         <hr class="bg-secondary mb-2 mt-0">
         <div>
@@ -40,6 +49,13 @@
         </div>
       </form>
     </div>
+    {% if not object_list %}
+      <div>
+        <hr>
+        <strong class="text-warning">No se han encontrado residencias</strong>
+        <hr>
+      </div>
+    {% endif %}
 		{% for i in object_list %}
 			<!-- Lista Residencias -->
           <div class="container">
@@ -68,20 +84,24 @@
 {% block footer_content %}
 	<nav aria-label="Page navigation example" class="bg-dark rounded-bottom" >
   	<ul class="pagination justify-content-center m-0 py-1" id="pagination">
-  		<li class="page-item disabled">
-      	<a class="page-link" href="#">&laquo</a>
+  		<li class="page-item {% if not page_obj.has_previous %} disabled {% endif %}">
+      	 <a class="page-link" href="{% if page_obj.has_previous %} /listadoResidencias?page={{ page_obj.previous_page_number }} {% endif %}">&laquo</a>
     	</li>
-    	<li class="page-item disabled">
-      		<a class="page-link" href="#" tabindex="-1">Anterior</a>
-    	</li>
-        <li class="page-item active"><a class="page-link" href="{% url "listadoResidencias" %}">1</a></li>
-    	<li class="page-item"><a class="page-link" href="{% url "agregarResidencia" %}">2</a></li>
-    	<li class="page-item"><a class="page-link" href="#">3</a></li>
+      {% if page_obj.has_previous %}
     	<li class="page-item">
-      	<a class="page-link" href="#">Siguiente</a>
-    	</li>
-    	<li class="page-item">
-      	<a class="page-link" href="#">&raquo</a>
+        <a class="page-link" href="/listadoResidencias?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+      </li>
+      {% endif %}
+      <li class="page-item active">
+        <a class="page-link" href="{{ page_obj_current }}">{{ page_obj.number }}</a>
+      </li>
+    	{% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="/listadoResidencias?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+      </li>
+      {% endif %}
+    	<li class="page-item {% if not page_obj.has_next %} disabled {% endif %}">
+      	<a class="page-link" href="{% if page_obj.has_next %} /listadoResidencias?page={{ page_obj.next_page_number }} {% endif %}">&raquo</a>
     	</li>
   	</ul>
 	</nav>

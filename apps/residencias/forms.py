@@ -1,5 +1,7 @@
+import calendar
 from django import forms
-from datetime import date
+from datetime import timedelta, datetime, date
+from django.core.exceptions import ValidationError
 from .models import Residencia, Ubicacion
 
 
@@ -49,10 +51,31 @@ class BusquedaResidenciaForm(forms.Form):
     fecha_inicio = forms.DateField(
         label='Desde',
         required=True,
-        widget=forms.TextInput({'type': 'date'})
+        widget=forms.TextInput({'type': 'date'}),
+        help_text='El rango de fechas no debe superar los 2 meses'
     )
     fecha_hasta = forms.DateField(
         label='Hasta',
         required=True,
         widget=forms.TextInput({'type': 'date'})
     )
+
+    MSG_LONGITUD_INVALIDA = 'Búsqueda no realizada, el rango \
+            de fechas no debe superar los 2 meses'
+
+    MSG_RANGO_INVALIDO = 'Búsqueda no realizada, ingrese un \
+            rango válido porfavor'
+
+    def clean(self):
+        fecha_inicio = self.cleaned_data.get('fecha_inicio')
+        fecha_hasta = self.cleaned_data.get('fecha_hasta')
+        if self.longitud_invalida(fecha_inicio, fecha_hasta):
+            raise ValidationError(self.MSG_LONGITUD_INVALIDA)
+        elif self.rango_invalido(fecha_inicio, fecha_hasta):
+            raise ValidationError(self.MSG_RANGO_INVALIDO)
+
+    def longitud_invalida(self, fecha_inicio, fecha_hasta):
+        return fecha_inicio + timedelta(days=61) < fecha_hasta
+
+    def rango_invalido(self, fecha_inicio, fecha_hasta):
+        return fecha_inicio > fecha_hasta

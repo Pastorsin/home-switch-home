@@ -129,6 +129,7 @@ class ListadoResidenciasView(ListView):
     template_name = 'listadoResidencias.html'
     model = Residencia
     form_class = BusquedaResidenciaForm
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super(ListadoResidenciasView,
@@ -139,26 +140,24 @@ class ListadoResidenciasView(ListView):
 
     def post(self, request, *args, **kwargs):
         busqueda = self.form_class(request.POST)
-        self.object_list = self.get_query_set(busqueda.data)
+        if busqueda.is_valid():
+            self.object_list = self.get_query_set(busqueda.data)
+        else:
+            self.object_list = self.model.objects.all()
         context = self.get_context_data(form=busqueda)
         return self.render_to_response(context)
-
-    def lunes_pasado(self, fecha):
-        fecha = datetime.strptime(fecha, "%Y-%m-%d")
-        lunes = fecha - timedelta(days=fecha.weekday())
-        return lunes - timedelta(weeks=1)
 
     def get_query_set(self, busqueda):
         pais = busqueda['pais']
         provincia = busqueda['provincia']
         ciudad = busqueda['ciudad']
         fecha_inicio = busqueda['fecha_inicio']
-        fecha_hasta = self.lunes_pasado(busqueda['fecha_hasta'])
+        fecha_hasta = busqueda['fecha_hasta']
         semanas = Semana.objects.filter(
-            Q(content_type__model='compradirecta') or
-            Q(content_type__model='subasta') or
-            Q(content_type__model='hotsale'),
-            fecha_inicio__range=[fecha_inicio, fecha_hasta]
+            (Q(content_type__model='compradirecta') or
+             Q(content_type__model='subasta') or
+             Q(content_type__model='hotsale')) and
+            Q(fecha_inicio__range=[fecha_inicio, fecha_hasta])
         )
         return Residencia.objects.filter(
             ubicacion__pais__startswith=pais,
