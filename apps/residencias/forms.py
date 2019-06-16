@@ -1,4 +1,5 @@
 from django import forms
+from datetime import date
 from .models import Residencia, Ubicacion
 
 
@@ -30,3 +31,28 @@ class ResidenciaForm(forms.ModelForm):
         for field in self.base_fields.values():
             field.widget.attrs['placeholder'] = field.label
             field.widget.attrs['class'] = 'form-control'
+
+
+class BusquedaResidenciaForm(forms.Form):
+    pais = forms.CharField(
+        max_length=255,
+        required=False
+    )
+    provincia = forms.CharField(
+        max_length=255,
+        required=False
+    )
+    ciudad = forms.CharField(
+        max_length=255,
+        required=False
+    )
+    fecha_inicio = forms.DateField(
+        label='Desde',
+        required=True,
+        widget=forms.TextInput({'type': 'date'})
+    )
+    fecha_hasta = forms.DateField(
+        label='Hasta',
+        required=True,
+        widget=forms.TextInput({'type': 'date'})
+    )

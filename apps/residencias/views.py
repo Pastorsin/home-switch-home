@@ -1,20 +1,22 @@
 # Views
 from django.views.generic import UpdateView, DetailView, ListView, CreateView
 # Models
+from django.db.models import Q
 from accounts.models import CustomUser
-from adquisiciones.models import CompraDirecta
 from adquisiciones.models import EventoNoPermitido
 from .models import Residencia
+from adquisiciones.models import Semana
 # Forms
-from .forms import ResidenciaForm, UbicacionForm
+from .forms import ResidenciaForm, UbicacionForm, BusquedaResidenciaForm
 # Utility Django
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
-from django.db.models import Q
 # Mixins
 from django.contrib.auth.mixins import LoginRequiredMixin
+# Utility Python
+from datetime import datetime, timedelta
 
 
 class AgregarResidenciaView(LoginRequiredMixin, CreateView):
@@ -52,7 +54,8 @@ class AgregarResidenciaView(LoginRequiredMixin, CreateView):
             error = 'Error! Ya existe otra residencia con la misma ubicación'
             messages.error(self.request, error)
 
-            context = self.get_context_data(residencia=residencia_form, ubicacion=ubicacion_form)
+            context = self.get_context_data(
+                residencia=residencia_form, ubicacion=ubicacion_form)
             return self.render_to_response(context)
 
     def formulario_es_valido(self, residencia_form, ubicacion_form):
@@ -86,8 +89,10 @@ class ModificarResidenciaView(LoginRequiredMixin, UpdateView):
     login_url = 'login'
 
     def get_context_data(self, **kwargs):
-        context = super(ModificarResidenciaView, self).get_context_data(**kwargs)
-        context['ubicacion'] = self.ubicacion_form_class(instance=context['residencia'].ubicacion)
+        context = super(ModificarResidenciaView,
+                        self).get_context_data(**kwargs)
+        context['ubicacion'] = self.ubicacion_form_class(
+            instance=context['residencia'].ubicacion)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -118,13 +123,43 @@ class ModificarResidenciaView(LoginRequiredMixin, UpdateView):
 class ListadoResidenciasView(ListView):
     template_name = 'listadoResidencias.html'
     model = Residencia
-    objetos = model.objects.order_by('precio_base')
+    form_class = BusquedaResidenciaForm
 
-    def get_context_data(self, *args, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super(ListadoResidenciasView,
-                        self).get_context_data(*args, **kwargs)
-        context['object_list'] = Residencia.objects.all()
+                        self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
         return context
+
+    def post(self, request, *args, **kwargs):
+        busqueda = self.form_class(request.POST)
+        self.object_list = self.get_query_set(busqueda.data)
+        context = self.get_context_data(form=busqueda)
+        return self.render_to_response(context)
+
+    def lunes_pasado(self, fecha):
+        fecha = datetime.strptime(fecha, "%Y-%m-%d")
+        lunes = fecha - timedelta(days=fecha.weekday())
+        return lunes - timedelta(weeks=1)
+
+    def get_query_set(self, busqueda):
+        pais = busqueda['pais']
+        provincia = busqueda['provincia']
+        ciudad = busqueda['ciudad']
+        fecha_inicio = busqueda['fecha_inicio']
+        fecha_hasta = self.lunes_pasado(busqueda['fecha_hasta'])
+        semanas = Semana.objects.filter(
+            Q(content_type__model='compradirecta') or
+            Q(content_type__model='subasta') or
+            Q(content_type__model='hotsale'),
+            fecha_inicio__range=[fecha_inicio, fecha_hasta]
+        )
+        return Residencia.objects.filter(
+            ubicacion__pais__startswith=pais,
+            ubicacion__provincia__startswith=provincia,
+            ubicacion__ciudad__startswith=ciudad,
+            semana__in=semanas)
 
 
 class MostrarResidenciaView(DetailView):

@@ -11,6 +11,35 @@
   <h2 class="text-center">Residencias</h2>
 {% endblock title_content %}
 {% block body_content %}
+    <div class= "col-md-12 bg-dark pb-2 my-2 rounded">
+      <h3 class="text-warning pt-2">¡Buscá tu residencia ideal!</h3>
+      <hr class="bg-secondary">
+      <form method="post">
+        {% csrf_token %}
+        <div>
+          <div class="form-row">
+            {% for field in form.visible_fields|slice:":3" %}
+            <div class="form-group col-md-4 pt-1">
+              <label class="bg-secondary w-100 m-0 rounded-top">{{field.label}}</label>
+              {{field}}
+            </div>
+          {% endfor %}
+          </div>
+          <div class="form-row">
+            {% for field in form.visible_fields|slice:"3:" %}
+            <div class="form-group col-md-6 pt-1">
+              <label class="bg-secondary w-100 m-0 rounded-top">{{field.label}}</label>
+              {{field}}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <hr class="bg-secondary mb-2 mt-0">
+        <div>
+          <input class="btn btn-warning w-25 m-0" type="submit" value="Buscar!">
+        </div>
+      </form>
+    </div>
 		{% for i in object_list %}
 			<!-- Lista Residencias -->
           <div class="container">
@@ -57,3 +86,10 @@
   	</ul>
 	</nav>
 {% endblock footer_content %}
+{% block script %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input").addClass("form-control");
+  });
+</script>        
+{% endblock script %}
