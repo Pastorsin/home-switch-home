@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from datetime import date
 
 
 class CustomUser(AbstractUser):
@@ -52,4 +53,8 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return 'Usuario {} {} con creditos: {}'.format(
                 self.first_name, self.last_name, self.creditos)
+
+    def edad(self):
+        today = date.today()
+        return today.year - self.fecha_nacimiento.year - ((today.month, today.day) < (self.fecha_nacimiento.month, self.fecha_nacimiento.day))    
 

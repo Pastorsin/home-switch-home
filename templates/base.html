@@ -101,7 +101,7 @@
                           <span>{{ user.email }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-secondary">
-                          <a class="dropdown-item" href="#">Mi perfil</a>
+                          <a class="dropdown-item" href="{% url 'verPerfil' user.pk %}">Mi perfil</a>
                           <div class="dropdown-divider"></div>
                           <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
                         </div>
