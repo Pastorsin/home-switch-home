@@ -8,27 +8,10 @@
 
 {% block body_content %}
 	<form method="post">
-	{% csrf_token %}
-	  	<div class="col-md-8 d-inline-flex">
-	      	<div class="col-md-6 ml-auto mr-auto">
-	      		<button name='visitante' class="btn btn-light shadow">Entrar como Usuario Visitante</button>
-	      	</div>
-	      	<div class="col-md-6 ml-auto mr-auto">
-	      		<button name='estandar' class="btn btn-info shadow">Entrar como Usuario Estándar</button>
-	      	</div>
-	      </div>
-	  	<div class="col-md-8 d-inline-flex mt-4">
-	      	<div class="col-md-6 ml-auto mr-auto">
-	      		<button name='premium' class="btn btn-primary shadow">Entrar como Usuario Premium</button>
-	      	</div>
-	      	<div class="col-md-6 ml-auto mr-auto">
-	      		<button name='admin' class="btn btn-warning shadow">Entrar como Administrador</button>
-	      	</div>
-	  	</div>
-	      <hr>
-	      	<button name="lunes" class="btn btn-success shadow">Abrir subasta</button>
-	      	<button name="jueves" class="btn btn-success shadow">Cerrar subasta</button>
-	      	<button name="reiniciar" class="btn btn-danger shadow">Reiniciar</button>
+		{% csrf_token %}
+      	<button name="lunes" class="btn btn-success shadow">Abrir subasta</button>
+      	<button name="jueves" class="btn btn-success shadow">Cerrar subasta</button>
+      	<button name="reiniciar" class="btn btn-danger shadow">Reiniciar</button>
 	</form>
 {% endblock body_content %}
 
