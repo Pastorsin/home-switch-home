@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
  Registro 
@@ -82,7 +83,7 @@
 {% endblock body_content %}
 
 {% block script %}
-<script src="../card/dist/jquery.card.js"></script>
+<script src="{% static '/card/dist/jquery.card.js' %}"></script>
 <script type="text/javascript">
   $(document).ready(function(){
     $("input").addClass("form-control");
@@ -90,7 +91,7 @@
   });
 
   new Card({
-    form: $('#form'),
+    form: 'form',
     container: '.card-wrapper'
   });
 </script>        

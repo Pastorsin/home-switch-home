@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView, UpdateView, DetailView
+from django.views.generic import CreateView, UpdateView, DetailView
 
 from django.http import HttpResponseRedirect
 
