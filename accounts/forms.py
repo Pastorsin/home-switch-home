@@ -9,6 +9,8 @@ from .models import CustomUser, Tarjeta
 
 class CustomUserForm:
 
+    URL_FOTO_ANONIMA = 'http://sport-werkt.nl/wp-content/uploads/2018/12/profile.png'
+
     def clean_fecha_nacimiento(self):
         data = self.cleaned_data['fecha_nacimiento']
         today = date.today()
@@ -28,7 +30,7 @@ class CustomUserForm:
     def clean_foto(self):
         data = self.cleaned_data['foto']
         if not data:
-            data = 'http://sport-werkt.nl/wp-content/uploads/2018/12/profile.png'
+            data = self.URL_FOTO_ANONIMA
         return data
 
 
@@ -60,10 +62,10 @@ class TarjetaForm(forms.ModelForm):
         fecha = data.split('/')
         mes = fecha[0]
         try:
-            ano = fecha[1]
+            año = fecha[1]
         except IndexError:
             raise ValidationError(self.MSG_FECHA_INVALIDA)
         else:
-            if len(ano.strip()) < 4 or int(mes) > 12:
+            if len(año.strip()) < 4 or int(mes) > 12:
                 raise ValidationError(self.MSG_FECHA_INVALIDA)
         return data
