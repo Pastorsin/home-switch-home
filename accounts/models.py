@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import AbstractUser
+from django.urls import reverse
 from django.db import models
 from datetime import date
 
@@ -114,3 +115,6 @@ class CustomUser(AbstractUser):
     def incrementar_credito(self):
         self.creditos += 1
         self.save()
+
+    def get_absolute_url(self):
+        return reverse('verPerfil', args=[str(self.pk)])

@@ -22,17 +22,18 @@
                                     </div>
                                 </div>
                                 <div class="userData ml-3">
-                                    <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold"><a href="javascript:void(0);">{{user.first_name}} {{user.last_name}}</a></h2>
+                                    <h2 class="d-block text-primary" style="font-size: 1.5rem; font-weight: bold">{{user.first_name}} {{user.last_name}}</h2>
                                     <h5 class="d-block">{{user.edad}} Años</h5>
                                 </div>
                                 <div class="ml-auto">
                                     <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
                                 </div>
                                 <div class="col-md-3">
-                    				<button type="button" class="btn btn-success">Editar Perfil</button>
-                					<br><br>
+                                    <a href="{% url 'profile_edit' user.pk %}">
+                                      <button type="button" class="btn btn-success">Editar Perfil</button>
+                                    </a>
                 					{% if not user.es_premium %}
-                						<a class="btn btn-warning" href="{% url 'premium_info' %}">Ser Premium</a>
+                                      <a class="mt-4 btn btn-warning" href="{% url 'premium_info' %}">Ser Premium</a>
                 					{% endif %}
                 				</div>
                             </div>
@@ -107,10 +108,7 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
-
                 </div>
             </div>
         </div>
