@@ -4,26 +4,43 @@ from django.db import models
 from datetime import date
 
 
+class Banco(models.Model):
+    nombre = models.CharField(
+        max_length=255,
+        unique=True
+    )
+    foto = models.URLField()
+
+    def __str__(self):
+        return self.nombre
+
+
 class Tarjeta(models.Model):
     numero = models.CharField(
-        max_length=16,
-        null=True
+        verbose_name='Número de tarjeta',
+        max_length=255
     )
     nombre_completo = models.CharField(
         max_length=255,
-        null=True
     )
     fecha_vencimiento = models.CharField(
+        verbose_name='Fecha de vencimiento',
         max_length=10,
-        null=True
     )
     cvc = models.CharField(
-        max_length=4,
+        verbose_name='CVC (Código de seguridad)',
+        max_length=4
+    )
+    banco = models.ForeignKey(
+        Banco,
+        related_name='banco',
+        on_delete=models.CASCADE,
         null=True
     )
 
     def __str__(self):
         return 'Tarjeta de {}'.format(self.nombre_completo)
+
 
 class CustomUser(AbstractUser):
     fecha_nacimiento = models.DateField(
@@ -49,9 +66,9 @@ class CustomUser(AbstractUser):
         null=True,
     )
     tarjeta = models.OneToOneField(
-            Tarjeta,
-            on_delete=models.CASCADE,
-            primary_key=True
+        Tarjeta,
+        on_delete=models.CASCADE,
+        null=True
     )
     email = models.EmailField(
         unique=True

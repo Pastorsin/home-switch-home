@@ -12,7 +12,7 @@
 {% block body_content %}
 
 
-  <form method="post"> {% csrf_token %}
+  <form id="form" method="post"> {% csrf_token %}
 
     {% if form.errors %}
       {% for error in form.non_field_errors %}
@@ -27,12 +27,14 @@
 
     <!-- Usuario -->
     {% for field in form %}
-     <div class="form-group text-left">
-       <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
-       {{field}}
+     <div class="form-group">
+       <p class="m-0 bg-dark rounded-top" for="{{ field.id_for_label }}">{{ field.label }}:</p>
+       <div> {{field}} </div>
 
        {% if field.help_text %}
-         <small class="form-text">{{ field.help_text|safe }}</small>
+       <div class="bg-dark rounded-bottom m-0">
+         <small class="text-muted">{{ field.help_text|safe }}</small>
+       </div>
        {% endif %}
      </div>
 
@@ -46,39 +48,38 @@
       {% endfor %}
 
     {% endfor %}
+
     <!-- Tarjeta -->
-    <p class="h3 m-0 bg-dark rounded-top">Tarjeta de Credito</p>
-    <div class="bg-dark py-2 px-2 mb-2">
-      {% for field in tarjeta %}
-        <div class="form-group">
-          <p class="m-0 bg-primary rounded-top">{{field.label}}</p>
-          <div>
-            {{field}}
+    <div class="bg-dark rounded-top">
+      <h3 class="py-1">Tarjeta de Credito</h3>
+      <!-- -->
+      <div class="py-2 bg-info card-wrapper"></div>
+      <!-- -->
+      <div class="bg-info py-2 px-2 mb-2">
+        {% for field in tarjeta %}
+          <div class="form-group">
+            <p class="m-0 bg-dark rounded-top">{{field.label}}</p>
+            <div>
+              {{field}}
+            </div>
           </div>
-        </div>
 
-        {% for error in field.errors %}
-          <div class="alert alert-danger alert-dismissible fade show">
-            <strong>{{ error|escape }}</strong>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-        {% endfor %}
+          {% for error in field.errors %}
+            <div class="alert alert-danger alert-dismissible fade show">
+              <strong>{{ error|escape }}</strong>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
 
-      {% endfor %}                
+        {% endfor %}                
+      </div>
     </div>
 
     <button type="submit" class="btn btn-primary">Registrarse!</button>
   </form>
-  <form id="form" action="">
-      <input placeholder="Card number" type="tel" name="number">
-      <input placeholder="Full name" type="text" name="name">
-      <input placeholder="MM/YY" type="tel" name="expiry">
-      <input placeholder="CVC" type="number" name="cvc">
-  </form>
 
-  <div class="card-wrapper"></div>
   
 {% endblock body_content %}
 
@@ -86,13 +87,19 @@
 <script src="{% static '/card/dist/jquery.card.js' %}"></script>
 <script type="text/javascript">
   $(document).ready(function(){
-    $("input").addClass("form-control");
+    $("input, select").addClass("form-control");
     $("#id_foto").val("");
   });
 
   new Card({
-    form: 'form',
-    container: '.card-wrapper'
+    form: document.querySelector('#form'),
+    container: '.card-wrapper',
+    formSelectors: {
+        numberInput: 'input[name="numero"]',
+        expiryInput: 'input[name="fecha_vencimiento"]',
+        cvcInput: 'input[name="cvc"]',
+        nameInput: 'input[name="nombre_completo"]'
+    },
   });
 </script>        
 {% endblock script %}

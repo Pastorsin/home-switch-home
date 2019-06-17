@@ -13,6 +13,38 @@ class SignUpView(CreateView):
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(SignUpView, self).get_context_data(**kwargs)
+        if 'usuario' not in context:
+            context['usuario'] = self.form_class()
+        if 'tarjeta' not in context:
+            context['tarjeta'] = self.tarjeta_form_class()
+        return context
+
+    def form_invalid(self, **kwargs):
+        return self.render_to_response(self.get_context_data(**kwargs))
+
+    def post(self, request, *args, **kwargs):
+        # Usuario anónimo
+        self.object = None
+
+        user_form = self.form_class(request.POST)
+        tarjeta_form = self.tarjeta_form_class(request.POST)
+
+        if user_form.is_valid() and tarjeta_form.is_valid():
+            self.guardar_formulario(user_form, tarjeta_form)
+            return HttpResponseRedirect(self.success_url)
+        else:
+            context = self.get_context_data(
+                usuario=user_form, tarjeta=tarjeta_form)
+            return self.render_to_response(context)
+
+    def guardar_formulario(self, user_form, tarjeta_form):
+        tarjeta_data = tarjeta_form.save()
+        user_data = user_form.save(commit=False)
+        user_data.tarjeta = tarjeta_data
+        user_data.save()
+
 
 class DetallePerfilView(DetailView):
     model = CustomUser
@@ -22,7 +54,8 @@ class DetallePerfilView(DetailView):
 class EditProfileView(UpdateView):
     model = CustomUser
     template_name = 'user_edit.html'
-    fields = ('first_name', 'last_name', 'email', 'foto', 'fecha_nacimiento', 'dni')
+    fields = ('first_name', 'last_name', 'email',
+              'foto', 'fecha_nacimiento', 'dni')
     success_url = reverse_lazy('home')
 
     # TODO esto probablemente no funciona, no está testeado
@@ -44,10 +77,11 @@ class EditProfileView(UpdateView):
         tarjeta_form = self.tarjeta_form_class(request.POST)
 
         if user_form.is_valid() and tarjeta_form.is_valid():
-            self.guardar_formulario()
+            self.guardar_formulario(user_form, tarjeta_form)
             return HttpResponseRedirect(self.get_success_url())
         else:
-            context = self.get_context_data(usuario=user_form, tarjeta=tarjeta_form)
+            context = self.get_context_data(
+                usuario=user_form, tarjeta=tarjeta_form)
             return self.render_to_response(context)
 
     def guardar_formulario(self, user_form, tarjeta_form):
