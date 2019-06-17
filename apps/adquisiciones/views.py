@@ -13,9 +13,10 @@ class MostrarSubastaView(DetailView):
     def post(self, request, *args, **kwargs):
         subasta = self.get_object()
 
-        # if usuario_conectado.tiene_creditos():
-        if True:
-            usuario_conectado = request.user
+        usuario_conectado = request.user
+        tiene_creditos = usuario_conectado.tenes_creditos
+        el_ganador_es = subasta.el_ganador_es
+        if tiene_creditos() or el_ganador_es(usuario_conectado):
             nuevo_monto = request.POST['monto']
             subasta.nueva_puja(usuario_conectado, nuevo_monto)
             mensaje_exito = 'Puja realizada con éxito!'

@@ -210,6 +210,7 @@ class Estado(models.Model):
     class Meta:
         abstract = True
 
+
 class NoDisponible(Estado):
 
     def __str__(self):
@@ -295,14 +296,18 @@ class Subasta(Estado):
         return self.precio_actual + 0.1
 
     def nueva_puja(self, nuevo_pujador, nuevo_precio):
-        # self.ganador_actual.incrementar_credito()
-        self.semana.establecer_comprador(nuevo_pujador)
+        if not self.el_ganador_es(nuevo_pujador):
+            self.ganador_actual.incrementar_credito()
+            self.semana.establecer_comprador(nuevo_pujador)
+            nuevo_pujador.decrementar_credito()
         self.precio_actual = nuevo_precio
-        # nuevo_pujador.decrementar_credito()
         self.save()
 
     def hay_ganador(self):
         return bool(self.ganador_actual)
+
+    def el_ganador_es(self, usuario):
+        return self.ganador_actual == usuario
 
     @property
     def ganador_actual(self):

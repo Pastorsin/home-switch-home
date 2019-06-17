@@ -61,3 +61,14 @@ class CustomUser(AbstractUser):
         return today.year - self.fecha_nacimiento.year - \
             ((today.month, today.day) <
              (self.fecha_nacimiento.month, self.fecha_nacimiento.day))
+
+    def tenes_creditos(self):
+        return self.creditos > 0
+
+    def decrementar_credito(self):
+        self.creditos -= 1
+        self.save()
+
+    def incrementar_credito(self):
+        self.creditos += 1
+        self.save()
