@@ -4,8 +4,28 @@ from django.db import models
 from datetime import date
 
 
-class CustomUser(AbstractUser):
+class Tarjeta(models.Model):
+    numero = models.CharField(
+        max_length=16,
+        null=True
+    )
+    nombre_completo = models.CharField(
+        max_length=255,
+        null=True
+    )
+    fecha_vencimiento = models.CharField(
+        max_length=10,
+        null=True
+    )
+    cvc = models.CharField(
+        max_length=4,
+        null=True
+    )
 
+    def __str__(self):
+        return 'Tarjeta de {}'.format(self.nombre_completo)
+
+class CustomUser(AbstractUser):
     fecha_nacimiento = models.DateField(
         help_text='Debe ser mayor de 18 años para poder reservar!',
         null=True,
@@ -27,6 +47,11 @@ class CustomUser(AbstractUser):
         ni espacios por favor. Ej: 11222333',
         max_length=8,
         null=True,
+    )
+    tarjeta = models.OneToOneField(
+            Tarjeta,
+            on_delete=models.CASCADE,
+            primary_key=True
     )
     email = models.EmailField(
         unique=True

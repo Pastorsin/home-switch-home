@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 from datetime import date
-from .models import CustomUser
+from .models import CustomUser, Tarjeta
 
 
 class CustomUserForm:
@@ -42,3 +42,9 @@ class CustomUserChangeForm(UserChangeForm, CustomUserForm):
     class Meta:
         model = CustomUser
         fields = ('first_name', 'last_name', 'email', 'foto', 'fecha_nacimiento', 'dni')
+
+
+class TarjetaForm(forms.ModelForm):
+    class Meta:
+        model = Tarjeta
+        fields = ('numero', 'nombre_completo', 'fecha_vencimiento', 'cvc',)

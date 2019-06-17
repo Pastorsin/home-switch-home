@@ -24,6 +24,7 @@
       {% endfor %}
     {% endif %}
 
+    <!-- Usuario -->
     {% for field in form %}
      <div class="form-group text-left">
        <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
@@ -32,7 +33,7 @@
        {% if field.help_text %}
          <small class="form-text">{{ field.help_text|safe }}</small>
        {% endif %}
-     </div> 
+     </div>
 
       {% for error in field.errors %}
         <div class="alert alert-danger alert-dismissible fade show">
@@ -44,16 +45,53 @@
       {% endfor %}
 
     {% endfor %}
+    <!-- Tarjeta -->
+    <p class="h3 m-0 bg-dark rounded-top">Tarjeta de Credito</p>
+    <div class="bg-dark py-2 px-2 mb-2">
+      {% for field in tarjeta %}
+        <div class="form-group">
+          <p class="m-0 bg-primary rounded-top">{{field.label}}</p>
+          <div>
+            {{field}}
+          </div>
+        </div>
+
+        {% for error in field.errors %}
+          <div class="alert alert-danger alert-dismissible fade show">
+            <strong>{{ error|escape }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+
+      {% endfor %}                
+    </div>
+
     <button type="submit" class="btn btn-primary">Registrarse!</button>
   </form>
+  <form id="form" action="">
+      <input placeholder="Card number" type="tel" name="number">
+      <input placeholder="Full name" type="text" name="name">
+      <input placeholder="MM/YY" type="tel" name="expiry">
+      <input placeholder="CVC" type="number" name="cvc">
+  </form>
+
+  <div class="card-wrapper"></div>
   
 {% endblock body_content %}
 
 {% block script %}
+<script src="../card/dist/jquery.card.js"></script>
 <script type="text/javascript">
   $(document).ready(function(){
     $("input").addClass("form-control");
     $("#id_foto").val("");
+  });
+
+  new Card({
+    form: $('#form'),
+    container: '.card-wrapper'
   });
 </script>        
 {% endblock script %}
