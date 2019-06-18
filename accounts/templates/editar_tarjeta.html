@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}Editar tarjeta{% endblock title %}
+
+
+{% block title_content %}
+	<h1>Editar tarjeta</h1>
+{% endblock title_content %}
+
+
+{% block body_content %}
+	<div class="py-2 card-wrapper rounded"></div>
+	
+	<div class="py-2 px-2 mb-2">
+    <form method="post" id="form">
+    {% csrf_token %}
+      {% for field in form %}
+        <div class="form-group">
+          <p class="m-0 bg-dark rounded-top">{{field.label}}</p>
+          <div>
+            {{field}}
+          </div>
+        </div>
+
+        {% for error in field.errors %}
+          <div class="alert alert-danger alert-dismissible fade show">
+            <strong>{{ error|escape }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+
+      {% endfor %}                
+      <button type="submit" class="btn btn-success">Guardar</button>
+      <a href="{% url 'verPerfil' user.pk %}"><button type="button" class="btn btn-danger">Cancelar</button></a>
+    </form>
+  </div>
+{% endblock body_content %}
+
+
+{% block script %}
+<script src="{% static '/card/jquery.card.js' %}"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    $("input, select").addClass("form-control");
+    $('ul').addClass('text-left')
+    $("#id_foto").val("");
+
+
+    new Card({
+      form: document.querySelector('#form'),
+      container: '.card-wrapper',
+      formSelectors: {
+          numberInput: 'input[name="numero"]',
+          expiryInput: 'input[name="fecha_vencimiento"]',
+          cvcInput: 'input[name="cvc"]',
+          nameInput: 'input[name="nombre_completo"]'
+      },
+    });
+
+    const changeEvent = new CustomEvent('change');
+    const blurEvent = new CustomEvent('blur');
+    document.getElementById('id_numero').dispatchEvent(changeEvent);
+    document.getElementById('id_nombre_completo').dispatchEvent(changeEvent);
+    document.getElementById('id_fecha_vencimiento').dispatchEvent(changeEvent);
+    document.getElementById('id_cvc').dispatchEvent(changeEvent);
+    document.getElementById('id_numero').dispatchEvent(blurEvent);
+
+
+  });
+
+</script>        
+{% endblock script %}

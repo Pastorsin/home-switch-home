@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm, TarjetaForm
-from .models import CustomUser
+from .models import CustomUser, Tarjeta
 
 
 class SignUpView(CreateView):
@@ -55,4 +55,12 @@ class EditProfileView(UpdateView):
     template_name = 'user_edit.html'
     fields = ('first_name', 'last_name', 'email',
               'foto', 'fecha_nacimiento', 'dni')
+
+class EditarTarjetaView(UpdateView):
+    model = Tarjeta
+    template_name = 'editar_tarjeta.html'
+    form_class = TarjetaForm
+
+    def get_success_url(self):
+        return reverse_lazy('verPerfil', args=[str(self.request.user.pk)])
 

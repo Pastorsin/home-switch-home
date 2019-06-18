@@ -46,7 +46,7 @@
                                                 <div class="dropdown-divider my-0"></div>
                                                 <a class="dropdown-item px-1" href="{% url 'password_change' %}">Cambiar contraseña</a>
                                                 <div class="dropdown-divider my-0"></div>
-                                                <a class="dropdown-item px-1" href="#">Cambiar tarjeta</a>
+                                                <a class="dropdown-item px-1" href="{% url 'editar_tarjeta' user.tarjeta.pk %}">Cambiar tarjeta</a>
                                             </div>
                                             <style type="text/css">
                                                 div > .dropdown-menu {
@@ -138,7 +138,17 @@
                                                 {{user.tarjeta.numero}} 
                                             </div>
                                         </div>
-                                        <hr /><div class="row">
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-sm-3 col-md-2 col-5">
+                                                <label style="font-weight:bold;color:grey">Titular</label>
+                                            </div>
+                                            <div class="col-md-8 col-6" style="color:grey">
+                                                {{user.tarjeta.nombre_completo}} 
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
                                             <div class="col-sm-3 col-md-2 col-5">
                                                 <label style="font-weight:bold;color:grey">Fecha de vencimiento</label>
                                             </div>
