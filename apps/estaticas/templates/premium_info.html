@@ -1,4 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+  <link href="{% static 'maps/jqvmap.css' %}" media="screen" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
 {% block title %}
   Convertite en Premium
 {% endblock title %}
@@ -42,28 +48,93 @@
 	<h5 class="text-light">Acercate a nuestras oficinas más cercanas:</h5>
 	<div class="bg-secondary dropdown-divider" style="border-color: #96b1cc"></div>
 
-	<div class="list-group">
-	  	<a href="#" class="list-group-item list-group-item-action flex-column align-items-start text-left my-1">
-	    <div class="d-flex w-100 justify-content-between">
-	      <h5 class="mb-1 text-primary">Argentina, Buenos Aires, Quilmes, Zola 1988</h5>
-	    </div>
-	    <p class="mb-1 text-secondary">Horarios de atención: Lunes a viernes 08:00hs. a 20:00hs.</p>
-	  	</a>
-  	</div>
-  	<div class="list-group">
-	  	<a href="#" class="list-group-item list-group-item-action flex-column align-items-start text-left my-1">
-	    <div class="d-flex w-100 justify-content-between">
-	      <h5 class="mb-1 text-primary">Argentina, Buenos Aires, Carlos Casares, Almirante Brown 438</h5>
-	    </div>
-	    <p class="mb-1 text-secondary">Horarios de atención: Lunes a viernes 08:00hs. a 20:00hs.</p>
-	  	</a>
-  	</div>
-  	<div class="list-group">
-	  	<a href="#" class="list-group-item list-group-item-action flex-column align-items-start text-left my-1">
-	    <div class="d-flex w-100 justify-content-between">
-	      <h5 class="mb-1 text-primary">Argentina, Buenos Aires, Don Bosco, Calle 165 Nº984 </h5>
-	    </div>
-	    <p class="mb-1 text-secondary">Horarios de atención: Lunes a viernes 08:00hs. a 20:00hs.</p>
-	  	</a>
+	<div class="col-sm-12 my-3">
+		<div id="vmap" style="height: 400px;"></div>
+	</div>
+
+	<hr>
+
+	<div id="oficinas">
+		<div id="ba">
+			<div class="list-group">
+			  	<a href="#" class="list-group-item list-group-item-action flex-column align-items-start text-left my-1">
+			    <div class="d-flex w-100 justify-content-between">
+			      <h5 class="mb-1 text-primary">Argentina, Buenos Aires, Quilmes, Zola 1988</h5>
+			    </div>
+			    <p class="mb-1 text-secondary">Horarios de atención: Lunes a viernes 08:00hs. a 20:00hs.</p>
+			  	</a>
+		  	</div>
+		  	<div class="list-group">
+			  	<a href="#" class="list-group-item list-group-item-action flex-column align-items-start text-left my-1">
+			    <div class="d-flex w-100 justify-content-between">
+			      <h5 class="mb-1 text-primary">Argentina, Buenos Aires, Carlos Casares, Almirante Brown 438</h5>
+			    </div>
+			    <p class="mb-1 text-secondary">Horarios de atención: Lunes a viernes 08:00hs. a 20:00hs.</p>
+			  	</a>
+		  	</div>
+		  	<div class="list-group">
+			  	<a href="#" class="list-group-item list-group-item-action flex-column align-items-start text-left my-1">
+			    <div class="d-flex w-100 justify-content-between">
+			      <h5 class="mb-1 text-primary">Argentina, Buenos Aires, Don Bosco, Calle 165 Nº984 </h5>
+			    </div>
+			    <p class="mb-1 text-secondary">Horarios de atención: Lunes a viernes 08:00hs. a 20:00hs.</p>
+			  	</a>
+		  	</div>
+		</div>
+		<div id="co">
+			<div class="list-group">
+			  	<a href="#" class="list-group-item list-group-item-action flex-column align-items-start text-left my-1">
+			    <div class="d-flex w-100 justify-content-between">
+			      <h5 class="mb-1 text-primary">Argentina, Córdoba, San Francisco, Ariel Torti 855</h5>
+			    </div>
+			    <p class="mb-1 text-secondary">Horarios de atención: Lunes a viernes 08:00hs. a 20:00hs.</p>
+			  	</a>
+		  	</div>
+		</div>
+		<div id="none">
+			<h6 class="text-warning">
+				No se disponen oficinas en la ubicación seleccionada por el momento. ¡Pronto llegaremos!
+			</h6>
+		</div>
   	</div>
 {% endblock body_content %}
+
+{% block script %}
+<script type="text/javascript" src="{% static 'maps/jquery.vmap.js' %}"></script>
+<script type="text/javascript" src="{% static 'maps/jquery.vmap.argentina.js' %}" charset="utf-8"></script>
+
+<script>
+  jQuery(document).ready(function () {
+  	// Oculta todas las oficinas
+    $('#oficinas').children().hide()
+
+    $.fn.exists = function () {
+ 	   return this.length !== 0;
+	}
+
+    jQuery('#vmap').vectorMap({
+      map: 'argentina_en',
+      backgroundColor: null,
+      color: '#ffffff',
+      hoverOpacity: 0.3,
+      selectedColor: '#063e77',
+      enableZoom: false,
+      scaleColors: ['#C8EEFF', '#006491'],
+      onRegionClick: function (element, code, region) {
+
+        // Oculta todas las oficinas
+        $('#oficinas').children().fadeOut()
+
+        // Muestra solo las oficinas de la provincia seleccionada
+        let oficinaSeleccionada = $('#'+code)
+        console.log(oficinaSeleccionada)
+        if (oficinaSeleccionada.exists()) {
+        	oficinaSeleccionada.fadeIn();
+        } else {
+        	$('#none').fadeIn()
+        }        
+      }
+    });
+  });
+</script>
+{% endblock %}
