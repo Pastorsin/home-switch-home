@@ -21,20 +21,47 @@
                                         <input type="file" style="display: none;" id="profilePicture" name="file" />
                                     </div>
                                 </div>
-                                <div class="userData ml-3">
+                                <div class="userData ml-3 text-left">
                                     <h2 class="d-block text-primary" style="font-size: 1.5rem; font-weight: bold">{{user.first_name}} {{user.last_name}}</h2>
                                     <h5 class="d-block">{{user.edad}} Años</h5>
+                                    {% if not user.es_premium %}
+                                    <hr>
+                                    <div>
+                                      <a class="btn btn-warning" href="{% url 'premium_info' %}">Ser Premium</a>
+                                    </div>
+                                    {% endif %}
                                 </div>
                                 <div class="ml-auto">
                                     <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
                                 </div>
-                                <div class="col-md-3">
-                                    <a href="{% url 'profile_edit' user.pk %}">
-                                      <button type="button" class="btn btn-success">Editar Perfil</button>
-                                    </a>
-                					{% if not user.es_premium %}
-                                      <a class="mt-4 btn btn-warning" href="{% url 'premium_info' %}">Ser Premium</a>
-                					{% endif %}
+                                <div>
+                                    <div class="col-sm-12">
+                                        <div class="btn-group">       
+                                            <span class="bg-info text-light rounded-left p-1 col-sm-12">Editar datos</span>
+                                            <button type="button" class="btn btn-primary py-0 px-1 rounded-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-cog"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right p-0 m-0 text-left">
+                                                <a class="dropdown-item px-1" href="{% url 'profile_edit' user.pk %}">Editar Perfil</a>
+                                                <div class="dropdown-divider my-0"></div>
+                                                <a class="dropdown-item px-1" href="{% url 'password_change' %}">Cambiar contraseña</a>
+                                                <div class="dropdown-divider my-0"></div>
+                                                <a class="dropdown-item px-1" href="#">Cambiar tarjeta</a>
+                                            </div>
+                                            <style type="text/css">
+                                                div > .dropdown-menu {
+                                                    background-color: #97b8de;
+                                                }
+                                                div > .dropdown-menu > a:hover {
+                                                    background-color: #79b7c3a6;
+                                                    color: white!important;
+                                                }
+                                                div > .dropdown-menu > a{
+                                                    color: #3f4d50;
+                                                }
+                                            </style>
+                                        </div>
+                                    </div>
                 				</div>
                             </div>
                         </div>
