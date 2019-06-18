@@ -44,9 +44,9 @@
                                     <li class="nav-item">
                                         <a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Información personal</a>
                                     </li>
-                                    <!-- <li class="nav-item">
-                                        <a class="nav-link" id="connectedServices-tab" data-toggle="tab" href="#connectedServices" role="tab" aria-controls="connectedServices" aria-selected="false">Mis cosas (?)</a>
-                                    </li>  Este lo podemos usar para poner mis subastas o algo asi-->
+                                     <li class="nav-item">
+                                        <a class="nav-link" id="connectedServices-tab" data-toggle="tab" href="#connectedServices" role="tab" aria-controls="connectedServices" aria-selected="false">Información de pago</a>
+                                    </li>  
                                 </ul>
                                 <div class="tab-content ml-1" id="myTabContent">
                                     <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
@@ -103,7 +103,33 @@
 
                                     </div>
                                     <div class="tab-pane fade" id="connectedServices" role="tabpanel" aria-labelledby="ConnectedServices-tab">
-                                        Facebook, Google, Twitter Account that are connected to this account
+                                        <div class="row">
+                                            <div class="col-sm-3 col-md-2 col-5">
+                                                <label style="font-weight:bold;color:grey">Numero de tarjeta</label>
+                                            </div>
+                                            <div class="col-md-8 col-6" style="color:grey">
+                                                {{user.tarjeta.numero}} 
+                                            </div>
+                                        </div>
+                                        <hr /><div class="row">
+                                            <div class="col-sm-3 col-md-2 col-5">
+                                                <label style="font-weight:bold;color:grey">Fecha de vencimiento</label>
+                                            </div>
+                                            <div class="col-md-8 col-6" style="color:grey">
+                                                {{user.tarjeta.fecha_vencimiento}} 
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-sm-3 col-md-2 col-5">
+                                                <label style="font-weight:bold;color:grey">Banco</label>
+                                            </div>
+                                            <div class="col-md-8 col-6" style="color:grey">
+                                                {{user.tarjeta.banco.nombre}} <img src={{user.tarjeta.banco.foto}}  style="width: 50px; height:30px"/>
+                                            </div>
+                                        </div>
+                                        <hr />
+
                                     </div>
                                 </div>
                             </div>
