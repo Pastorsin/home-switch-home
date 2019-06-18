@@ -6,7 +6,7 @@
 
 
 {% block title_content %}
-	<h1>Editar tarjeta</h1>
+	<h2>Editar tarjeta</h2>
 {% endblock title_content %}
 
 
@@ -34,6 +34,7 @@
         {% endfor %}
 
       {% endfor %}                
+      <hr>
       <button type="submit" class="btn btn-success">Guardar</button>
       <a href="{% url 'verPerfil' user.pk %}"><button type="button" class="btn btn-danger">Cancelar</button></a>
     </form>

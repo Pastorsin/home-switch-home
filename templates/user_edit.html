@@ -24,9 +24,9 @@
     {% endif %}
 
     {% for field in form %}
-     <div class="form-group text-left">
-       <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
-       {{ field }}
+     <div class="form-group text-center">
+       <p class="m-0 bg-dark rounded-top" for="{{ field.id_for_label }}">{{ field.label }}:</p>
+       <div> {{field}} </div>
 
        {% if field.help_text %}
          <small class="form-text">{{ field.help_text|safe }}</small>
@@ -43,8 +43,8 @@
       {% endfor %}
 
     {% endfor %}
-    <a class="btn btn-info text-right" href="{% url 'password_change' %}">Cambiar contraseña</a>
-    <button type="submit" class="btn btn-success">Editar!!</button>
+    <hr>
+    <button type="submit" class="btn btn-success">Guardar</button>
     <a href="{% url 'verPerfil' user.pk %}"><button type="button" class="btn btn-danger">Cancelar</button></a>
   </form>
 {% endblock body_content %}
