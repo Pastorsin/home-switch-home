@@ -43,6 +43,7 @@
       {% endfor %}
 
     {% endfor %}
+    <a class="btn btn-info text-right" href="{% url 'password_change' %}">Cambiar contraseña</a>
     <button type="submit" class="btn btn-success">Editar!!</button>
     <a href="{% url 'verPerfil' user.pk %}"><button type="button" class="btn btn-danger">Cancelar</button></a>
   </form>
