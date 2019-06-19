@@ -50,13 +50,13 @@ class BusquedaResidenciaForm(forms.Form):
     )
     fecha_inicio = forms.DateField(
         label='Desde',
-        required=True,
+        required=False,
         widget=forms.TextInput({'type': 'date'}),
         help_text='El rango de fechas no debe superar los 2 meses'
     )
     fecha_hasta = forms.DateField(
         label='Hasta',
-        required=True,
+        required=False,
         widget=forms.TextInput({'type': 'date'})
     )
 
@@ -66,13 +66,28 @@ class BusquedaResidenciaForm(forms.Form):
     MSG_RANGO_INVALIDO = 'Búsqueda no realizada, ingrese un \
             rango válido porfavor'
 
+    MSG_RANGO_INCOMPLETO = 'Búsqueda no realizada, complete ambas fechas \
+            porfavor'
+
     def clean(self):
         fecha_inicio = self.cleaned_data.get('fecha_inicio')
         fecha_hasta = self.cleaned_data.get('fecha_hasta')
-        if self.longitud_invalida(fecha_inicio, fecha_hasta):
+        if self.fecha_completada(fecha_inicio, fecha_hasta):
+            self.verificar_rango(fecha_inicio, fecha_hasta)
+
+    def fecha_completada(self, fecha_inicio, fecha_hasta):
+        return bool(fecha_inicio) or bool(fecha_hasta)
+
+    def verificar_rango(self, fecha_inicio, fecha_hasta):
+        if self.rango_incompleto(fecha_inicio, fecha_hasta):
+            raise ValidationError(self.MSG_RANGO_INCOMPLETO)
+        elif self.longitud_invalida(fecha_inicio, fecha_hasta):
             raise ValidationError(self.MSG_LONGITUD_INVALIDA)
         elif self.rango_invalido(fecha_inicio, fecha_hasta):
             raise ValidationError(self.MSG_RANGO_INVALIDO)
+
+    def rango_incompleto(self, fecha_inicio, fecha_hasta):
+        return not bool(fecha_inicio) or not bool(fecha_hasta)
 
     def longitud_invalida(self, fecha_inicio, fecha_hasta):
         return fecha_inicio + timedelta(days=61) < fecha_hasta

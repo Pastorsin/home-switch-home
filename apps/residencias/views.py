@@ -16,7 +16,7 @@ from django.shortcuts import get_object_or_404
 # Mixins
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Utility Python
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 
 class AgregarResidenciaView(LoginRequiredMixin, CreateView):
@@ -153,17 +153,20 @@ class ListadoResidenciasView(ListView):
         ciudad = busqueda['ciudad']
         fecha_inicio = busqueda['fecha_inicio']
         fecha_hasta = busqueda['fecha_hasta']
-        semanas = Semana.objects.filter(
-            (Q(content_type__model='compradirecta') or
-             Q(content_type__model='subasta') or
-             Q(content_type__model='hotsale')) and
-            Q(fecha_inicio__range=[fecha_inicio, fecha_hasta])
-        )
+        if not fecha_inicio or not fecha_hasta:
+            semanas = Semana.objects.all()
+        else:
+            semanas = Semana.objects.filter(
+                (Q(content_type__model='compradirecta') or
+                 Q(content_type__model='subasta') or
+                 Q(content_type__model='hotsale')) and
+                Q(fecha_inicio__range=[fecha_inicio, fecha_hasta])
+            )
         return Residencia.objects.filter(
             ubicacion__pais__startswith=pais,
             ubicacion__provincia__startswith=provincia,
             ubicacion__ciudad__startswith=ciudad,
-            semana__in=semanas)
+            semana__in=semanas).distinct()
 
 
 class MostrarResidenciaView(DetailView):
