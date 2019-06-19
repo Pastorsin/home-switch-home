@@ -2,6 +2,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 from django.db import models
+import datetime
 from datetime import date
 
 
@@ -78,6 +79,9 @@ class CustomUser(AbstractUser):
         max_length=150,
         unique=False    # Ahora el mail es unico
     )
+    fecha_creacion = models.DateField(
+        default=datetime.date.today)
+
     REQUIRED_FIELDS = ['username']
     USERNAME_FIELD = 'email'
 
