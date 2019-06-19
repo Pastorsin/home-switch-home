@@ -40,6 +40,9 @@ class CustomUserCreationForm(UserCreationForm, CustomUserForm):
         model = CustomUser
         fields = ('first_name', 'last_name', 'email',
                   'foto', 'fecha_nacimiento', 'dni')
+        widgets = {
+            'fecha_nacimiento': forms.TextInput(attrs={'type': 'date'}),
+        }
 
 
 class CustomUserChangeForm(UserChangeForm, CustomUserForm):
@@ -48,12 +51,19 @@ class CustomUserChangeForm(UserChangeForm, CustomUserForm):
         model = CustomUser
         fields = ('first_name', 'last_name', 'email',
                   'foto', 'fecha_nacimiento', 'dni')
+        widgets = {
+            'fecha_nacimiento': forms.TextInput(attrs={'type': 'date'}),
+        }
 
 
 class TarjetaForm(forms.ModelForm):
     class Meta:
         model = Tarjeta
         fields = ('numero', 'nombre_completo', 'fecha_vencimiento', 'cvc', 'banco')
+        widgets = { 
+            'fecha_vencimiento': forms.TextInput(attrs={'placeholder': 'mm/yyyy'}),
+        }
+
 
     MSG_FECHA_INVALIDA = 'Ingrese una fecha de vencimiento válida porfavor'
     MSG_NUMERO_INVALIDO = 'El numero de la tarjeta debe ser de 16 digitos exactamente'
