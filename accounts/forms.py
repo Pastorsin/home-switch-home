@@ -47,13 +47,17 @@ class CustomUserCreationForm(UserCreationForm, CustomUserForm):
 
 class CustomUserChangeForm(UserChangeForm, CustomUserForm):
 
-    class Meta:
+    class Meta(UserChangeForm.Meta):
         model = CustomUser
         fields = ('first_name', 'last_name', 'email',
                   'foto', 'fecha_nacimiento', 'dni')
         widgets = {
             'fecha_nacimiento': forms.TextInput(attrs={'type': 'date'}),
         }
+
+    def __init__(self, *args, **kargs):
+        super(CustomUserChangeForm, self).__init__(*args, **kargs)
+        del self.fields['password']
 
 
 class TarjetaForm(forms.ModelForm):
@@ -89,8 +93,9 @@ class TarjetaForm(forms.ModelForm):
         else:
             año_invalido = len(año.strip()) < 4
             mes_invalido = int(mes) > 12
-            fecha_invalida = int(año) <= today.year and int(mes) < today.month
-            if año_invalido or mes_invalido or fecha_invalida:
+            if año_invalido or mes_invalido:
+                raise ValidationError(self.MSG_FECHA_INVALIDA)
+            elif date(int(año), int(mes), 1) <= date.today():
                 raise ValidationError(self.MSG_FECHA_INVALIDA)
         return data
 

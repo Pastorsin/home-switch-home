@@ -102,5 +102,13 @@
         nameInput: 'input[name="nombre_completo"]'
     },
   });
+
+  const changeEvent = new CustomEvent('change');
+  const blurEvent = new CustomEvent('blur');
+  document.getElementById('id_numero').dispatchEvent(changeEvent);
+  document.getElementById('id_nombre_completo').dispatchEvent(changeEvent);
+  document.getElementById('id_fecha_vencimiento').dispatchEvent(changeEvent);
+  document.getElementById('id_cvc').dispatchEvent(changeEvent);
+  document.getElementById('id_numero').dispatchEvent(blurEvent);
 </script>        
 {% endblock script %}

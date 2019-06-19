@@ -51,10 +51,10 @@ class DetallePerfilView(DetailView):
 
 
 class EditProfileView(UpdateView):
+    form_class = CustomUserChangeForm
     model = CustomUser
     template_name = 'user_edit.html'
-    fields = ('first_name', 'last_name', 'email',
-              'foto', 'fecha_nacimiento', 'dni')
+    
 
 class EditarTarjetaView(UpdateView):
     model = Tarjeta
