@@ -62,11 +62,19 @@ class Residencia(models.Model):
 
     def crear_semanas(self):
         from adquisiciones.models import Semana
-        for numero_semana in range(0, self.SEMANAS_TOTALES):
+        for numero_semana in range(1, self.SEMANAS_TOTALES + 1):
             semana = Semana.objects.create(
                 residencia=self
             )
             semana.inicializar_con(numero_semana)
+
+    def actualizar(self):
+        for semana in self.semanas_actualizables():
+            semana.actualizar()
+
+    def semanas_actualizables(self):
+        return filter(lambda semana: semana.es_actualizable(),
+                      self.semanas)
 
     @property
     def semanas(self):

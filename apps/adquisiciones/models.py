@@ -41,9 +41,12 @@ class Semana(models.Model):
     )
 
     def inicializar_con(self, numero_semana):
-        self.fecha_inicio = self.generar_lunes(numero_semana)
-        Estado.crear(self)
+        self.incializar_fecha(numero_semana)
+        self.inicializar_estados()
         self.save()
+
+    def incializar_fecha(self, numero_semana):
+        self.fecha_inicio = self.generar_lunes(numero_semana)
 
     def generar_lunes(self, numero_semana):
         return self.lunes_actual() + timedelta(weeks=numero_semana)
@@ -51,6 +54,9 @@ class Semana(models.Model):
     def lunes_actual(self):
         hoy = date.today()
         return hoy - timedelta(days=hoy.weekday())
+
+    def inicializar_estados(self):
+        Estado.crear(self)
 
     def estas_en_primer_mitad(self):
         semanas_totales = self.residencia.SEMANAS_TOTALES
@@ -64,6 +70,15 @@ class Semana(models.Model):
         self.estado = estado
         self.estado_id = estado.pk
         self.save()
+
+    def es_actualizable(self):
+        return self.estado.es_actualizable()
+
+    def actualizar(self):
+        self.estado.actualizar()
+
+    def jueves(self):
+        return self.fecha_inicio + timedelta(days=3)
 
     def dar_de_baja(self):
         return self.estado.dar_de_baja()
@@ -142,6 +157,12 @@ class Estado(models.Model):
     def cerrar_subasta(self):
         raise NotImplementedError('Método abstracto, implementame')
 
+    def es_actualizable(self):
+        return False
+
+    def actualizar(self):
+        pass
+
     def __str__(self):
         raise NotImplementedError('Método abstracto, implementame')
 
@@ -182,23 +203,23 @@ class CompraDirecta(Estado):
         super().dar_de_baja()
 
     def abrir_subasta(self):
-        SEMANAS_MINIMAS = 26  # 6 meses = 26 semanas
-        tiempo_transcurrido = date.today() - self.semana.residencia.fecha_publicacion
-        if tiempo_transcurrido >= timedelta(weeks=SEMANAS_MINIMAS):
-            precio_base = self.semana.residencia.precio_base
-            subasta = Subasta.objects.create(precio_actual=precio_base)
-            self.semana.cambiar_estado(subasta)
-            return 'Se ha puesto la semana en subasta correctamente'
-        else:
-            error = 'La semana debe estar como mínimo 6 meses ' +\
-                'en compra directa'
-            raise EventoNoPermitido(error)
+        precio_base = self.semana.residencia.precio_base
+        subasta = Subasta.objects.create(precio_actual=precio_base)
+        self.semana.cambiar_estado(subasta)
+        return 'Se ha puesto la semana en subasta correctamente'
 
     def cerrar_subasta(self):
         pass
 
     def detalle(self):
         return ''
+
+    def es_actualizable(self):
+        lunes_espejo = date.today() + timedelta(weeks=25)
+        return self.semana.fecha_inicio == lunes_espejo
+
+    def actualizar(self):
+        self.abrir_subasta()
 
 
 class Subasta(Estado):
@@ -264,6 +285,13 @@ class Subasta(Estado):
     def detalle(self):
         return ''
 
+    def es_actualizable(self):
+        jueves_espejo = date.today() + timedelta(weeks=25)
+        return self.semana.jueves() == jueves_espejo
+
+    def actualizar(self):
+        self.cerrar_subasta()
+
 
 class EnEspera(Estado):
 
@@ -284,6 +312,13 @@ class EnEspera(Estado):
 
     def detalle(self):
         return ''
+
+    def es_actualizable(self):
+        return self.semana.fecha_inicio == date.today()
+
+    def actualizar(self):
+        no_disponible = NoDisponible.objects.create()
+        self.semana.cambiar_estado(no_disponible)
 
 
 class Reservada(Estado):
