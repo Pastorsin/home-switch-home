@@ -112,3 +112,15 @@
   document.getElementById('id_numero').dispatchEvent(blurEvent);
 </script>        
 {% endblock script %}
+
+{% block style %}
+<style type="text/css">
+  @media only screen 
+  and (min-device-width : 320px) 
+  and (max-device-width : 480px) {
+     .jp-card-front {
+        max-width: 84%;
+     }
+}
+</style>
+{% endblock %}
