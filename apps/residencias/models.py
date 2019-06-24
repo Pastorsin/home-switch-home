@@ -52,7 +52,7 @@ class Residencia(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
-    SEMANAS_TOTALES = 53
+    SEMANAS_TOTALES = 52
 
     def __str__(self):
         return self.nombre
@@ -71,6 +71,14 @@ class Residencia(models.Model):
     def actualizar(self):
         for semana in self.semanas_actualizables():
             semana.actualizar()
+
+    def crear_nueva_semana(self):
+        from adquisiciones.models import Semana
+        numero_semana = len(Semana.objects.filter(residencia=self))
+        semana = Semana.objects.create(
+            residencia=self
+        )
+        semana.inicializar_con(numero_semana)
 
     def semanas_actualizables(self):
         return filter(lambda semana: semana.es_actualizable(),
