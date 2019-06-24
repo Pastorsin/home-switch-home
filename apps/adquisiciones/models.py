@@ -74,11 +74,25 @@ class Semana(models.Model):
     def es_actualizable(self):
         return self.estado.es_actualizable()
 
+    def es_adquirible(self):
+        return self.estado.es_adquirible()
+
     def actualizar(self):
         self.estado.actualizar()
 
     def jueves(self):
         return self.fecha_inicio + timedelta(days=3)
+
+    def fecha_fin(self):
+        return self.fecha_inicio + timedelta(days=6)
+
+    def fecha_abrir_subasta(self):
+        lunes = self.fecha_inicio - timedelta(weeks=25)
+        return lunes
+
+    def fecha_cerrar_subasta(self):
+        jueves = self.fecha_abrir_subasta() + timedelta(days=3)
+        return jueves
 
     def dar_de_baja(self):
         return self.estado.dar_de_baja()
@@ -163,6 +177,9 @@ class Estado(models.Model):
     def actualizar(self):
         pass
 
+    def es_adquirible(self):
+        return self.es_subasta() or self.es_compra_directa()
+
     def __str__(self):
         raise NotImplementedError('Método abstracto, implementame')
 
@@ -188,7 +205,7 @@ class NoDisponible(Estado):
         pass
 
     def detalle(self):
-        return ''
+        return 'Ha pasado la fecha de ocupación de la semana'
 
 
 class CompraDirecta(Estado):
@@ -212,7 +229,10 @@ class CompraDirecta(Estado):
         pass
 
     def detalle(self):
-        return ''
+        fecha_subasta = self.semana.fecha_abrir_subasta()
+        return 'La semana entrará en subasta el día {}'.format(
+            fecha_subasta.strftime("%A %d %B %Y - %H:%Mhs.")
+        )
 
     def es_actualizable(self):
         lunes_espejo = date.today() + timedelta(weeks=25)
@@ -283,7 +303,10 @@ class Subasta(Estado):
         return 'Se ha cerrado la subasta correctamente'
 
     def detalle(self):
-        return ''
+        fecha_cerrar_subasta = self.semana.fecha_cerrar_subasta()
+        return 'La semana cerrará la subasta el día {}'.format(
+            fecha_cerrar_subasta.strftime("%A %d %B %Y - %H:%Mhs.")
+        )
 
     def es_actualizable(self):
         jueves_espejo = date.today() + timedelta(weeks=25)
@@ -311,7 +334,7 @@ class EnEspera(Estado):
         pass
 
     def detalle(self):
-        return ''
+        return 'Decida si poner en HotSale la semana'
 
     def es_actualizable(self):
         return self.semana.fecha_inicio == date.today()

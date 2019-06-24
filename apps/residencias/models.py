@@ -84,6 +84,10 @@ class Residencia(models.Model):
         return filter(lambda semana: semana.es_actualizable(),
                       self.semanas)
 
+    def semanas_adquiribles(self):
+        return filter(lambda semana: semana.es_adquirible(),
+                      self.semanas)
+
     @property
     def semanas(self):
         return self.semana_set.all()

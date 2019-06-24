@@ -1,114 +1,59 @@
 {% extends "base.html" %}
 
+{% block title %}
+	Semanas disponibles
+{% endblock %}
+
 {% block title_content %}
-	<h2>Semanas disponibles<h2>
+	<h2>Semanas disponibles para la residencia 
+		<a href="residencia/{{residencia.pk}}" style="text-decoration: none;">{{residencia}}</a>
+	<h2>
 {% endblock title_content %}
 
 {% block body_content %}
-
-<div class="col-sm-12 offset-sm-0 p-4 table-responsive-md text-center">
-	<table class="table table-dark table-hover shadow">
-	  <thead>
-	    <tr class="bg-primary">
-	      <th></th>
-	      <th scope="col">Fecha de ocupación</th>
-	      <th scope="col">Estado</th>
-	      <th scope="col">Información</th>
-	      <th scope="col" class="w-25"></th>
-	    </tr>
-	  </thead>
-	  <tbody style="font-family: 'OpenSans'; color:#b7d0f4;">
-
-	  	<tr class="table-active">
-	      <td class="bg-info">
-	      	<button class="d-block btn btn-dark p-0 rounded w-100">Reservar!</button>
-	      </td>
-	      <th scope="row">18-06-2019 a 19-07-2020</th>
-	      <td><label class="btn btn-secondary p-0 rounded w-100">Pendiente</label></td>
-	      <td>
-	      	<i class="">La semana se encontrará en subasta el 07-12-2019</i> 
-	      </td>
-	      <td>
-	      	<button class="btn btn-primary rounded p-0 w-100">Avisame!</button>
-	      </td>
-	    </tr>
-
-	    <tr class="table-active">
-	      <td class="bg-info">
-	      	<button class="d-block btn btn-dark p-0 rounded w-100">Reservar!</button>
-	      </td>
-	      <th scope="row">18-06-2019 a 19-07-2020</th>
-	      <td>
-	      	<label class="d-block btn btn-success p-0 rounded w-100">En subasta</label>
-	      </td>
-	      <td>
-	      	<i class="">La semana se encontrará en subasta el 07-12-2019</i> 
-	      </td>
-	      <td>
-	      	<button class="btn btn-primary rounded p-0 w-100">Avisame!</button>
-	      </td>
-	    </tr>
-
-	   	<tr class="table-active">
-	      <td class="bg-info">
-	      	<button class="d-block btn btn-dark p-0 rounded w-100">Reservar!</button>
-	      </td>
-	      <th scope="row">18-06-2019 a 19-07-2020</th>
-	      <td><label class="btn btn-warning p-0 rounded w-100">Hotsale</label></td>
-	      <td>
-	      	<i class="">La semana se encontrará en subasta el 07-12-2019</i> 
-	      </td>
-	      <td>
-	      	<button class="btn btn-primary rounded p-0 w-100">Avisame!</button>
-	      </td>
-		</tr>
-
-	    <tr class="table-active">
-	      <td class="bg-info">
-	      	<button class="d-block btn btn-dark p-0 rounded w-100">Reservar!</button>
-	      </td>
-	      <th scope="row">18-06-2019 a 19-07-2020</th>
-	      <td><label class="btn btn-info p-0 rounded w-100">Compra directa</label></td>
-	      <td>
-	      	<i class="">La semana se encontrará en subasta el 07-12-2019</i> 
-	      </td>
-	      <td>
-	      	<button class="btn btn-primary rounded p-0 w-100">Avisame!</button>
-	      </td>
-	    </tr>
-
-	    <tr class="table-active">
-	      <td class="bg-info">
-	      	<button class="d-block btn btn-dark p-0 rounded w-100">Reservar!</button>
-	      </td>
-	      <th scope="row">18-06-2019 a 19-07-2020</th>
-	      <td><label class="btn btn-danger p-0 rounded w-100">No disponible</label></td>
-	      <td>
-	      	<i class="">La semana se encontrará en subasta el 07-12-2019</i> 
-	      </td>
-	      <td>
-	      	<button class="btn btn-primary rounded p-0 w-100">Avisame!</button>
-	      </td>
-	    </tr>
-
-	    <tr class="table-active">
-	      <td class="bg-info">
-	      	<button class="d-block btn btn-dark p-0 rounded w-100">Reservar!</button>
-	      </td>
-	      <th scope="row">18-06-2019 a 19-07-2020</th>
-	      <td><label class="btn btn-light p-0 rounded w-100">Reservada</label></td>
-	      <td>
-	      	<i class="">La semana se encontrará en subasta el 07-12-2019</i> 
-	      </td>
-	      <td>
-	      	<button class="btn btn-primary rounded p-0 w-100">Avisame!</button>
-	      </td>
-	    </tr>
-
-	  </tbody>
-	</table>
+<div class="bg-primary rounded-top py-2">
+	<h4 class="mb-0 text-light">¡Elija la semana para las mejores vacaciones de su vida!</h4>
 </div>
-      
-
-
+<div class="list-group">
+	{% for semana in listado_semanas %}
+	<a href="#" class="list-group-item bg-light list-group-item-action text-left">
+		<div>
+			<span class="text-primary">Fecha de ocupación:</span> 
+			<span class="text-secondary">{{semana.fecha_inicio}} al {{semana.fecha_fin}}</span>
+		</div>
+		<div class="mt-1">
+			<label>{{semana.estado}}</label>
+		</div>
+		<div>
+			<small>{{semana.detalle_estado}}</small>
+		</div>
+	</a>
+	{% endfor %}
+</div>
 {% endblock body_content %}
+
+{% block script %}
+<script type="text/javascript">
+  $(document).ready(function(){
+  	
+  	const colorDelEstado = {
+  		"No disponible": "danger",
+  		"Compra directa": "info",
+  		"Hotsale": "warning",
+  		"Reservada": "light",
+  		"En espera": "secondary",
+  		"Subasta": "success"
+  	}
+
+    $("label").each(function(){
+  		let claseBS = "btn mt-1 py-0 px-1 btn-" + colorDelEstado[$(this).text()];
+    	$(this).addClass(claseBS)
+    });
+
+    $("label:contains('Subasta')").parent().parent().addClass(
+    	"list-group-item bg-dark text-warning list-group-item-action text-left rounded-0 border-0 active"
+    )
+
+  });
+</script>        
+{% endblock script %}

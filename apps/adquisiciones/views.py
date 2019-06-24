@@ -1,5 +1,6 @@
-from django.views.generic import DetailView, TemplateView
+from django.views.generic import DetailView
 from django.http import HttpResponseRedirect
+from residencias.models import Residencia
 from .models import Subasta
 from django.contrib import messages
 
@@ -27,5 +28,16 @@ class MostrarSubastaView(DetailView):
         return HttpResponseRedirect(subasta.get_absolute_url())
 
 
-class SemanasView(TemplateView):
+class SemanasView(DetailView):
+
+    model = Residencia
     template_name = 'listado_semanas.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SemanasView, self).get_context_data(**kwargs)
+        self.residencia = self.get_object()
+        if self.request.user.is_staff:
+            context['listado_semanas'] = self.residencia.semanas
+        else:
+            context['listado_semanas'] = self.residencia.semanas_adquiribles()
+        return context

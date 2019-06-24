@@ -5,7 +5,7 @@ urlpatterns = [
     path('subasta/<int:pk>/',
          MostrarSubastaView.as_view(),
          name='mostrar_subasta'),
-    path('semanas',
+    path('residencia/<int:pk>/semanas',
          SemanasView.as_view(),
          name='listado_semanas')
 ]
