@@ -147,4 +147,9 @@ AUTHENTICATION_BACKENDS = [
         'is2.backends.AdminBackend'
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = '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'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
