@@ -14,7 +14,6 @@ class CustomUserAdmin(UserAdmin):
         (('User'), {
             'fields': ('first_name',
                        'last_name',
-                       'password',
                        'email',
                        'is_staff',
                        'fecha_nacimiento',
