@@ -25,7 +25,23 @@
 		{% block head %} {% endblock %}
 
 	<title>{% block title %}{% endblock title %} - HomeSwitchHome</title>
+
   	{% block style %}{% endblock style %}
+
+		<style type="text/css">
+	  	h1, h2, h3, h4, h5, h6, p{
+	    	font-family: 'Open Sans', sans-serif;
+	    	user-select: none;
+	    	color: white
+	  	}
+	  	h1, h2, h3, h4, h5, h6 {
+	    	color: #84a2c1;
+	  	}
+	  	p{
+	    	color: #c3cbd8;
+	  	}
+		</style>
+
 	</head>
 	<body class="bg-secundario">
 
@@ -59,7 +75,7 @@
 			<div class="d-flex m-0 justify-content-center order-0" style="z-index:1">
 				<ul class="navbar-nav mx-2">
 					<li class="nav-item">
-						<a id="logo" class="navbar-brand mr-0" href="/">
+                      <a id="logo" class="navbar-brand mr-0" href="{% url 'home' %}">
 							<img id="logo" src="{% static 'logo/HSH-Complete.svg' %}" style="max-width: 150px">
 						</a>
 					</li>
@@ -131,19 +147,6 @@
 
 
 		<!-- Content -->
-		<style type="text/css">
-	  	h1, h2, h3, h4, h5, h6, p{
-	    	font-family: 'Open Sans', sans-serif;
-	    	user-select: none;
-	    	color: white
-	  	}
-	  	h1, h2, h3, h4, h5, h6 {
-	    	color: #84a2c1;
-	  	}
-	  	p{
-	    	color: #c3cbd8;
-	  	}
-		</style>
 		<section id="cover">
 		  <div id="cover-caption">
 		    <div id="container" class="container mt-5">
