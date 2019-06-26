@@ -6,8 +6,8 @@ Proyecto para la materia Ingeniería de Software II de la Facultad de Informáti
 1. Instale las dependencias   
 ```pip3 install -r requirements.txt```
 2. Haga las migraciones  
-```python3 manage.py migrate```  
 ```python3 manage.py makemigrations```
+```python3 manage.py migrate```  
 3. Corra el servidor  
 ``` python3 manage.py runserver```
 4. ***Acceda a su localhost en el navegador***
