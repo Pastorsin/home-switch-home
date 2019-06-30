@@ -1,7 +1,48 @@
 {% extends "mostrar_estado_base.html" %}
-{% block title %} En espera {% endblock title %}
+{% block title %} Residencia reservada {% endblock title %}
 {% block title_content %}
-	Reservada
+	<h2>Reserva de {{reservada.semana.residencia.nombre}}</h2>
 {% endblock title_content %}
 {% block estado_content %}
+	<ul class="list-group">
+ 		<li class="list-group-item text-secondary">Residencia: 
+ 			<a href="{{reservada.semana.residencia.get_absolute_url}}">
+ 				<span class="text-danger">{{reservada.semana.residencia.nombre}}</span>
+ 			</a>
+ 		</li>
+ 		<li class="list-group-item text-secondary">
+ 			<div>
+ 				<img style="max-height: 200px;" src="{{reservada.semana.residencia.foto}}">
+ 			</div>
+		</li>
+ 		<li class="list-group-item text-secondary">Reservada por: 
+ 			<span class="text-danger">{{reservada.semana.comprador.nombre_completo}}</span>
+ 		</li>
+ 		<li class="list-group-item text-secondary">Monto pagado: 
+ 			{% if reservada.semana.comprador.es_premium %}
+ 				<span class="text-info">Adquirida por membresía premium</span>
+ 			{% else %}
+ 				<span class="text-success">${{reservada.precio_actual}}</span>
+ 			{% endif %}
+ 		</li>
+ 		<li class="list-group-item text-secondary">Fecha de alojamiento: 
+ 			<span class="text-primary">{{reservada.semana.fecha_inicio}}</span>
+ 		</li>
+ 		<li class="list-group-item text-secondary">Fecha de desalojamiento: 
+ 			<span class="text-primary">{{reservada.semana.fecha_fin}}</span>
+ 		</li>
+ 	</ul>
+
+ 	<hr>
+
+ 	{% if user == reservada.semana.comprador %}
+ 	<div>
+ 		<div>
+ 			<input type="button" class="btn btn-danger" value="Cancelar reserva">
+ 		</div>
+ 		<div>
+ 			<small class="text-warning">¿Está seguro? Se le devolverá su crédito pero no el dinero</small>
+ 		</div>
+ 	</div>
+ 	{% endif %}
 {% endblock estado_content %}
