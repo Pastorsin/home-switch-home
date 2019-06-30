@@ -122,3 +122,6 @@ class CustomUser(AbstractUser):
 
     def get_absolute_url(self):
         return reverse('verPerfil', args=[str(self.pk)])
+
+    def nombre_completo(self):
+        return '{} {}'.format(self.first_name, self.last_name)
