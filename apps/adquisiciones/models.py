@@ -373,6 +373,11 @@ class EnEspera(Estado):
     def cerrar_subasta(self):
         pass
 
+    def establecer_hotsale(self, monto):
+        hotsale = Hotsale.objects.create(precio_actual=monto)
+        self.semana.cambiar_estado(hotsale)
+        return hotsale
+
     def detalle(self):
         return 'Decida si poner en HotSale la semana'
 
@@ -430,6 +435,12 @@ class Hotsale(Estado):
     def __str__(self):
         return 'Hotsale'
 
+    def abrir_subasta(self):
+        pass
+
+    def cerrar_subasta(self):
+        pass
+
     def es_hotsale(self):
         return True
 
@@ -441,7 +452,7 @@ class Hotsale(Estado):
         self.semana.cambiar_estado(no_disponible)
 
     def detalle(self):
-        return '¡Reserve ya! a solo ${}'.format(self.precio_actual)
+        return 'Semana en Hotsale por ${}'.format(self.precio_actual)
 
     def url(self):
         return 'mostrar_hotsale'

@@ -1,7 +1,7 @@
 from django.views.generic import DetailView
 from django.http import HttpResponseRedirect
 from residencias.models import Residencia
-from .models import Subasta, EnEspera, Reservada, CompraDirecta
+from .models import Subasta, EnEspera, Reservada, CompraDirecta, Hotsale
 from django.contrib import messages
 
 
@@ -38,11 +38,28 @@ class MostrarEnEsperaView(DetailView):
     model = EnEspera
     template_name = 'mostrar_en_espera.html'
 
+    def post(self, request, *args, **kwargs):
+        en_espera = self.get_object()
+
+        monto = request.POST['monto']
+        hotsale = en_espera.establecer_hotsale(monto)
+
+        mensaje_exito = 'Hotsale establecido correctamente'
+        messages.success(request, mensaje_exito)
+
+        return HttpResponseRedirect(hotsale.get_absolute_url())
+
 
 class MostrarReservadaView(DetailView):
 
     model = Reservada
     template_name = 'mostrar_reservada.html'
+
+
+class MostrarHotsaleView(DetailView):
+
+    model = Hotsale
+    template_name = 'mostrar_hotsale.html'
 
 
 class SemanasView(DetailView):

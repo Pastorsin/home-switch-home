@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import MostrarSubastaView, SemanasView, MostrarCompraDirectaView
 from .views import MostrarEnEsperaView, MostrarReservadaView
+from .views import MostrarHotsaleView
 
 urlpatterns = [
     path('subasta/<int:pk>/',
@@ -18,6 +19,10 @@ urlpatterns = [
     path('reservada/<int:pk>/',
          MostrarReservadaView.as_view(),
          name='mostrar_reservada'),
+
+    path('hotsale/<int:pk>/',
+         MostrarHotsaleView.as_view(),
+         name='mostrar_hotsale'),
 
     path('residencia/<int:pk>/semanas',
          SemanasView.as_view(),
