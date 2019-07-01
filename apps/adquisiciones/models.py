@@ -173,6 +173,12 @@ class Estado(models.Model):
     def es_reservada(self):
         return False
 
+    def es_hotsale(self):
+        return False
+
+    def es_actualizable(self):
+        return False
+
     # Eventos
     def dar_de_baja(self):
         no_disponible = NoDisponible.objects.create()
@@ -188,14 +194,13 @@ class Estado(models.Model):
     def cerrar_subasta(self):
         raise NotImplementedError('Método abstracto, implementame')
 
-    def es_actualizable(self):
-        return False
+    def es_adquirible(self):
+        return self.es_subasta() or \
+            self.es_compra_directa() or \
+            self.es_hotsale()
 
     def actualizar(self):
         pass
-
-    def es_adquirible(self):
-        return self.es_subasta() or self.es_compra_directa()
 
     # Modelo
     def __str__(self):
@@ -394,6 +399,9 @@ class Reservada(Estado):
     def es_reservada(self):
         return True
 
+    def actualizar(self):
+        pass
+
     def dar_de_baja(self):
         raise EventoNoPermitido('La semana se encuentra reservada')
 
@@ -411,3 +419,29 @@ class Reservada(Estado):
 
     def url(self):
         return 'mostrar_reservada'
+
+
+class Hotsale(Estado):
+    precio_actual = models.FloatField(
+        null=True,
+        blank=True
+    )
+
+    def __str__(self):
+        return 'Hotsale'
+
+    def es_hotsale(self):
+        return True
+
+    def es_actualizable(self):
+        return self.semana.fecha_inicio == date.today()
+
+    def actualizar(self):
+        no_disponible = NoDisponible.objects.create()
+        self.semana.cambiar_estado(no_disponible)
+
+    def detalle(self):
+        return '¡Reserve ya! a solo ${}'.format(self.precio_actual)
+
+    def url(self):
+        return 'mostrar_hotsale'
