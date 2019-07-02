@@ -451,6 +451,14 @@ class Hotsale(Estado):
         no_disponible = NoDisponible.objects.create()
         self.semana.cambiar_estado(no_disponible)
 
+    def generar_reserva(self, comprador):
+        self.semana.establecer_comprador(comprador)
+        reservada = Reservada.objects.create(
+            precio_actual=self.precio_actual
+        )
+        self.semana.cambiar_estado(reservada)
+        return reservada
+
     def detalle(self):
         return 'Semana en Hotsale por ${}'.format(self.precio_actual)
 

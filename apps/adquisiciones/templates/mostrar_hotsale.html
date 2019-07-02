@@ -1,7 +1,71 @@
 {% extends "mostrar_estado_base.html" %}
 {% block title %} Hotsale {% endblock title %}
 {% block title_content %}
-	Hotsale
+	<h2>Hotsale</h2>
 {% endblock title_content %}
 {% block estado_content %}
+	<div class="p-2 rounded-top shadow" id="hotsale-info">
+		<h5 class="text-warning"> ¡Reservá tu semana ya! </h5>
+		<h4 class="text-success"> ¡Por tán solo ${{hotsale.precio_actual}}! </h4>
+		<h3 class="text-danger"> ¡No consume créditos! </h3>
+	</div>
+	<ul class="list-group my-1 col-sm-10 m-auto shadow pr-0">
+ 		<li class="list-group-item" style="border-radius: 0px !important;">
+ 			Residencia: 
+ 			<a href="{{hotsale.semana.residencia.get_absolute_url}}">
+ 				<span class="text-info">{{hotsale.semana.residencia.nombre}}</span>
+ 			</a>
+ 		</li>
+ 		<li class="list-group-item text-secondary">
+ 			<img src="{{hotsale.semana.residencia.foto}}">
+ 		</li>
+ 		<li class="list-group-item">Fecha de alojamiento: 
+ 			<span class="text-primary">{{hotsale.semana.fecha_inicio}}</span>
+ 		</li>
+ 		<li class="list-group-item">Fecha de desalojamiento: 
+ 			<span class="text-primary">{{hotsale.semana.fecha_fin}}</span>
+ 		</li>
+ 		<li class="list-group-item">
+ 			Precio base: 
+ 			<a>
+ 				<span class="text-muted">
+ 					<strike>${{hotsale.semana.residencia.precio_base}}</strike>
+ 				</span>
+ 			</a>
+ 			|
+ 			Precio: 
+ 			<a>
+ 				<span class="text-success">${{hotsale.precio_actual}}</span>
+ 			</a>
+ 			<p class="text-warning mb-0">
+ 				<small>Descuento de 20%, ahorrás <strong>$hotsale.precio_actual</strong></small>
+ 			</p>
+ 		</li>
+	 		<li class="list-group-item">
+	 			<form method="post">
+ 				{% csrf_token %}
+	 				<input class="btn btn-success" type="submit" name="adquirir" value="Reservar!">
+	 			</form>
+	 		</li>
+ 	</ul>
 {% endblock estado_content %}
+{% block style %}
+<style type="text/css">
+	.list-group > li {
+		background-color: #343940;
+	}
+	.list-group > li:hover {
+		background-color: #3e4856;
+	}
+	@keyframes parpadeo {
+		0% {background-color: #343940;}
+		100% {background-color: #103c69;}
+	}
+	#hotsale-info {
+		animation-name: parpadeo;
+		animation-duration: 1s;
+		animation-iteration-count: infinite;
+		animation-direction: alternate;
+	}
+</style>
+{% endblock style %}

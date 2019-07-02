@@ -61,6 +61,17 @@ class MostrarHotsaleView(DetailView):
     model = Hotsale
     template_name = 'mostrar_hotsale.html'
 
+    def post(self, request, *args, **kwargs):
+        hotsale = self.get_object()
+
+        comprador = self.request.user
+        reserva = hotsale.generar_reserva(comprador)
+
+        mensaje_exito = '¡Semana reservada correctamente! Disfrute su estadía'
+        messages.success(request, mensaje_exito)
+
+        return HttpResponseRedirect(reserva.get_absolute_url())
+
 
 class SemanasView(DetailView):
 
