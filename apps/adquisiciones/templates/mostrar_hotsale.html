@@ -41,12 +41,19 @@
  				<small>Descuento de 20%, ahorrás <strong>$hotsale.precio_actual</strong></small>
  			</p>
  		</li>
+ 		
+		{% if not user.is_staff %}		
 	 		<li class="list-group-item">
-	 			<form method="post">
- 				{% csrf_token %}
-	 				<input class="btn btn-success" type="submit" name="reservar" value="Reservar!">
-	 			</form>
+	 			{% if user.is_authenticated %}
+		 			<form method="post">
+	 				{% csrf_token %}
+		 				<input class="btn btn-success" type="submit" name="reservar" value="Reservar!">
+		 			</form>
+		 		{% else %}
+	 				<small class="text-muted">Registrate para reservar esta semana</small>
+	 			{% endif %}
 	 		</li>
+		{% endif %}
  	</ul>
 {% endblock estado_content %}
 {% block script %}
