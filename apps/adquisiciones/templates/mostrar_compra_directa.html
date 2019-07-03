@@ -18,21 +18,43 @@
 		</li>
 		<li class="list-group-item text-dark">Fecha de ingreso: <span class="text-danger">{{compradirecta.semana.fecha_inicio}}</span></li>
 		<li class="list-group-item text-dark">Fecha de desalojo: <span class="text-danger">{{compradirecta.semana.fecha_fin}}</span></li>
-		<li class="list-group-item text-dark">Precio: <span class="text-success">${{compradirecta.semana.residencia.precio_base}}</span></li>
+		<li class="list-group-item text-dark">Precio: <span class="text-success">¡Gratis!</span></li>
+		{% if user.es_premium %}		
+			<li class="list-group-item text-dark bg-dark">
+	 			<form method="post">
+				{% csrf_token %}
+	 				<input class="btn btn-success" type="submit" name="reservar" value="Reservar!">
+	 			</form>
+			</li>
+		{% elif not user.is_authenticated %}
+			<li class="list-group-item text-dark bg-dark">
+				<small class="text-light">Registrate para reservar esta semana</small>
+			</li>
+		{% endif %}
 	</ul>
+	
 	<hr>
-	<button class="btn btn-warning">Reservar!</button>
-	<hr>
-	<div class="text-left">
+	<div>
 		<small class="text-warning">
 			Deberá ser un usuario premium para poder reservar esta semana. <br>
+			Se le descontará un crédito.
+		</small>
+		<hr>
+		<small>
 			En caso de ser usuario estándar deberá esperar a la subasta que será abierta el día {{compradirecta.semana.fecha_abrir_subasta}} 00:00hs. y concluirá el día {{compradirecta.semana.fecha_cerrar_subasta}} 00:00hs.
 		</small>
 	</div>
 {% endblock estado_content %}
+{% block script %}
+<script type="text/javascript">
+    $('input[name=reservar]').click(function(){
+      return confirm('Seguro desea realizar esta acción?');
+});
+   </script>
+{% endblock script %}
 {% block style %}
 <style type="text/css">
-	li:hover{
+	.list-group > li:hover{
 		background-color: #e6edf7;	
 	}
 </style>

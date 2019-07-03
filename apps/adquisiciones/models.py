@@ -15,6 +15,10 @@ class EventoNoPermitido(Exception):
     pass
 
 
+class CreditosInsuficientes(Exception):
+    pass
+
+
 class Semana(models.Model):
 
     residencia = models.ForeignKey(
@@ -128,6 +132,9 @@ class Semana(models.Model):
     def establecer_comprador(self, nuevo_comprador):
         self.comprador = nuevo_comprador
         self.save()
+
+    def precio_base(self):
+        return self.residencia.precio_base
 
     def __str__(self):
         return 'Semana {} con estado {}'.format(
@@ -272,6 +279,24 @@ class CompraDirecta(Estado):
 
     def actualizar(self):
         self.abrir_subasta()
+
+    def generar_reserva(self, comprador):
+        self.decrementar_credito(comprador)
+        return self._crear_reserva(comprador)
+
+    def decrementar_credito(self, comprador):
+        if comprador.tenes_creditos():
+            comprador.decrementar_credito()
+        else:
+            raise CreditosInsuficientes()
+
+    def _crear_reserva(self, comprador):
+        self.semana.establecer_comprador(comprador)
+        reservada = Reservada.objects.create(
+            precio_actual=self.semana.precio_base()
+        )
+        self.semana.cambiar_estado(reservada)
+        return reservada
 
     def url(self):
         return 'mostrar_compra_directa'

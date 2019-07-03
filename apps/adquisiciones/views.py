@@ -2,6 +2,7 @@ from django.views.generic import DetailView
 from django.http import HttpResponseRedirect
 from residencias.models import Residencia
 from .models import Subasta, EnEspera, Reservada, CompraDirecta, Hotsale
+from .models import CreditosInsuficientes
 from django.contrib import messages
 
 
@@ -31,6 +32,19 @@ class MostrarCompraDirectaView(DetailView):
 
     model = CompraDirecta
     template_name = 'mostrar_compra_directa.html'
+    MENSAJE_ERROR = 'No tenés suficientes créditos para realizar esta compra'
+    MENSAJE_EXITO = '¡Semana reservada correctamente! Disfrute su estadía'
+
+    def post(self, request, *args, **kwargs):
+        compra_directa = self.get_object()
+        comprador = self.request.user
+        try:
+            reserva = compra_directa.generar_reserva(comprador)
+            messages.success(request, self.MENSAJE_EXITO)
+            return HttpResponseRedirect(reserva.get_absolute_url())
+        except CreditosInsuficientes:
+            messages.error(request, self.MENSAJE_ERROR)
+            return HttpResponseRedirect(compra_directa.get_absolute_url())
 
 
 class MostrarEnEsperaView(DetailView):
