@@ -297,7 +297,8 @@ class Subasta(Estado):
 
     def nueva_puja(self, nuevo_pujador, nuevo_precio):
         if not self.el_ganador_es(nuevo_pujador):
-            self.ganador_actual.incrementar_credito()
+            if self.ganador_actual:
+                self.ganador_actual.incrementar_credito()
             self.semana.establecer_comprador(nuevo_pujador)
             nuevo_pujador.decrementar_credito()
         self.precio_actual = nuevo_precio
