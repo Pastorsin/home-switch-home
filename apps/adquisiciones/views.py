@@ -68,6 +68,13 @@ class MostrarReservadaView(DetailView):
 
     model = Reservada
     template_name = 'mostrar_reservada.html'
+    MENSAJE_EXITO = 'Reserva eliminada correctamente'
+
+    def post(self, request, *args, **kwargs):
+        reserva = self.get_object()
+        reserva.cancelar()
+        messages.success(request, self.MENSAJE_EXITO)
+        raise Exception(self.MENSAJE_EXITO)
 
 
 class MostrarHotsaleView(DetailView):

@@ -35,10 +35,13 @@
 
  	<hr>
 
- 	{% if user == reservada.semana.comprador %}
+ 	{% if user == reservada.semana.comprador and not reservada.semana.esta_concluida %}
  	<div>
  		<div>
- 			<input type="button" class="btn btn-danger" value="Cancelar reserva">
+ 			<form method="post">
+			{% csrf_token %}
+ 				<input type="submit" name="cancelar" class="btn btn-danger" value="Cancelar reserva">
+ 			</form>
  		</div>
  		<div>
  			<small class="text-warning">¿Está seguro? Se le devolverá su crédito pero no el dinero</small>
@@ -46,3 +49,10 @@
  	</div>
  	{% endif %}
 {% endblock estado_content %}
+{% block script %}
+<script type="text/javascript">
+    $('input[name=cancelar]').click(function(){
+      return confirm('Seguro desea realizar esta acción?');
+});
+   </script>
+{% endblock script %}

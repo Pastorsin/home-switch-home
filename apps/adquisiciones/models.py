@@ -100,6 +100,9 @@ class Semana(models.Model):
     def fecha_fin(self):
         return self.fecha_inicio + timedelta(days=6)
 
+    def esta_concluida(self):
+        return date.today() >= self.fecha_inicio
+
     def fecha_abrir_subasta(self):
         lunes = self.fecha_inicio - timedelta(weeks=25)
         return lunes
@@ -135,6 +138,14 @@ class Semana(models.Model):
 
     def precio_base(self):
         return self.residencia.precio_base
+
+    def cancelar_reserva(self):
+        self.comprador.incrementar_credito()
+        self.eliminar_comprador()
+        self.save()
+
+    def eliminar_comprador(self):
+        self.comprador = None
 
     def __str__(self):
         return 'Semana {} con estado {}'.format(
@@ -440,6 +451,10 @@ class Reservada(Estado):
 
     def cerrar_subasta(self):
         pass
+
+    def cancelar(self):
+        self.semana.cancelar_reserva()
+        self.semana.cambiar_estado(EnEspera.objects.create())
 
     def detalle(self):
         return 'Semana reservada por {} {} con un monto de ${}'.format(
