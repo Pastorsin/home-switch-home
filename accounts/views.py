@@ -67,12 +67,24 @@ class EditarTarjetaView(UpdateView):
 
 
 class MisReservasView(ListView):
-    model = CustomUser
+    model = Semana
     template_name = 'mis_reservas.html'
 
     def get_queryset(self):
         usuario = self.request.user
         return Semana.objects.filter(
             content_type__model='reservada',
+            comprador=usuario
+        )
+
+
+class MisSubastasView(ListView):
+    model = Semana
+    template_name = 'mis_subastas.html'
+
+    def get_queryset(self):
+        usuario = self.request.user
+        return Semana.objects.filter(
+            content_type__model='subasta',
             comprador=usuario
         )

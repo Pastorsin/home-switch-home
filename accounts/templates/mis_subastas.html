@@ -1,12 +1,12 @@
 {% extends "mis_adquisiciones.html" %}
 
 {% block title %}
-	Mis reservas
+	Mis subastas
 {% endblock %}
 {% block title_content %}
-	<h2>Mis reservas</h2>
+	<h2>Mis subastas</h2>
 {% endblock title_content %}
 
 {% block semanas_vacias %}
-	Todavía no reservaste ninguna semana, <a class="text-light" href="{% url 'listadoResidencias' %}">¡reservá ya!</a>
+	Todavía no subastaste por ninguna semana, <a class="text-light" href="{% url 'listadoResidencias' %}">¡subastá ya!</a>
 {% endblock %}
