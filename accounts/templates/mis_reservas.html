@@ -8,19 +8,25 @@
 {% endblock title_content %}
 {% block body_content %}
 <div class="list-group">
-	{% for semana in object_list %}
-	<a href="{{semana.estado.get_absolute_url}}" class="list-group-item bg-light list-group-item-action text-left">
-		<div>
-			<span class="text-primary">Fecha de ocupación:</span> 
-			<span class="text-secondary">{{semana.fecha_inicio}} al {{semana.fecha_fin}}</span>
-		</div>
-		<div class="mt-1">
-			<label>Residencia: <span class="text-danger">{{semana.residencia}}</span></label>
-		</div>
-		<div>
-			<small>{{semana.detalle_estado}}</small>
-		</div>
-	</a>
-	{% endfor %}
+	{% if object_list %}
+		{% for semana in object_list %}
+		<a href="{{semana.estado.get_absolute_url}}" class="list-group-item bg-light list-group-item-action text-left">
+			<div>
+				<span class="text-primary">Fecha de ocupación:</span> 
+				<span class="text-secondary">{{semana.fecha_inicio}} al {{semana.fecha_fin}}</span>
+			</div>
+			<div class="mt-1">
+				<label>Residencia: <span class="text-danger">{{semana.residencia}}</span></label>
+			</div>
+			<div>
+				<small>{{semana.detalle_estado}}</small>
+			</div>
+		</a>
+		{% endfor %}
+	{% else %}
+	<h5 class="text-warning">
+		Todavía no reservaste ninguna semana, <a class="text-light" href="{% url 'listadoResidencias' %}">¡reservá ya!</a>
+	</h5>
+	{% endif %}
 </div>
 {% endblock body_content %}
