@@ -4,6 +4,7 @@ from residencias.models import Residencia
 from .models import Subasta, EnEspera, Reservada, CompraDirecta, Hotsale
 from .models import CreditosInsuficientes
 from django.contrib import messages
+from django.urls import reverse
 
 
 class MostrarSubastaView(DetailView):
@@ -74,7 +75,10 @@ class MostrarReservadaView(DetailView):
         reserva = self.get_object()
         reserva.cancelar()
         messages.success(request, self.MENSAJE_EXITO)
-        raise Exception(self.MENSAJE_EXITO)
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('mis_reservas')
 
 
 class MostrarHotsaleView(DetailView):
