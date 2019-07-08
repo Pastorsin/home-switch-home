@@ -29,16 +29,16 @@
  			Precio base: 
  			<a>
  				<span class="text-muted">
- 					<strike>${{hotsale.semana.residencia.precio_base}}</strike>
+ 					<strike>${{hotsale.semana.residencia.precio_base|floatformat:"2"}}</strike>
  				</span>
  			</a>
  			|
  			Precio: 
  			<a>
- 				<span class="text-success">${{hotsale.precio_actual}}</span>
+ 				<span class="text-success">${{hotsale.precio_actual|floatformat:"2"}}</span>
  			</a>
  			<p class="text-warning mb-0">
- 				<small>Descuento de 20%, ahorrás <strong>$hotsale.precio_actual</strong></small>
+ 				<small>Descuento de {{hotsale.descuento|floatformat:"1"}}%, ahorrás <strong>${{hotsale.precio_ahorro|floatformat:"2"}}</strong></small>
  			</p>
  		</li>
  		

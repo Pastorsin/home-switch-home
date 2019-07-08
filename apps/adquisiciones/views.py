@@ -57,7 +57,7 @@ class MostrarEnEsperaView(DetailView):
         en_espera = self.get_object()
 
         monto = request.POST['monto']
-        hotsale = en_espera.establecer_hotsale(monto)
+        hotsale = en_espera.establecer_hotsale(float(monto))
 
         mensaje_exito = 'Hotsale establecido correctamente'
         messages.success(request, mensaje_exito)

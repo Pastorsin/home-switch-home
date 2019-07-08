@@ -409,8 +409,8 @@ class EnEspera(Estado):
     def cerrar_subasta(self):
         pass
 
-    def establecer_hotsale(self, monto):
-        hotsale = Hotsale.objects.create(precio_actual=monto)
+    def establecer_hotsale(self, descuento):
+        hotsale = Hotsale.objects.create(descuento=descuento)
         self.semana.cambiar_estado(hotsale)
         return hotsale
 
@@ -467,7 +467,7 @@ class Reservada(Estado):
 
 
 class Hotsale(Estado):
-    precio_actual = models.FloatField(
+    descuento = models.FloatField(
         null=True,
         blank=True
     )
@@ -501,6 +501,15 @@ class Hotsale(Estado):
 
     def detalle(self):
         return 'Semana en Hotsale por ${}'.format(self.precio_actual)
+
+    @property
+    def precio_actual(self):
+        precio_base = self.semana.precio_base()
+        return precio_base - precio_base * self.descuento / 100
+
+    def precio_ahorro(self):
+        precio_base = self.semana.precio_base()
+        return precio_base - self.precio_actual
 
     def url(self):
         return 'mostrar_hotsale'
