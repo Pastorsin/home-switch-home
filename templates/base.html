@@ -132,6 +132,9 @@
                           {% if not user.is_staff %}
                           	<a class="dropdown-item" href="{% url 'verPerfil' user.pk %}">Mi perfil</a>
                           	<div class="dropdown-divider"></div>
+                          	<a class="dropdown-item text-info" href="{% url 'mis_reservas' user.pk %}">Mis reservas</a>
+                          	<a class="dropdown-item text-info" href="">Mis subastas</a>
+                          	<div class="dropdown-divider"></div>
                           {% endif %}
                           <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
                         </div>

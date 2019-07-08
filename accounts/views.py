@@ -1,9 +1,10 @@
-from django.views.generic import CreateView, UpdateView, DetailView
+from django.views.generic import CreateView, UpdateView, DetailView, ListView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm, TarjetaForm
 from .models import CustomUser, Tarjeta
+from adquisiciones.models import Semana
 
 
 class SignUpView(CreateView):
@@ -54,7 +55,7 @@ class EditProfileView(UpdateView):
     form_class = CustomUserChangeForm
     model = CustomUser
     template_name = 'user_edit.html'
-    
+
 
 class EditarTarjetaView(UpdateView):
     model = Tarjeta
@@ -64,3 +65,14 @@ class EditarTarjetaView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('verPerfil', args=[str(self.request.user.pk)])
 
+
+class MisReservasView(ListView):
+    model = CustomUser
+    template_name = 'mis_reservas.html'
+
+    def get_queryset(self):
+        usuario = self.request.user
+        return Semana.objects.filter(
+            content_type__model='reservada',
+            comprador=usuario
+        )

@@ -50,7 +50,7 @@ class Semana(models.Model):
     comprador = models.ForeignKey(
         CustomUser,
         related_name='comprador',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         null=True
     )
 
