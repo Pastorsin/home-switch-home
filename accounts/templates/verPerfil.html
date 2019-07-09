@@ -15,7 +15,7 @@
                         <div class="card-title mb-4">
                             <div class="d-flex justify-content-start">
                                 <div class="image-container">
-                                    <img src={{user.foto}} id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                                    <img src={{ user.public.foto }} id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
                                     <div class="middle">
                                         <!-- input type="button" class="btn btn-secondary" id="btnChangePicture" value="Cambiar --><!--  Foto" /> -->
                                         <input type="file" style="display: none;" id="profilePicture" name="file" />
@@ -23,8 +23,8 @@
                                 </div>
                                 <div class="userData ml-3 text-left">
                                     <h2 class="d-block text-primary" style="font-size: 1.5rem; font-weight: bold">{{user.first_name}} {{user.last_name}}</h2>
-                                    <h5 class="d-block">{{user.edad}} Años</h5>
-                                    {% if not user.es_premium %}
+                                    <h5 class="d-block">{{user.public.edad}} Años</h5>
+                                    {% if not user.public.es_premium %}
                                     <hr>
                                     <div>
                                       <a class="btn btn-warning" href="{% url 'premium_info' %}">Ser Premium</a>
@@ -46,7 +46,7 @@
                                                 <div class="dropdown-divider my-0"></div>
                                                 <a class="dropdown-item px-1" href="{% url 'password_change' %}">Cambiar contraseña</a>
                                                 <div class="dropdown-divider my-0"></div>
-                                                <a class="dropdown-item px-1" href="{% url 'editar_tarjeta' user.tarjeta.pk %}">Cambiar tarjeta</a>
+                                                <a class="dropdown-item px-1" href="{% url 'editar_tarjeta' user.public.tarjeta.pk %}">Cambiar tarjeta</a>
                                             </div>
                                             <style type="text/css">
                                                 div > .dropdown-menu {
@@ -105,7 +105,7 @@
                                                 <label style="font-weight:bold;color:grey">Fecha de nacimiento</label>
                                             </div>
                                             <div class="col-md-8 col-6" style="color:grey">
-                                                {{user.fecha_nacimiento}}
+                                                {{user.public.fecha_nacimiento}}
                                             </div>
                                         </div>
                                         <hr />
@@ -114,7 +114,7 @@
                                                 <label style="font-weight:bold;color:red">Créditos</label>
                                             </div>
                                             <div class="col-md-8 col-6 text-danger">
-                                                {{user.creditos}}
+                                                {{user.public.creditos}}
                                             </div>
                                         </div>
                                         <hr />
@@ -123,7 +123,7 @@
                                                 <label style="font-weight:bold;color:grey">Se unió el</label>
                                             </div>
                                             <div class="col-md-8 col-6" style="color: grey">
-                                                {{user.fecha_creacion}}
+                                                {{user.public.fecha_creacion}}
                                             </div>
                                         </div>
                                         <hr />
@@ -135,7 +135,7 @@
                                                 <label style="font-weight:bold;color:grey">Numero de tarjeta</label>
                                             </div>
                                             <div class="col-md-8 col-6" style="color:grey">
-                                                {{user.tarjeta.numero}} 
+                                                {{user.public.tarjeta.numero}} 
                                             </div>
                                         </div>
                                         <hr />
@@ -144,7 +144,7 @@
                                                 <label style="font-weight:bold;color:grey">Titular</label>
                                             </div>
                                             <div class="col-md-8 col-6" style="color:grey">
-                                                {{user.tarjeta.nombre_completo}} 
+                                                {{user.public.tarjeta.nombre_completo}} 
                                             </div>
                                         </div>
                                         <hr />
@@ -153,7 +153,7 @@
                                                 <label style="font-weight:bold;color:grey">Fecha de vencimiento</label>
                                             </div>
                                             <div class="col-md-8 col-6" style="color:grey">
-                                                {{user.tarjeta.fecha_vencimiento}} 
+                                                {{user.public.tarjeta.fecha_vencimiento}} 
                                             </div>
                                         </div>
                                         <hr />
@@ -162,7 +162,7 @@
                                                 <label style="font-weight:bold;color:grey">Banco</label>
                                             </div>
                                             <div class="col-md-8 col-6" style="color:grey">
-                                                {{user.tarjeta.banco.nombre}} <img src={{user.tarjeta.banco.foto}}  style="width: 50px; height:30px"/>
+                                                {{user.public.tarjeta.banco.nombre}} <img src={{user.public.tarjeta.banco.foto}}  style="width: 50px; height:30px"/>
                                             </div>
                                         </div>
                                         <hr />

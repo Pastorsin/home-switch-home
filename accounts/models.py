@@ -45,6 +45,30 @@ class Tarjeta(models.Model):
 
 
 class CustomUser(AbstractUser):
+    email = models.EmailField(
+        unique=True
+    )
+    username = models.CharField(
+        max_length=150,
+        unique=False    # Ahora el mail es unico
+    )
+
+    REQUIRED_FIELDS = ['username']
+    USERNAME_FIELD = 'email'
+
+    def nombre_completo(self):
+        return '{} {}'.format(self.first_name, self.last_name)
+
+    def get_absolute_url(self):
+        return reverse('verPerfil', args=[str(self.pk)])
+
+
+class Public(models.Model):
+    user = models.OneToOneField(
+        CustomUser,
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
     fecha_nacimiento = models.DateField(
         help_text='Debe ser mayor de 18 años para poder reservar!',
         null=True,
@@ -72,18 +96,9 @@ class CustomUser(AbstractUser):
         on_delete=models.CASCADE,
         null=True
     )
-    email = models.EmailField(
-        unique=True
-    )
-    username = models.CharField(
-        max_length=150,
-        unique=False    # Ahora el mail es unico
-    )
     fecha_creacion = models.DateField(
-        default=datetime.date.today)
-
-    REQUIRED_FIELDS = ['username']
-    USERNAME_FIELD = 'email'
+        default=datetime.date.today
+    )
 
     @property
     def semanas_seguidas(self):
@@ -100,8 +115,8 @@ class CustomUser(AbstractUser):
         self.save()
 
     def __str__(self):
-        return 'Usuario {} {} con creditos: {}'.format(
-            self.first_name, self.last_name, self.creditos)
+        return 'Usuario {} con creditos: {}'.format(
+                self.user.nombre_completo(), self.creditos)
 
     def edad(self):
         today = date.today()
@@ -120,8 +135,3 @@ class CustomUser(AbstractUser):
         self.creditos += 1
         self.save()
 
-    def get_absolute_url(self):
-        return reverse('verPerfil', args=[str(self.pk)])
-
-    def nombre_completo(self):
-        return '{} {}'.format(self.first_name, self.last_name)

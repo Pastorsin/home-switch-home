@@ -7,14 +7,14 @@ from .models import CustomUser, Tarjeta
 from adquisiciones.models import Semana
 
 
-class SignUpView(CreateView):
+class UserSignUpView(CreateView):
     form_class = CustomUserCreationForm
     tarjeta_form_class = TarjetaForm
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
 
     def get_context_data(self, **kwargs):
-        context = super(SignUpView, self).get_context_data(**kwargs)
+        context = super(UserSignUpView, self).get_context_data(**kwargs)
         if 'usuario' not in context:
             context['usuario'] = self.form_class()
         if 'tarjeta' not in context:
@@ -42,7 +42,8 @@ class SignUpView(CreateView):
     def guardar_formulario(self, user_form, tarjeta_form):
         tarjeta_data = tarjeta_form.save()
         user_data = user_form.save(commit=False)
-        user_data.tarjeta = tarjeta_data
+        user_data.public.tarjeta = tarjeta_data
+        user_data.public.save()
         user_data.save()
 
 

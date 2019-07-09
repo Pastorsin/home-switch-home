@@ -15,16 +15,16 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('first_name',
                        'last_name',
                        'email',
-                       'is_staff',
-                       'fecha_nacimiento',
-                       'es_premium',
-                       'dni',
-                       'tarjeta',
-                       'creditos')
+                       'is_staff',)
+ #                      'fecha_nacimiento',
+ #                      'es_premium',
+ #                      'dni',
+ #                      'tarjeta',
+ #                      'creditos')
         }),
     )
-    list_display = ['email', 'first_name', 'last_name',
-                    'fecha_nacimiento', 'is_staff', 'es_premium', ]
+    list_display = ['email', 'first_name', 'last_name', 'is_staff',]
+                    #'fecha_nacimiento', 'es_premium', ]
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
