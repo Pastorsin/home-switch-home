@@ -2,7 +2,7 @@ from django.views.generic import CreateView, UpdateView, DetailView, ListView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 
-from .forms import CustomUserCreationForm, CustomUserChangeForm, TarjetaForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm, TarjetaForm, AdminCreationForm
 from .models import CustomUser, Tarjeta
 from adquisiciones.models import Semana
 
@@ -11,7 +11,7 @@ class UserSignUpView(CreateView):
     form_class = CustomUserCreationForm
     tarjeta_form_class = TarjetaForm
     success_url = reverse_lazy('login')
-    template_name = 'signup.html'
+    template_name = 'user_signup.html'
 
     def get_context_data(self, **kwargs):
         context = super(UserSignUpView, self).get_context_data(**kwargs)
@@ -89,3 +89,10 @@ class MisSubastasView(ListView):
             content_type__model='subasta',
             comprador=usuario
         )
+
+
+class AdminSignUpView(CreateView):
+    form_class = AdminCreationForm
+    success_url = reverse_lazy('login')
+    template_name = 'admin_signup.html'
+

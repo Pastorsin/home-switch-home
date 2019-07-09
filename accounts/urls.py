@@ -16,4 +16,3 @@ urlpatterns = [
     path('tarjeta/<int:pk>', EditarTarjetaView.as_view(), name='editar_tarjeta')
     path('reservas/', MisReservasView.as_view(), name='mis_reservas'),
     path('subastas/', MisSubastasView.as_view(), name='mis_subastas')
-]

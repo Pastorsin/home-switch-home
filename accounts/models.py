@@ -45,6 +45,11 @@ class Tarjeta(models.Model):
 
 
 class CustomUser(AbstractUser):
+    """
+    Reúne las cualidades de los usuarios comúnes y el manejo de usuarios en genericos.
+    Las subclases de esta clase deberian ser consideradas como 'perfiles' que
+    especializan esta clase para un tipo determinado de usuario
+    """
     email = models.EmailField(
         unique=True
     )
@@ -61,6 +66,15 @@ class CustomUser(AbstractUser):
 
     def get_absolute_url(self):
         return reverse('verPerfil', args=[str(self.pk)])
+
+
+class Admin(models.Model):
+    # Clase destinada a preveer algún tipo de método o cualidad especifica de admin
+    user = models.OneToOneField(
+        CustomUser,
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
 
 
 class Public(models.Model):

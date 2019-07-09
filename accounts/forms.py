@@ -9,7 +9,6 @@ from .models import CustomUser, Tarjeta, Public
 
 
 class CustomUserForm:
-
     URL_FOTO_ANONIMA = 'http://sport-werkt.nl/wp-content/uploads/2018/12/profile.png'
     MSG_EDAD_INVALIDA = 'Fecha de nacimiento invalida'
     MSG_DNI_INVALIDO = 'El DNI debe tener 8 digitos sin separadores. Ej: 11222333'
@@ -126,4 +125,18 @@ class TarjetaForm(forms.ModelForm):
         widgets = { 
             'fecha_vencimiento': forms.TextInput(attrs={'placeholder': 'mm/yyyy'}),
         }
+
+
+class AdminCreationForm(UserCreationForm):
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.is_staff = True
+        if commit:
+            user.save()
+        return user
+
+    class Meta(UserCreationForm.Meta):
+        model = CustomUser
+        fields = ('first_name', 'last_name', 'email',)
 
