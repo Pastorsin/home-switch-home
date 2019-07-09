@@ -1,8 +1,10 @@
 from django.views.generic import CreateView, UpdateView, DetailView, ListView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 
-from .forms import CustomUserCreationForm, CustomUserChangeForm, TarjetaForm, AdminCreationForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm
+from .forms import TarjetaForm, AdminCreationForm
 from .models import CustomUser, Tarjeta
 from adquisiciones.models import Semana
 
@@ -91,8 +93,8 @@ class MisSubastasView(ListView):
         )
 
 
-class AdminSignUpView(CreateView):
+class AdminSignUpView(SuccessMessageMixin, CreateView):
     form_class = AdminCreationForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('admin_signup')
     template_name = 'admin_signup.html'
-
+    success_message = 'Administrador creado correctamente'

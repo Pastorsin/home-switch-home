@@ -3,12 +3,32 @@
 
 {% block title %} Registro Admin {% endblock title %}
 
-{% block title_content %} <h3>Registro Admin</h3> {% endblock title_content %}
+{% block title_content %} <h3>Registrar administrador</h3> {% endblock title_content %}
 
 {% block body_content %}
 
   <form id="form" method="post"> {% csrf_token %}
 
+      <!-- Mensajes -->
+      {% if messages %}
+        <div class="mt-2 p-0">
+        {% for message in messages %}
+          {% if message.tags == "error" %}
+            <div class="alert alert-danger alert-dismissible fade show m-0">
+          {% else %}
+            <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %} alert-dismissible fade show m-0">
+          {% endif %}
+              <strong>{{ message }}</strong>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+        {% endfor %}                
+        </div>
+        <hr>
+      {% endif %}
+
+    <!-- Errores -->
     {% if form.errors %}
       {% for error in form.non_field_errors %}
           <div class="alert alert-danger alert-dismissible fade show">
@@ -43,7 +63,7 @@
       {% endfor %}
     {% endfor %}
 
-    <button type="submit" class="btn btn-primary">Registrarse!</button>
+    <button type="submit" class="btn btn-primary">Registrar!</button>
   </form>
 {% endblock body_content %}
 
