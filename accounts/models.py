@@ -148,4 +148,3 @@ class Public(models.Model):
     def incrementar_credito(self):
         self.creditos += 1
         self.save()
-

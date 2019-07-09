@@ -46,7 +46,8 @@ class CustomUserCreationForm(UserCreationForm, CustomUserForm):
         user = super().save()
         public_user = Public.objects.create(user=user)
         public_user.foto = self.cleaned_data.get('foto')
-        public_user.fecha_nacimiento = self.cleaned_data.get('fecha_nacimiento')
+        public_user.fecha_nacimiento = self.cleaned_data.get(
+            'fecha_nacimiento')
         public_user.dni = self.cleaned_data.get('dni')
         return user
 
@@ -55,29 +56,29 @@ class CustomUserCreationForm(UserCreationForm, CustomUserForm):
         fields = ('first_name', 'last_name', 'email',)
 
 
-class CustomUserChangeForm(UserChangeForm, CustomUserForm):
-    foto = forms.URLField(required=False)
-    fecha_nacimiento = forms.DateField(
-        help_text='Debe ser mayor de 18 años para poder reservar!',
-        widget=forms.DateInput(attrs={'type': 'date'})
-    )
-    dni = forms.CharField()
+class CustomUserChangeForm(UserChangeForm):
 
     def __init__(self, *args, **kargs):
         super(CustomUserChangeForm, self).__init__(*args, **kargs)
         del self.fields['password']
 
-    def save(self, commit=True):
-        user = super().save()
-        public_user = Public.objects.get(user=user)
-        public_user.foto = self.cleaned_data.get('foto')
-        public_user.fecha_nacimiento = self.cleaned_data.get('fecha_nacimiento')
-        public_user.dni = self.cleaned_data.get('dni')
-        return user
-
     class Meta(UserChangeForm.Meta):
         model = CustomUser
-        fields = ('first_name', 'last_name', 'email',)
+        fields = ('first_name', 'last_name', 'email')
+
+
+class PublicUserChangeForm(UserChangeForm, CustomUserForm):
+
+    def __init__(self, *args, **kargs):
+        super(PublicUserChangeForm, self).__init__(*args, **kargs)
+        del self.fields['password']
+
+    class Meta(UserChangeForm.Meta):
+        model = Public
+        fields = ('foto', 'fecha_nacimiento', 'dni')
+        widgets = {
+            'fecha_nacimiento': forms.TextInput(attrs={'type': 'date'}),
+        }
 
 
 class TarjetaForm(forms.ModelForm):
@@ -86,11 +87,11 @@ class TarjetaForm(forms.ModelForm):
     MSG_CVC_INVALIDO = 'El numero CVC debe ser de más de 3 caracteres'
 
     def clean_numero(self):
-       data = self.cleaned_data['numero']
-       num_sin_espacios = data.replace(' ', '')
-       if len(num_sin_espacios) != 16:   # Digitos de tarjeta promedio. No aceptamos cosas raras
-           raise ValidationError(self.MSG_NUMERO_INVALIDO)
-       return data
+        data = self.cleaned_data['numero']
+        num_sin_espacios = data.replace(' ', '')
+        if len(num_sin_espacios) != 16:   # Digitos de tarjeta promedio. No aceptamos cosas raras
+            raise ValidationError(self.MSG_NUMERO_INVALIDO)
+        return data
 
     def clean_fecha_vencimiento(self):
         data = self.cleaned_data['fecha_vencimiento']
@@ -119,8 +120,9 @@ class TarjetaForm(forms.ModelForm):
 
     class Meta:
         model = Tarjeta
-        fields = ('numero', 'nombre_completo', 'fecha_vencimiento', 'cvc', 'banco')
-        widgets = { 
+        fields = ('numero', 'nombre_completo',
+                  'fecha_vencimiento', 'cvc', 'banco')
+        widgets = {
             'fecha_vencimiento': forms.TextInput(attrs={'placeholder': 'mm/yyyy'}),
         }
 
@@ -137,4 +139,3 @@ class AdminCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = CustomUser
         fields = ('first_name', 'last_name', 'email',)
-

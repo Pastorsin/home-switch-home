@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .forms import TarjetaForm, AdminCreationForm
+from .forms import TarjetaForm, AdminCreationForm, PublicUserChangeForm
 from .models import CustomUser, Tarjeta
 from adquisiciones.models import Semana
 
@@ -56,8 +56,51 @@ class DetallePerfilView(DetailView):
 
 class EditProfileView(UpdateView):
     form_class = CustomUserChangeForm
+    form_estandar = PublicUserChangeForm
     model = CustomUser
     template_name = 'user_edit.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(EditProfileView, self).get_context_data(**kwargs)
+        if 'estandar' not in context:
+            usuario = context['customuser']
+            context['estandar'] = self.form_estandar(
+                instance=usuario.public
+            )
+        return context
+
+    def post(self, request, *args, **kwargs):
+        usuario = self.object = self.get_object()
+        usuario_form = self.form_class(
+            request.POST,
+            instance=usuario
+        )
+        estandar_form = self.form_estandar(
+            request.POST,
+            instance=usuario.public
+        )
+        context = self.get_context_data(
+            customuser=usuario_form,
+            estandar=estandar_form
+        )
+        return self.__procesar_form(usuario_form, estandar_form, context)
+
+    def __procesar_form(self, usuario_form, estandar_form, context):
+        if self.__form_valido(usuario_form, estandar_form):
+            self.__guardar(usuario_form, estandar_form)
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(context)
+
+    def __form_valido(self, usuario_form, estandar_form):
+        return usuario_form.is_valid() and estandar_form.is_valid()
+
+    def __guardar(self, usuario_form, estandar_form):
+        usuario_form.save()
+        estandar_form.save()
+
+    def get_success_url(self):
+        return reverse_lazy('verPerfil', args=[str(self.request.user.pk)])
 
 
 class EditarTarjetaView(UpdateView):

@@ -43,6 +43,26 @@
       {% endfor %}
 
     {% endfor %}
+    {% for field in estandar %}
+     <div class="form-group text-center">
+       <p class="m-0 bg-dark rounded-top" for="{{ field.id_for_label }}">{{ field.label }}:</p>
+       <div> {{field}} </div>
+
+       {% if field.help_text %}
+         <small class="form-text">{{ field.help_text|safe }}</small>
+       {% endif %}
+     </div>
+
+      {% for error in field.errors %}
+        <div class="alert alert-danger alert-dismissible fade show">
+          <strong>{{ error|escape }}</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+
+    {% endfor %}
     <hr>
     <button type="submit" class="btn btn-success">Guardar</button>
     <a href="{% url 'verPerfil' user.pk %}"><button type="button" class="btn btn-danger">Cancelar</button></a>
