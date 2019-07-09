@@ -134,8 +134,10 @@
                           	<div class="dropdown-divider"></div>
                           	<a class="dropdown-item text-info" href="{% url 'mis_reservas' %}">Mis reservas</a>
                           	<a class="dropdown-item text-info" href="{% url 'mis_subastas' %}">Mis subastas</a>
-                          	<div class="dropdown-divider"></div>
+                          {% else %}
+                            <a class="dropdown-item text-info" href="{% url 'admin_signup' %}">Crear Admin</a>
                           {% endif %}
+                          <div class="dropdown-divider"></div>
                           <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
                         </div>
                       {% else %}
