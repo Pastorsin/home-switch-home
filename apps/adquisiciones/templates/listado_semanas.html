@@ -17,9 +17,27 @@
 <div class="list-group">
 	{% for semana in listado_semanas %}
 	<a href="{{semana.estado.get_absolute_url}}" class="list-group-item bg-light list-group-item-action text-left">
-		<div>
-			<span class="text-primary">Fecha de ocupación:</span> 
-			<span class="text-secondary">{{semana.fecha_inicio}} al {{semana.fecha_fin}}</span>
+		<div class="d-inline-flex col-sm-12 p-0">
+			<!-- Ocupación -->
+			<div class="col-sm-8 pl-0">
+				<span class="text-primary">Fecha de ocupación:</span> 
+				<span class="text-secondary">{{semana.fecha_inicio}} al {{semana.fecha_fin}}</span>
+			</div>
+
+			<!-- Seguimiento -->
+			{% if not user.is_staff and user.is_authenticated %}
+			<div class="col-sm-4 text-right pr-0">
+				<form>
+					{% load my_templatetag %}
+					{% es_seguida semana user as semana_es_seguida_por_usuario %}
+					{% if semana_es_seguida_por_usuario %}
+						<input type="submit" name="{{semana.pk}}" class="btn btn-secondary py-0" value="Dejar de seguir">
+					{% else %}
+						<input type="submit" name="{{semana.pk}}" class="btn btn-dark py-0" value="Seguir">
+					{% endif %}
+				</form>
+			</div>
+			{% endif %}
 		</div>
 		<div class="mt-1">
 			<label>{{semana.estado}}</label>

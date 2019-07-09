@@ -147,6 +147,17 @@ class Semana(models.Model):
     def eliminar_comprador(self):
         self.comprador = None
 
+    def agregar_seguidor(self, usuario):
+        self.seguidores.add(usuario)
+        self.save()
+
+    def eliminar_seguidor(self, usuario):
+        self.seguidores.remove(usuario)
+        self.save()
+
+    def es_seguida_por(self, usuario):
+        return usuario in self.seguidores.all()
+
     def __str__(self):
         return 'Semana {} con estado {}'.format(
             self.fecha_inicio, self.estado)

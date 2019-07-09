@@ -2,7 +2,7 @@ from django.views.generic import DetailView
 from django.http import HttpResponseRedirect
 from residencias.models import Residencia
 from .models import Subasta, EnEspera, Reservada, CompraDirecta, Hotsale
-from .models import CreditosInsuficientes
+from .models import CreditosInsuficientes, Semana
 from django.contrib import messages
 from django.urls import reverse
 
@@ -111,3 +111,21 @@ class SemanasView(DetailView):
         else:
             context['listado_semanas'] = self.residencia.semanas_adquiribles()
         return context
+
+    def get(self, request, *args, **kwargs):
+        get = self.request.GET
+        get_keys = list(get)
+        if get_keys:
+            self.__seguir_semana(
+                get=get,
+                semana_pk=get_keys.pop(),
+                usuario=self.request.user
+            )
+        return super(SemanasView, self).get(request, *args, **kwargs)
+
+    def __seguir_semana(self, get, semana_pk, usuario):
+        semana = Semana.objects.get(pk=semana_pk)
+        if get[semana_pk] == 'Seguir':
+            semana.agregar_seguidor(self.request.user)
+        else:
+            semana.eliminar_seguidor(self.request.user)
