@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.db import transaction
 
 from datetime import date
-from .models import CustomUser, Tarjeta, Public
+from .models import CustomUser, Tarjeta, UsuarioEstandar
 
 
 class CustomUserForm:
@@ -40,11 +40,13 @@ class CustomUserCreationForm(UserCreationForm, CustomUserForm):
         help_text='Debe ser mayor de 18 años para poder reservar!',
         widget=forms.DateInput(attrs={'type': 'date'})
     )
-    dni = forms.CharField()
+    dni = forms.CharField(
+        help_text='Ingrese los digitos sin separadores ni espacios por favor. Ej: 11222333',
+    )
 
     def save(self, commit=True):
         user = super().save()
-        public_user = Public.objects.create(user=user)
+        public_user = UsuarioEstandar.objects.create(user=user)
         public_user.foto = self.cleaned_data.get('foto')
         public_user.fecha_nacimiento = self.cleaned_data.get(
             'fecha_nacimiento')

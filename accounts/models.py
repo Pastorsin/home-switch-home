@@ -77,7 +77,7 @@ class Admin(models.Model):
     )
 
 
-class Public(models.Model):
+class UsuarioEstandar(models.Model):
     user = models.OneToOneField(
         CustomUser,
         on_delete=models.CASCADE,
