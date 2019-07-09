@@ -38,6 +38,7 @@ class CustomUserCreationForm(UserCreationForm, CustomUserForm):
     foto = forms.URLField(required=False)
     fecha_nacimiento = forms.DateField(
         help_text='Debe ser mayor de 18 años para poder reservar!',
+        widget=forms.DateInput(attrs={'type': 'date'})
     )
     dni = forms.CharField()
 
@@ -52,14 +53,14 @@ class CustomUserCreationForm(UserCreationForm, CustomUserForm):
     class Meta(UserCreationForm.Meta):
         model = CustomUser
         fields = ('first_name', 'last_name', 'email',)
-        widgets = {
-            'fecha_nacimiento': forms.TextInput(attrs={'type': 'date'}),
-        }
 
 
 class CustomUserChangeForm(UserChangeForm, CustomUserForm):
     foto = forms.URLField(required=False)
-    fecha_nacimiento = forms.DateField()
+    fecha_nacimiento = forms.DateField(
+        help_text='Debe ser mayor de 18 años para poder reservar!',
+        widget=forms.DateInput(attrs={'type': 'date'})
+    )
     dni = forms.CharField()
 
     def __init__(self, *args, **kargs):
@@ -77,9 +78,6 @@ class CustomUserChangeForm(UserChangeForm, CustomUserForm):
     class Meta(UserChangeForm.Meta):
         model = CustomUser
         fields = ('first_name', 'last_name', 'email',)
-        widgets = {
-            'fecha_nacimiento': forms.TextInput(attrs={'type': 'date'}),
-        }
 
 
 class TarjetaForm(forms.ModelForm):
