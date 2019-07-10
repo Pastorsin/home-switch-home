@@ -79,7 +79,7 @@ class Semana(models.Model):
 
     def cambiar_estado(self, estado):
         if self.estado is not None:
-            self.estado.delete()
+            self.estado.eliminar()
 
         self.estado = estado
         self.estado_id = estado.pk
@@ -97,6 +97,7 @@ class Semana(models.Model):
     def jueves(self):
         return self.fecha_inicio + timedelta(days=3)
 
+    @property
     def fecha_fin(self):
         return self.fecha_inicio + timedelta(days=6)
 
@@ -158,9 +159,18 @@ class Semana(models.Model):
     def es_seguida_por(self, usuario):
         return usuario in self.seguidores.all()
 
+    def agregar_notificacion(self, mensaje):
+        Notificacion.objects.create(
+            mensaje=mensaje,
+            semana=self
+        )
+
+    def notificaciones(self):
+        return self.notificacion_set.all()
+
     def __str__(self):
-        return 'Semana {} con estado {}'.format(
-            self.fecha_inicio, self.estado)
+        return '{} - {}'.format(
+            self.fecha_inicio, self.fecha_fin)
 
     class Meta:
         unique_together = ('content_type', 'estado_id')
@@ -172,6 +182,9 @@ class Estado(models.Model):
         Semana,
         content_type_field='content_type',
         object_id_field='estado_id'
+    )
+    esta_eliminado = models.BooleanField(
+        default=False
     )
 
     @classmethod
@@ -231,6 +244,9 @@ class Estado(models.Model):
     def actualizar(self):
         pass
 
+    def eliminar(self):
+        self.eliminar = True
+
     # Modelo
     def __str__(self):
         raise NotImplementedError('Método abstracto, implementame')
@@ -271,6 +287,8 @@ class NoDisponible(Estado):
 
 class CompraDirecta(Estado):
 
+    NOTIFICACION = 'Se ha puesto en subasta'
+
     def __str__(self):
         return 'Compra directa'
 
@@ -283,6 +301,7 @@ class CompraDirecta(Estado):
     def abrir_subasta(self):
         precio_base = self.semana.residencia.precio_base
         subasta = Subasta.objects.create(precio_actual=precio_base)
+        self.semana.agregar_notificacion(self.NOTIFICACION)
         self.semana.cambiar_estado(subasta)
         return 'Se ha puesto la semana en subasta correctamente'
 
@@ -337,6 +356,10 @@ class Subasta(Estado):
         null=True,
         blank=True
     )
+    NOTIFICACION_GANADOR = 'Ha cerrado su subasta, \
+        ¡HAY UN GANADOR!'
+    NOTIFICACION_NO_GANADOR = 'Ha cerrado su subasta, \
+        no hay ganadores.. :('
 
     def __str__(self):
         return 'Subasta'
@@ -380,9 +403,11 @@ class Subasta(Estado):
             reservada = Reservada.objects.create(
                 precio_actual=self.precio_actual
             )
+            self.semana.agregar_notificacion(self.NOTIFICACION_GANADOR)
             self.semana.cambiar_estado(reservada)
         else:
             en_espera = EnEspera.objects.create()
+            self.semana.agregar_notificacion(self.NOTIFICACION_NO_GANADOR)
             self.semana.cambiar_estado(en_espera)
         return 'Se ha cerrado la subasta correctamente'
 
@@ -524,3 +549,20 @@ class Hotsale(Estado):
 
     def url(self):
         return 'mostrar_hotsale'
+
+
+class Notificacion(models.Model):
+    mensaje = models.CharField(
+        max_length=255
+    )
+    semana = models.ForeignKey(
+        Semana,
+        on_delete=models.CASCADE,
+    )
+
+    @property
+    def residencia(self):
+        return self.semana.residencia
+
+    def __str__(self):
+        return self.mensaje.lower()

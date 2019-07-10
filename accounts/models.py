@@ -67,6 +67,9 @@ class CustomUser(AbstractUser):
     def get_absolute_url(self):
         return reverse('verPerfil', args=[str(self.pk)])
 
+    def notificaciones(self):
+        pass
+
 
 class Admin(models.Model):
     # Clase destinada a preveer algún tipo de método o cualidad especifica de admin
@@ -114,15 +117,12 @@ class UsuarioEstandar(models.Model):
         default=datetime.date.today
     )
 
-    @property
     def semanas_seguidas(self):
         """Retorna las semanas seguidas por el usuario"""
-        return self.seguidores.all()
-
-    @property
-    def reservas_del_año(self):
-        """Retorna las semanas compradas por el usuario"""
-        return self.comprador.all()    # TODO probablemente haya que filtrar las del año actual
+        from adquisiciones.models import Semana
+        return Semana.objects.filter(
+            seguidores__pk=self.pk
+        )
 
     def cambiar_categoria(self):
         self.es_premium = not self.es_premium
@@ -147,3 +147,9 @@ class UsuarioEstandar(models.Model):
     def incrementar_credito(self):
         self.creditos += 1
         self.save()
+
+    def notificaciones(self):
+        from adquisiciones.models import Notificacion
+        return Notificacion.objects.filter(
+            semana__in=self.semanas_seguidas()
+        )

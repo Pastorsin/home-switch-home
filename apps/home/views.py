@@ -8,6 +8,7 @@ from django.contrib.auth import login, logout
 
 from accounts.models import CustomUser
 from residencias.models import Residencia
+from adquisiciones.models import Notificacion
 
 
 def _deshabilitar_hora_automatica():
@@ -42,11 +43,13 @@ def decrementar_semana():
 
 
 def cerrar_subasta():
+    Notificacion.objects.all().delete()
     for residencia in Residencia.objects.all():
         residencia.actualizar()
 
 
 def abrir_subasta():
+    Notificacion.objects.all().delete()
     for residencia in Residencia.objects.all():
         residencia.actualizar()
         residencia.crear_nueva_semana()

@@ -105,19 +105,38 @@
 				<ul class="navbar-nav m-0 nav-flex-icons r-0">
 
 					<!-- Notificaciones -->
+					{% if not user.is_staff and user.is_authenticated %}
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
-							<span id="notificador">1</span>
-							<i class='fas fa-bell'></i>
-						</a>
-						<div class="dropdown-menu dropdown-menu-right dropdown-secondary">
-							<a class="dropdown-item" href="#">Notificación 1</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#">Notificación 2</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#">Notificación 3</a>
+						<div>
+							<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+								<span id="notificador">{{user.usuarioestandar.notificaciones.count}}</span>
+								<i class='fas fa-bell'></i>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right dropdown-secondary notificacion">
+								<small>
+								{% if user.usuarioestandar.notificaciones %}
+									{% for notificacion in user.usuarioestandar.notificaciones %}
+										<a class="dropdown-item"href="#">									
+											La semana: <span class="text-primary">{{notificacion.semana}}</span>
+											de la residencia: <span class="text-primary">{{notificacion.residencia}}</span>
+											<div class="text-center">
+												<strong class="text-danger">
+													{{notificacion|upper}}
+												</strong>
+											</div>
+										</a>
+									{% endfor %}
+								{% else %}
+									<a class="dropdown-item"href="#">	
+										Sin notificaciones
+									</a>
+								{% endif %}
+								</small>
+								<div class="dropdown-divider"></div>
+							</div>
 						</div>
 					</li>
+					{% endif %}
 
 					<!-- Perfil Usuario -->
                     <li class="nav-item avatar dropdown mr-2">
