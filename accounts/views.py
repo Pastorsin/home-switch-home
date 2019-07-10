@@ -44,8 +44,8 @@ class UserSignUpView(CreateView):
     def guardar_formulario(self, user_form, tarjeta_form):
         tarjeta_data = tarjeta_form.save()
         user_data = user_form.save(commit=False)
-        user_data.public.tarjeta = tarjeta_data
-        user_data.public.save()
+        user_data.usuarioestandar.tarjeta = tarjeta_data
+        user_data.usuarioestandar.save()
         user_data.save()
 
 
@@ -65,7 +65,7 @@ class EditProfileView(UpdateView):
         if 'estandar' not in context:
             usuario = context['customuser']
             context['estandar'] = self.form_estandar(
-                instance=usuario.public
+                instance=usuario.usuarioestandar
             )
         return context
 
@@ -77,7 +77,7 @@ class EditProfileView(UpdateView):
         )
         estandar_form = self.form_estandar(
             request.POST,
-            instance=usuario.public
+            instance=usuario.usuarioestandar
         )
         context = self.get_context_data(
             customuser=usuario_form,

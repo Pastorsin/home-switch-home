@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser, Tarjeta, Banco
+from .models import CustomUser, Tarjeta, Banco, UsuarioEstandar
 
 
 class CustomUserAdmin(UserAdmin):
@@ -16,17 +16,11 @@ class CustomUserAdmin(UserAdmin):
                        'last_name',
                        'email',
                        'is_staff',)
- #                      'fecha_nacimiento',
- #                      'es_premium',
- #                      'dni',
- #                      'tarjeta',
- #                      'creditos')
         }),
     )
     list_display = ['email', 'first_name', 'last_name', 'is_staff',]
-                    #'fecha_nacimiento', 'es_premium', ]
 
-
+admin.site.register(UsuarioEstandar)
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Tarjeta)
 admin.site.register(Banco)

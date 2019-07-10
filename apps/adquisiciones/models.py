@@ -140,7 +140,7 @@ class Semana(models.Model):
         return self.residencia.precio_base
 
     def cancelar_reserva(self):
-        self.comprador.incrementar_credito()
+        self.comprador.usuarioestandar.incrementar_credito()
         self.eliminar_comprador()
         self.save()
 
@@ -307,8 +307,8 @@ class CompraDirecta(Estado):
         return self._crear_reserva(comprador)
 
     def decrementar_credito(self, comprador):
-        if comprador.tenes_creditos():
-            comprador.decrementar_credito()
+        if comprador.usuarioestandar.tenes_creditos():
+            comprador.usuarioestandar.decrementar_credito()
         else:
             raise CreditosInsuficientes()
 
@@ -350,9 +350,9 @@ class Subasta(Estado):
     def nueva_puja(self, nuevo_pujador, nuevo_precio):
         if not self.el_ganador_es(nuevo_pujador):
             if self.ganador_actual:
-                self.ganador_actual.incrementar_credito()
+                self.ganador_actual.usuarioestandar.incrementar_credito()
             self.semana.establecer_comprador(nuevo_pujador)
-            nuevo_pujador.decrementar_credito()
+            nuevo_pujador.usuarioestandar.decrementar_credito()
         self.precio_actual = nuevo_precio
         self.save()
 

@@ -129,8 +129,7 @@ class UsuarioEstandar(models.Model):
         self.save()
 
     def __str__(self):
-        return 'Usuario {} con creditos: {}'.format(
-                self.user.nombre_completo(), self.creditos)
+        return self.user.email
 
     def edad(self):
         today = date.today()

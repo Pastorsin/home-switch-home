@@ -76,7 +76,7 @@ class PublicUserChangeForm(UserChangeForm, CustomUserForm):
         del self.fields['password']
 
     class Meta(UserChangeForm.Meta):
-        model = Public
+        model = UsuarioEstandar
         fields = ('foto', 'fecha_nacimiento', 'dni')
         widgets = {
             'fecha_nacimiento': forms.TextInput(attrs={'type': 'date'}),
