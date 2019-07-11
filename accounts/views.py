@@ -53,6 +53,7 @@ class UserSignUpView(CreateView):
 class DetallePerfilView(DetailView):
     model = CustomUser
     template_name = 'verPerfil.html'
+    context_object_name = 'usuario'
 
     def boton_presionado(self, request):
         for nombre_boton in self.eventos:
@@ -62,13 +63,16 @@ class DetallePerfilView(DetailView):
     def post(self, request, *args, **kwargs):
         usuario = self.get_object()
         self.eventos = {
+            'cambiar_categoria': usuario.usuarioestandar.cambiar_categoria,
             'eliminar': usuario.eliminar
         }
-        evento = self.eventos[self.boton_presionado(request)]
-        mensaje_exito = evento()
+        boton = self.boton_presionado(request)
+        mensaje_exito = self.eventos[boton]()
         usuario.save()
         messages.success(self.request, mensaje_exito)
-        return HttpResponseRedirect(reverse_lazy('home'))
+        if boton == 'eliminar':
+            return HttpResponseRedirect(reverse_lazy('home'))
+        return HttpResponseRedirect(usuario.get_absolute_url())
 
 
 class EditProfileView(UpdateView):
