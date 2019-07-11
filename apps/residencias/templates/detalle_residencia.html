@@ -92,15 +92,15 @@
             {{ residencia.ubicacion.pais }}
           </li>
           <li class="mx-1">
-            <h6>Provincia:</h6> 
-            {{ residencia.ubicacion.provincia }} 
+            <h6>Provincia:</h6>
+            {{ residencia.ubicacion.provincia }}
           </li>
           <li class="mx-1">
-            <h6>Ciudad:</h6> 
-            {{ residencia.ubicacion.ciudad }} 
+            <h6>Ciudad:</h6>
+            {{ residencia.ubicacion.ciudad }}
           </li>
           <li class="mx-1">
-            <h6>Calle y número:</h6> 
+            <h6>Calle y número:</h6>
             {{ residencia.ubicacion.calle }} - {{ residencia.ubicacion.numero }} </li>
         </ul>
       </div>
@@ -112,7 +112,7 @@
       {% if residencia.eliminada %}
       <div class="col-sm-12">
         <small class="text-danger"><i>La residencia no se encuentra disponible</i></small>
-      <div class="col-sm-12">        
+      <div class="col-sm-12">
       {% else %}
       <div class="col-sm-12">
         {% if not user.is_staff %}
@@ -123,9 +123,9 @@
         </div>
         <hr>
         {% if user.is_staff and not residencia.esta_en_subasta %}
-          {% include "botones_admin_detalle_residencia.html" %}          
-        {% endif %}     
-      </div>      
+          {% include "botones_admin_detalle_residencia.html" %}
+        {% endif %}
+      </div>
       {% endif %}
       <!-- Mensajes -->
       <div class="col-sm-12">

@@ -2,6 +2,7 @@ from django.views.generic import CreateView, UpdateView, DetailView, ListView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
+from django.contrib import messages
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .forms import TarjetaForm, AdminCreationForm, PublicUserChangeForm
@@ -52,6 +53,22 @@ class UserSignUpView(CreateView):
 class DetallePerfilView(DetailView):
     model = CustomUser
     template_name = 'verPerfil.html'
+
+    def boton_presionado(self, request):
+        for nombre_boton in self.eventos:
+            if nombre_boton in request.POST.keys():
+                return nombre_boton
+
+    def post(self, request, *args, **kwargs):
+        usuario = self.get_object()
+        self.eventos = {
+            'eliminar': usuario.eliminar
+        }
+        evento = self.eventos[self.boton_presionado(request)]
+        mensaje_exito = evento()
+        usuario.save()
+        messages.success(self.request, mensaje_exito)
+        return HttpResponseRedirect(reverse_lazy('home'))
 
 
 class EditProfileView(UpdateView):

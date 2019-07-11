@@ -99,7 +99,6 @@ class MostrarHotsaleView(DetailView):
 
 
 class SemanasView(DetailView):
-
     model = Residencia
     template_name = 'listado_semanas.html'
 

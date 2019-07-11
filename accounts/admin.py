@@ -6,7 +6,6 @@ from .models import CustomUser, Tarjeta, Banco, UsuarioEstandar
 
 
 class CustomUserAdmin(UserAdmin):
-
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
@@ -15,10 +14,14 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('first_name',
                        'last_name',
                        'email',
-                       'is_staff',)
+                       'is_staff',
+                       'is_active',
+                       )
         }),
     )
-    list_display = ['email', 'first_name', 'last_name', 'is_staff',]
+    list_display = ['email', 'first_name', 'last_name',
+                    'is_staff', 'is_active', ]
+
 
 admin.site.register(UsuarioEstandar)
 admin.site.register(CustomUser, CustomUserAdmin)

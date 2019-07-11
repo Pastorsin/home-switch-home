@@ -46,7 +46,8 @@ class Tarjeta(models.Model):
 
 class CustomUser(AbstractUser):
     """
-    Reúne las cualidades de los usuarios comúnes y el manejo de usuarios en genericos.
+    Reúne las cualidades de los usuarios comúnes y
+    el manejo de usuarios en genericos.
     Las subclases de esta clase deberian ser consideradas como 'perfiles' que
     especializan esta clase para un tipo determinado de usuario
     """
@@ -64,6 +65,10 @@ class CustomUser(AbstractUser):
     def nombre_completo(self):
         return '{} {}'.format(self.first_name, self.last_name)
 
+    def eliminar(self):
+        self.is_active = False
+        return 'Se ha eliminado al usuario exitosamente'
+
     def get_absolute_url(self):
         return reverse('verPerfil', args=[str(self.pk)])
 
@@ -72,7 +77,8 @@ class CustomUser(AbstractUser):
 
 
 class Admin(models.Model):
-    # Clase destinada a preveer algún tipo de método o cualidad especifica de admin
+    # Clase destinada a preveer algún tipo de método o
+    # cualidad especifica de admin
     user = models.OneToOneField(
         CustomUser,
         on_delete=models.CASCADE,
@@ -120,9 +126,7 @@ class UsuarioEstandar(models.Model):
     def semanas_seguidas(self):
         """Retorna las semanas seguidas por el usuario"""
         from adquisiciones.models import Semana
-        return Semana.objects.filter(
-            seguidores__pk=self.pk
-        )
+        return Semana.objects.filter(seguidores__pk=self.pk)
 
     def cambiar_categoria(self):
         self.es_premium = not self.es_premium
@@ -150,6 +154,4 @@ class UsuarioEstandar(models.Model):
 
     def notificaciones(self):
         from adquisiciones.models import Notificacion
-        return Notificacion.objects.filter(
-            semana__in=self.semanas_seguidas()
-        )
+        return Notificacion.objects.filter(semana__in=self.semanas_seguidas())

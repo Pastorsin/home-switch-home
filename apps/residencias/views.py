@@ -15,8 +15,6 @@ from django.urls import reverse
 from django.shortcuts import get_object_or_404
 # Mixins
 from django.contrib.auth.mixins import LoginRequiredMixin
-# Utility Python
-from datetime import datetime, timedelta, date
 
 
 class AgregarResidenciaView(LoginRequiredMixin, CreateView):
@@ -81,7 +79,6 @@ class AgregarResidenciaView(LoginRequiredMixin, CreateView):
 
 
 class ModificarResidenciaView(LoginRequiredMixin, UpdateView):
-
     model = Residencia
     template_name = 'modificarResidencia.html'
     form_class = ResidenciaForm
@@ -170,7 +167,6 @@ class ListadoResidenciasView(ListView):
 
 
 class MostrarResidenciaView(DetailView):
-
     model = Residencia
     template_name = 'detalle_residencia.html'
 
