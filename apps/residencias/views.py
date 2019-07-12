@@ -163,7 +163,8 @@ class ListadoResidenciasView(ListView):
             ubicacion__pais__startswith=pais,
             ubicacion__provincia__startswith=provincia,
             ubicacion__ciudad__startswith=ciudad,
-            semana__in=semanas).distinct()
+            semana__in=semanas,
+            eliminada=False).distinct()
 
 
 class MostrarResidenciaView(DetailView):
