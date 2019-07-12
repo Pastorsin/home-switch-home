@@ -154,9 +154,9 @@ class ListadoResidenciasView(ListView):
             semanas = Semana.objects.all()
         else:
             semanas = Semana.objects.filter(
-                (Q(content_type__model='compradirecta') or
-                 Q(content_type__model='subasta') or
-                 Q(content_type__model='hotsale')) and
+                (Q(content_type__model='compradirecta') |
+                 Q(content_type__model='subasta') |
+                 Q(content_type__model='hotsale')) &
                 Q(fecha_inicio__range=[fecha_inicio, fecha_hasta])
             )
         return Residencia.objects.filter(
