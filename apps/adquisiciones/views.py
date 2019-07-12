@@ -14,18 +14,12 @@ class MostrarSubastaView(DetailView):
 
     def post(self, request, *args, **kwargs):
         subasta = self.get_object()
-
-        usuario_conectado = request.user
-        tiene_creditos = usuario_conectado.tenes_creditos
-        el_ganador_es = subasta.el_ganador_es
-        if tiene_creditos() or el_ganador_es(usuario_conectado):
-            nuevo_monto = request.POST['monto']
-            subasta.nueva_puja(usuario_conectado, nuevo_monto)
-            mensaje_exito = 'Puja realizada con éxito!'
-            messages.success(request, mensaje_exito)
-        else:
-            mensaje_error = 'Error! No tenés créditos suficientes para pujar'
-            messages.error(request, mensaje_error)
+        subasta.nueva_puja(
+            pujador=request.user.usuarioestandar,
+            monto=request.POST['monto']
+        )
+        mensaje_exito = 'Puja realizada con éxito!'
+        messages.success(request, mensaje_exito)
         return HttpResponseRedirect(subasta.get_absolute_url())
 
 

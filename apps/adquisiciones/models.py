@@ -2,7 +2,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 
-from accounts.models import CustomUser
+from accounts.models import CustomUser, UsuarioEstandar
 from residencias.models import Residencia
 
 from django.urls import reverse
@@ -133,8 +133,8 @@ class Semana(models.Model):
     def esta_en_subasta(self):
         return self.estado.es_subasta()
 
-    def establecer_comprador(self, nuevo_comprador):
-        self.comprador = nuevo_comprador
+    def establecer_comprador(self, usuario):
+        self.comprador = usuario
         self.save()
 
     def precio_base(self):
@@ -167,6 +167,9 @@ class Semana(models.Model):
 
     def notificaciones(self):
         return self.notificacion_set.all()
+
+    def notificacion_url(self):
+        return self.estado.notificacion_url()
 
     def __str__(self):
         return '{} - {}'.format(
@@ -254,6 +257,9 @@ class Estado(models.Model):
     def get_absolute_url(self):
         return reverse(self.url(), args=[str(self.pk)])
 
+    def notificacion_url(self):
+        return self.get_absolute_url()
+
     def url(self):
         raise NotImplementedError('Método abstracto, implementame')
 
@@ -299,8 +305,7 @@ class CompraDirecta(Estado):
         super().dar_de_baja()
 
     def abrir_subasta(self):
-        precio_base = self.semana.residencia.precio_base
-        subasta = Subasta.objects.create(precio_actual=precio_base)
+        subasta = Subasta.objects.create()
         self.semana.agregar_notificacion(self.NOTIFICACION)
         self.semana.cambiar_estado(subasta)
         return 'Se ha puesto la semana en subasta correctamente'
@@ -352,10 +357,6 @@ class Subasta(Estado):
         null=True,
         blank=True
     )
-    precio_actual = models.FloatField(
-        null=True,
-        blank=True
-    )
     NOTIFICACION_GANADOR = 'Ha cerrado su subasta, \
         ¡HAY UN GANADOR!'
     NOTIFICACION_NO_GANADOR = 'Ha cerrado su subasta, \
@@ -368,26 +369,40 @@ class Subasta(Estado):
         return True
 
     def precio_minimo(self):
-        return self.precio_actual + 0.1
+        return self.precio_actual() + 0.1
 
-    def nueva_puja(self, nuevo_pujador, nuevo_precio):
-        if not self.el_ganador_es(nuevo_pujador):
-            if self.ganador_actual:
-                self.ganador_actual.usuarioestandar.incrementar_credito()
-            self.semana.establecer_comprador(nuevo_pujador)
-            nuevo_pujador.usuarioestandar.decrementar_credito()
-        self.precio_actual = nuevo_precio
-        self.save()
+    def precio_actual(self):
+        if self.hay_pujas():
+            return self.puja_actual().monto
+        else:
+            return self.semana.precio_base()
 
-    def hay_ganador(self):
-        return bool(self.ganador_actual)
+    @property
+    def pujas(self):
+        return Puja.objects.filter(subasta=self)
 
-    def el_ganador_es(self, usuario):
-        return self.ganador_actual == usuario
+    def puja_actual(self):
+        return self.pujas.all().first()
+
+    def hay_pujas(self):
+        return bool(self.pujas)
 
     @property
     def ganador_actual(self):
-        return self.semana.comprador
+        return self.puja_actual().pujador
+
+    def nueva_puja(self, pujador, monto):
+        Puja.objects.create(
+            pujador=pujador,
+            monto=monto,
+            subasta=self
+        )
+
+    def hay_ganador_actual(self):
+        return self.hay_pujas()
+
+    def el_ganador_es(self, usuario):
+        return self.ganador_actual == usuario
 
     def get_absolute_url(self):
         return reverse('mostrar_subasta', args=[str(self.pk)])
@@ -399,17 +414,26 @@ class Subasta(Estado):
         pass
 
     def cerrar_subasta(self):
-        if self.hay_ganador():
-            reservada = Reservada.objects.create(
-                precio_actual=self.precio_actual
-            )
+        if self.hay_pujas_validas():
+            reservada = self.puja_ganadora().generar_reserva(self.semana)
             self.semana.agregar_notificacion(self.NOTIFICACION_GANADOR)
             self.semana.cambiar_estado(reservada)
         else:
             en_espera = EnEspera.objects.create()
             self.semana.agregar_notificacion(self.NOTIFICACION_NO_GANADOR)
             self.semana.cambiar_estado(en_espera)
-        return 'Se ha cerrado la subasta correctamente'
+
+    def hay_pujas_validas(self):
+        return bool(self.pujas_validas())
+
+    def pujas_validas(self):
+        return list(filter(
+            lambda puja: puja.es_valida(),
+            self.pujas
+        ))
+
+    def puja_ganadora(self):
+        return self.pujas_validas()[0]
 
     def detalle(self):
         fecha_cerrar_subasta = self.semana.fecha_cerrar_subasta()
@@ -426,6 +450,45 @@ class Subasta(Estado):
 
     def url(self):
         return 'mostrar_subasta'
+
+
+class Puja(models.Model):
+    pujador = models.ForeignKey(
+        UsuarioEstandar,
+        on_delete=models.CASCADE
+    )
+    monto = models.FloatField(
+    )
+    subasta = models.ForeignKey(
+        Subasta,
+        on_delete=models.CASCADE
+    )
+
+    class Meta:
+        ordering = ['-monto']
+
+    def __str__(self):
+        return '{}, {} ${}'.format(
+            self.subasta.semana,
+            self.pujador,
+            self.monto
+        )
+
+    def es_valida(self):
+        return self.pujador.tenes_creditos()
+
+    def generar_reserva(self, semana):
+        reserva = Reservada.objects.create(
+            precio_actual=self.monto
+        )
+        semana.establecer_comprador(
+            usuario=self.comprador()
+        )
+        self.pujador.decrementar_credito()
+        return reserva
+
+    def comprador(self):
+        return CustomUser.objects.get(pk=self.pujador.pk)
 
 
 class EnEspera(Estado):
@@ -462,6 +525,9 @@ class EnEspera(Estado):
 
     def url(self):
         return 'mostrar_en_espera'
+
+    def notificacion_url(self):
+        return ''
 
 
 class Reservada(Estado):
@@ -559,10 +625,16 @@ class Notificacion(models.Model):
         Semana,
         on_delete=models.CASCADE,
     )
+    leida = models.BooleanField(
+        default=False
+    )
 
     @property
     def residencia(self):
         return self.semana.residencia
+
+    def get_absolute_url(self):
+        return self.semana.notificacion_url()
 
     def __str__(self):
         return self.mensaje.lower()

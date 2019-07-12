@@ -32,7 +32,7 @@
         <div class="mt-1">
           <p class="m-0"><strong>Ganador actual:</strong></p> 
           <h6>
-          {% if subasta.hay_ganador %}
+          {% if subasta.hay_ganador_actual %}
             {{ subasta.ganador_actual.first_name }}
             {{ subasta.ganador_actual.last_name }}
           {% else %}
@@ -41,7 +41,9 @@
           </h6>
         </div>
         <div class="ml-2 mt-1">
+          {% if subasta.hay_ganador_actual %}
             <img src="{{ subasta.ganador_actual.foto }}" style="max-height: 60px;">    
+          {% endif %}
         </div>
       </div>
     </div>

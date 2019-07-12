@@ -118,7 +118,7 @@
 					{% if not user.is_staff and user.is_authenticated %}
 					<li class="nav-item dropdown my-1">
 						<div>
-							<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+							<a class="nav-link dropdown-toggle" id="campana" data-toggle="dropdown" href="#">
 								<span id="notificador">{{user.usuarioestandar.notificaciones.count}}</span>
 								<i class='fas fa-bell'></i>
 							</a>
@@ -126,7 +126,7 @@
 								<small>
 								{% if user.usuarioestandar.notificaciones %}
 									{% for notificacion in user.usuarioestandar.notificaciones %}
-										<a class="dropdown-item"href="#">									
+										<a class="dropdown-item" href="{{notificacion.get_absolute_url}}">									
 											La semana: <span class="text-primary">{{notificacion.semana}}</span>
 											de la residencia: <span class="text-primary">{{notificacion.residencia}}</span>
 											<div class="text-center">
@@ -222,6 +222,12 @@
 			    $("input, textarea, select").focus(function(){
 			      $("p").css("color", "#c3cbd8");
 			      $(this).parent().siblings("p").css("color", "#00e3ff");
+			    })
+
+			    $("#campana").click(function(){
+			    	var xhr = new XMLHttpRequest();
+			    	xhr.open("GET", "leerNotificaciones", false)
+			    	xhr.send()
 			    })
 		  	});
 	    </script>

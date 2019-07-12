@@ -123,6 +123,12 @@ class UsuarioEstandar(models.Model):
         default=datetime.date.today
     )
 
+    def first_name(self):
+        return self.user.first_name
+
+    def last_name(self):
+        return self.user.last_name
+
     def semanas_seguidas(self):
         """Retorna las semanas seguidas por el usuario"""
         from adquisiciones.models import Semana
