@@ -80,16 +80,17 @@
     {% dia_semana as nombre_dia %}
     {% num_dia_semana as num_dia %}
     <div class="progress" style="height: 40px;">
+      <span class="text-center text-dark lead" style="position:absolute; width:100%; line-height: 40px">Hoy es {{ nombre_dia }}</span>
       {% if num_dia < 4 %}
-        <div class="progress-bar progress-bar-striped bg-warning text-dark lead" role="progressbar" style="width: calc({{ num_dia }}*14.3%);"
-             aria-valuenow="1" aria-valuemin="1" aria-valuemax="7">{{ nombre_dia }}</div>
+        <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: calc({{ num_dia }}*14.3%);"
+             aria-valuenow="1" aria-valuemin="1" aria-valuemax="7"></div>
         </div>
         <div class="m-0 py-2 bg-dark shadow text-center">
           <p class="m-0 font-weight-bold">Subaste ahora!, las subastas de la semana se cierran el Jueves</p>
         </div>
       {% else %}
-        <div class="progress-bar progress-bar-striped bg-info text-dark lead" role="progressbar" style="width: calc({{ num_dia }}*14.3%);"
-             aria-valuenow="1" aria-valuemin="1" aria-valuemax="7">{{ nombre_dia }}</div>
+        <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: calc({{ num_dia }}*14.3%);"
+             aria-valuenow="1" aria-valuemin="1" aria-valuemax="7"></div>
         </div>
         <div class="m-0 py-2 bg-dark shadow text-center">
           <p class="m-0 font-weight-bold">Las subastas de la semana se abrirán el Lunes, esté atento!!</p>
