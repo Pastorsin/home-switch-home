@@ -43,6 +43,7 @@
                                 </div>
                                 <div>
                                     <div class="col-sm-12">
+                                        {% if not user.is_staff %}
                                         <div class="btn-group">
                                             <span class="bg-info text-light rounded-left p-1 col-sm-12">Editar datos</span>
                                             <button type="button" class="btn btn-primary py-0 px-1 rounded-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -58,7 +59,8 @@
                                                 <form action="{% url 'verPerfil' usuario.pk %}" method="post"> {% csrf_token %}
                                                       <input type="submit" class="dropdown-item px-1 text-danger" name="eliminar" value="Eliminar cuenta"></input>
                                                 </form>
-                                            </div>
+                                        </div>
+                                        {% endif %}
                                             <style type="text/css">
                                                 div > .dropdown-menu {
                                                     background-color: #97b8de;
