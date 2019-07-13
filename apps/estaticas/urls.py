@@ -6,5 +6,5 @@ from .views import ContactoView
 urlpatterns = [
     path('premium', PremiumView.as_view(), name='premium_info'),
     path('ayuda', AyudaView.as_view(), name='ayuda'),
-    path('contacto',ContactoView.as_view(), name='contacto')
+    path('contacto', ContactoView.as_view(), name='contacto'),
 ]
