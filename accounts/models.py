@@ -113,6 +113,9 @@ class Admin(models.Model):
         primary_key=True
     )
 
+    def nombre_c(self):
+        return self.user.nombre_completo()
+
 
 class UsuarioEstandar(models.Model):
     user = models.OneToOneField(

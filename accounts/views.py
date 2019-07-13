@@ -162,3 +162,13 @@ class AdminSignUpView(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('admin_signup')
     template_name = 'admin_signup.html'
     success_message = 'Administrador creado correctamente'
+
+class ListarUsuariosView(ListView):    
+    model = CustomUser
+    template_name = 'listadoUsuarios.html'
+
+    def get_context_data(self,**kwargs):
+        context = super(ListarUsuariosView, self).get_context_data(**kwargs)
+        context['usuario'] = CustomUser.objects.filter(is_staff=False).order_by('first_name','last_name')
+        context['administrador'] = CustomUser.objects.filter(is_staff=True).order_by('first_name','last_name')
+        return context    

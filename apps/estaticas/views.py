@@ -8,3 +8,7 @@ class PremiumView(TemplateView):
 class AyudaView(TemplateView):
 	
 	template_name = 'ayuda.html'
+
+class ContactoView(TemplateView):
+	
+	template_name = 'contacto.html'	
