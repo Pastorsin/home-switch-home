@@ -98,8 +98,6 @@ class TarjetaForm(forms.ModelForm):
     def clean_fecha_vencimiento(self):
         data = self.cleaned_data['fecha_vencimiento']
         fecha = data.split('/')
-
-        today = date.today()
         mes = fecha[0]
         try:
             año = fecha[1]

@@ -102,10 +102,6 @@
 					</li>
 					{% endif %}
 
-					<!-- FaQs -->
-					<li class="nav-item my-1">
-						<a class="nav-link active" href="{% url 'ayuda' %}">FaQ</a>
-					</li>
 				</ul>
 
 				<div class="dropdown-divider" style="border-top-color: #5b6c8a;"></div>
@@ -128,7 +124,7 @@
 								<small>
 								{% if user.notificaciones %}
 									{% for notificacion in user.notificaciones %}
-										<a class="dropdown-item" href="{{notificacion.get_absolute_url}}">	
+										<a class="dropdown-item" href="{{notificacion.get_absolute_url}}">
 											Semana: <span class="text-{{ notificacion.leida|yesno:'secondary,primary' }}">{{notificacion.semana}}</span>
 											de la residencia: <span class="text-{{ notificacion.leida|yesno:'secondary,primary' }}">{{notificacion.residencia}}</span>
 											<div class="text-center">
@@ -140,7 +136,7 @@
 										<div class="dropdown-divider"></div>
 									{% endfor %}
 								{% else %}
-									<a class="dropdown-item"href="#">	
+									<a class="dropdown-item"href="#">
 										Sin notificaciones
 									</a>
 								{% endif %}
