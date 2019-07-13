@@ -13,14 +13,25 @@ class MostrarSubastaView(DetailView):
     model = Subasta
     template_name = 'mostrar_subasta.html'
 
+    MENSAJE_EXITO = 'Puja realizada con éxito!'
+    MENSAJE_ERROR = 'Error! No tenés créditos suficientes para subastar'
+
     def post(self, request, *args, **kwargs):
         subasta = self.get_object()
-        subasta.nueva_puja(
-            pujador=request.user.usuarioestandar,
-            monto=request.POST['monto']
-        )
-        mensaje_exito = 'Puja realizada con éxito!'
-        messages.success(request, mensaje_exito)
+        try:
+            subasta.nueva_puja(
+                pujador=request.user.usuarioestandar,
+                monto=request.POST['monto']
+            )
+            messages.success(
+                request,
+                self.MENSAJE_EXITO
+            )
+        except CreditosInsuficientes:
+            messages.error(
+                request,
+                self.MENSAJE_ERROR
+            )
         return HttpResponseRedirect(subasta.get_absolute_url())
 
 
@@ -28,6 +39,7 @@ class MostrarCompraDirectaView(DetailView):
 
     model = CompraDirecta
     template_name = 'mostrar_compra_directa.html'
+
     MENSAJE_ERROR = 'No tenés suficientes créditos para realizar esta compra'
     MENSAJE_EXITO = '¡Semana reservada correctamente! Disfrute su estadía'
 
@@ -64,6 +76,7 @@ class MostrarReservadaView(DetailView):
 
     model = Reservada
     template_name = 'mostrar_reservada.html'
+
     MENSAJE_EXITO = 'Reserva eliminada correctamente'
 
     def post(self, request, *args, **kwargs):

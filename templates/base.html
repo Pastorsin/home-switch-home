@@ -51,7 +51,7 @@
 			<!-- Responsive button -->
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           	<span class="navbar-toggler-icon"></span>
-        	</button>
+    	</button>
 
 			<!-- Izquierda -->
 			<div class="collapse navbar-collapse w-100 order-1 order-lg-0" id="navbarResponsive">
@@ -75,7 +75,7 @@
 			<div class="d-flex m-0 justify-content-center order-0" style="z-index:1">
 				<ul class="navbar-nav mx-2">
 					<li class="nav-item">
-                      <a id="logo" class="navbar-brand mr-0" href="{% url 'home' %}">
+              <a id="logo" class="navbar-brand mr-0" href="{% url 'home' %}">
 							<img id="logo" src="{% static 'logo/HSH-Complete.svg' %}" style="max-width: 150px">
 						</a>
 					</li>
@@ -128,15 +128,16 @@
 								<small>
 								{% if user.notificaciones %}
 									{% for notificacion in user.notificaciones %}
-										<a class="dropdown-item" href="{{notificacion.get_absolute_url}}">									
-											La semana: <span class="text-primary">{{notificacion.semana}}</span>
-											de la residencia: <span class="text-primary">{{notificacion.residencia}}</span>
+										<a class="dropdown-item" href="{{notificacion.get_absolute_url}}">	
+											Semana: <span class="text-{{ notificacion.leida|yesno:'secondary,primary' }}">{{notificacion.semana}}</span>
+											de la residencia: <span class="text-{{ notificacion.leida|yesno:'secondary,primary' }}">{{notificacion.residencia}}</span>
 											<div class="text-center">
-												<strong class="text-danger">
+												<strong class="text-{{ notificacion.leida|yesno:'secondary,danger' }}">
 													{{notificacion|upper}}
 												</strong>
 											</div>
 										</a>
+										<div class="dropdown-divider"></div>
 									{% endfor %}
 								{% else %}
 									<a class="dropdown-item"href="#">	
@@ -144,38 +145,37 @@
 									</a>
 								{% endif %}
 								</small>
-								<div class="dropdown-divider"></div>
 							</div>
 						</div>
 					</li>
 					{% endif %}
 
 					<!-- Perfil Usuario -->
-                    <li class="nav-item avatar dropdown mr-2 my-1">
-                      {% if user.is_authenticated %}
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+          <li class="nav-item avatar dropdown mr-2 my-1">
+            {% if user.is_authenticated %}
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
 
-                          <img src="{{ user.usuarioestandar.foto }}"
-                               class="rounded-circle z-depth-0" height="20px" width="20px">
-                          <span>{{ user.email }}</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-secondary">
-                          {% if not user.is_staff %}
-                          	<a class="dropdown-item" href="{% url 'verPerfil' user.pk %}">Mi perfil</a>
-                          	<div class="dropdown-divider"></div>
-                          	<a class="dropdown-item text-info" href="{% url 'mis_reservas' %}">Mis reservas</a>
-                          	<a class="dropdown-item text-info" href="{% url 'mis_subastas' %}">Mis subastas</a>
-                          {% else %}
-                            <a class="dropdown-item text-info" href="{% url 'admin_signup' %}">Crear Admin</a>
-                          {% endif %}
-                          <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
-                        </div>
-                      {% else %}
-                        <a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a>
-                        <a href="{% url 'user_signup' %}" class="btn btn-secondary">Registrarse</a>
-                      {% endif %}
-                    </li>
+                <img src="{{ user.usuarioestandar.foto }}"
+                     class="rounded-circle z-depth-0" height="20px" width="20px">
+                <span>{{ user.email }}</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right dropdown-secondary">
+                {% if not user.is_staff %}
+                	<a class="dropdown-item" href="{% url 'verPerfil' user.pk %}">Mi perfil</a>
+                	<div class="dropdown-divider"></div>
+                	<a class="dropdown-item text-info" href="{% url 'mis_reservas' %}">Mis reservas</a>
+                	<a class="dropdown-item text-info" href="{% url 'mis_subastas' %}">Mis subastas</a>
+                {% else %}
+                  <a class="dropdown-item text-info" href="{% url 'admin_signup' %}">Crear Admin</a>
+                {% endif %}
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
+              </div>
+            {% else %}
+              <a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a>
+              <a href="{% url 'user_signup' %}" class="btn btn-secondary">Registrarse</a>
+            {% endif %}
+          </li>
 
 				</ul>
 			</div>

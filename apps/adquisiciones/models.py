@@ -395,7 +395,8 @@ class Subasta(Estado):
         return self.puja_actual().pujador
 
     def nueva_puja(self, pujador, monto):
-        if self.hay_pujas() and not self.puja_actual().pujador_es(pujador):
+        self.verificar_pujador(pujador)
+        if self.mismo_pujador(pujador):
             self.puja_actual().notificar_pujador(
                 mensaje=self.NOTIFICACION_PUJA,
                 semana=self.semana
@@ -405,6 +406,13 @@ class Subasta(Estado):
             monto=monto,
             subasta=self
         )
+
+    def verificar_pujador(self, pujador):
+        if not pujador.tenes_creditos():
+            raise CreditosInsuficientes
+
+    def mismo_pujador(self, pujador):
+        return self.hay_pujas() and not self.puja_actual().pujador_es(pujador)
 
     def hay_ganador_actual(self):
         return self.hay_pujas()
