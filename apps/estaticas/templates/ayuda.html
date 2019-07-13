@@ -14,44 +14,80 @@
                         <div class="card">
                             <div class="card-header" id="accordion-tab-1-heading-1">
 								<h5>   
-                                    <button class="btn btn-outline-light" type="button" data-toggle="collapse" data-target="#accordion-tab-1-content-1" aria-expanded="false" aria-controls="accordion-tab-1-content-1" style="color:black">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaPrimer pregunta</button>
+                                    <button class="btn btn-outline-light" type="button" data-toggle="collapse" data-target="#accordion-tab-1-content-1" aria-expanded="false" aria-controls="accordion-tab-1-content-1" style="color:black"><strong>¿Qué debo saber antes de registarme?</strong></button>
                                 </h5>
                             </div>
                             <div class="collapse" id="accordion-tab-1-content-1" aria-labelledby="accordion-tab-1-heading-1" data-parent="#accordion-tab-1">
                                 <div class="card-body">
-                                    <p>Primer respuesta</p>
-                                    <p><strong>Example: </strong>Respuesta1?</p>
+                                    <p style="color: black">El único requisito para poder registrarte es que tenés que ser mayor de 18 años</p>
+                                    <p style="color: black"><strong>Podés registrarte en </strong><a href="{% url 'user_signup' %}">Registrarse</a>!</p>
                                 </div>
                             </div>
                         </div>
                         <div class="card">
                             <div class="card-header" id="accordion-tab-1-heading-2">
                                 <h5>
-                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#accordion-tab-1-content-2" aria-expanded="false" aria-controls="accordion-tab-1-content-2" style="color: black">Segunda pregunta</button>
+                                    <button class="btn btn-outline-light" type="button" data-toggle="collapse" data-target="#accordion-tab-1-content-2" aria-expanded="false" aria-controls="accordion-tab-1-content-2" style="color: black"><strong>¿Cómo adquiero una residencia?</strong></button>
                                 </h5>
                             </div>
                             <div class="collapse" id="accordion-tab-1-content-2" aria-labelledby="accordion-tab-1-heading-2" data-parent="#accordion-tab-1">
                                 <div class="card-body">
-                                    <p>Segunda respuesta</p>
-                                    <p><strong>Example: </strong>Respuesta2?</p>
+                                    <p style="color: grey">Primero tenés que esperar a que la residencia entre en subasta, una vez en subasta se puede comenzar a pujar por ella. La subasta dura 3 dias, si ésta termina y no tiene ganador puede entrar en Hotsale para ser adquirida. En caso de que no quieras esperar a la subasta para adquirir una residencia, podés convertirte en premium!</p>
+                                    <p style="color: grey">Aclaración: Es necesario estar registrado para realizar esta acción!</p>
                                 </div>
                             </div>
                         </div>
                         <div class="card">
                             <div class="card-header" id="accordion-tab-1-heading-3">
                                 <h5>
-                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#accordion-tab-1-content-3" aria-expanded="false" aria-controls="accordion-tab-1-content-3">Tercer pregunta</button>
+                                    <button class="btn btn-outline-light" type="button" data-toggle="collapse" data-target="#accordion-tab-1-content-3" aria-expanded="false" aria-controls="accordion-tab-1-content-3" style="color: black"><strong>¿Cómo me convierto en usuario premium?</strong></button>
                                 </h5>
                             </div>
                             <div class="collapse" id="accordion-tab-1-content-3" aria-labelledby="accordion-tab-1-heading-3" data-parent="#accordion-tab-1">
                                 <div class="card-body">
-                                    <p>Tercer respuesta</p>
-                                    <p><strong>Example: </strong>Respuesta3?</p>
+                                    <p style="color: black">Tenés que acercarte a nuestras oficinas con Dni y tu cuenta creada!</p>
+                                    <p style="color: black"><strong>Toda la informacion está en </strong><a href="{% url 'premium_info' %}">Ser Premium</a></p>
                                 </div>
                             </div>
                         </div>
                         <div class="card">
                             <div class="card-header" id="accordion-tab-1-heading-4">
                                 <h5>
+                                    <button class="btn btn-outline-light" type="button" data-toggle="collapse" data-target="#accordion-tab-1-content-4" aria-expanded="false" aria-controls="accordion-tab-1-content-4" style="color: black"><strong>¿Cómo y cuándo me llegan las notificaciones sobre las residencias que sigo?</strong></button>
+                                </h5>
+                            </div>
+                            <div class="collapse" id="accordion-tab-1-content-4" aria-labelledby="accordion-tab-1-heading-3" data-parent="#accordion-tab-1">
+                                <div class="card-body">
+                                    <p style="color: black">•Si seguís una semana de la residencia y ésta entra en subasta</p>
+                                    <p style="color: black">•Si seguís una semana de la residencia y su subasta se cierra</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="accordion-tab-1-heading-5">
+                                <h5>
+                                    <button class="btn btn-outline-light" type="button" data-toggle="collapse" data-target="#accordion-tab-1-content-5" aria-expanded="false" aria-controls="accordion-tab-1-content-5" style="color: black"><strong>¿Cuándo me llegan otras notificaciones?</strong></button>
+                                </h5>
+                            </div>
+                            <div class="collapse" id="accordion-tab-1-content-5" aria-labelledby="accordion-tab-1-heading-5" data-parent="#accordion-tab-1">
+                                <div class="card-body">
+                                    <p style="color: black">•Si pujás por una semana de una residencia y otro usuario puja más que vos</p>
+                                    <p style="color: black">•Si pujaste por una semana de una residencia y su subasta se cierra</p>
+                                    <p style="color: black">•Si ganaste una puja</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="accordion-tab-1-heading-6">
+                                <h5>
+                                    <button class="btn btn-outline-light" type="button" data-toggle="collapse" data-target="#accordion-tab-1-content-6" aria-expanded="false" aria-controls="accordion-tab-1-content-6" style="color: black"><strong>¿Cómo puedo ver y modificar mi información?</strong></button>
+                                </h5>
+                            </div>
+                            <div class="collapse" id="accordion-tab-1-content-6" aria-labelledby="accordion-tab-1-heading-6" data-parent="#accordion-tab-1">
+                                <div class="card-body">
+                                    <p style="color: black">Tenes que estar registrado! Podés ver tu información en la sección Mi perfil Ahi podés modificar tus datos!</a></p>
+                                </div>
+                            </div>
+                        </div>
 {% endblock body_content %}
 
