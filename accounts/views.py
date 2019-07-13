@@ -174,8 +174,21 @@ class ListarUsuariosView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ListarUsuariosView, self).get_context_data(**kwargs)
-        context['usuario'] = CustomUser.objects.filter(
-            is_staff=False, is_active=True).order_by('first_name', 'last_name')
-        context['administrador'] = CustomUser.objects.filter(
-            is_staff=True, is_superuser=False).order_by('first_name', 'last_name')
+        filtered_users = CustomUser.objects.filter(is_staff=False,
+                                                   is_active=True)
+        filtered_admins = CustomUser.objects.filter(is_staff=True,
+                                                    is_superuser=False,
+                                                    is_active=True)
+
+        context['usuario'] = filtered_users.order_by('first_name', 'last_name')
+        context['administrador'] = filtered_admins.order_by('first_name', 'last_name')
         return context
+
+    def get(self, request, *args, **kwargs):
+        get = self.request.GET
+        get_keys = list(get)
+        if get_keys:
+            user_pk = get_keys.pop()
+            user = CustomUser.objects.get(pk=user_pk)
+            user.eliminar()
+        return super(ListarUsuariosView, self).get(request, *args, **kwargs)

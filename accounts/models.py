@@ -67,6 +67,7 @@ class CustomUser(AbstractUser):
 
     def eliminar(self):
         self.is_active = False
+        self.save()
         return 'Se ha eliminado al usuario exitosamente'
 
     def get_absolute_url(self):

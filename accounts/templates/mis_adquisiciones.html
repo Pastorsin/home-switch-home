@@ -23,7 +23,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-    {% endfor %}                
+    {% endfor %}
     </div>
     <hr>
 
@@ -33,7 +33,7 @@
 			{% for semana in object_list %}
 			<a href="{{semana.estado.get_absolute_url}}" class="list-group-item bg-light list-group-item-action text-left">
 				<div>
-					<span class="text-primary">Fecha de ocupación:</span> 
+					<span class="text-primary">Fecha de ocupación:</span>
 					<span class="text-secondary">{{semana.fecha_inicio}} al {{semana.fecha_fin}}</span>
 				</div>
 				<div class="mt-1">
@@ -55,7 +55,7 @@
 {% block script %}
 <script type="text/javascript">
   $(document).ready(function(){
-  	
+
   	const colorDelEstado = {
   		"No disponible": "danger",
   		"Compra directa": "info",
@@ -68,5 +68,5 @@
   		let claseBS = "btn mt-1 py-0 px-1 btn-" + colorDelEstado[$(this).text()];
     	$(this).addClass(claseBS)
     });
-</script>        
+</script>
 {% endblock script %}
