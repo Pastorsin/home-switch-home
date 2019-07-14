@@ -75,7 +75,7 @@ class CustomUser(AbstractUser):
 
     def notificaciones(self):
         from adquisiciones.models import Notificacion
-        return Notificacion.objects.filter(usuario=self)
+        return Notificacion.objects.filter(usuario=self).order_by('-creacion')
 
     def agregar_notificacion(self, mensaje, semana):
         from adquisiciones.models import Notificacion
@@ -88,7 +88,7 @@ class CustomUser(AbstractUser):
 
     def notificaciones_sin_leer(self):
         return self.notificaciones().filter(
-            leida=False).order_by('creacion')
+            leida=False).order_by('-creacion')
 
     def leer_notificaciones(self):
         self.notificaciones_sin_leer().update(leida=True)
