@@ -1,38 +1,44 @@
 class Notificador {
 
-    constructor(sonido, selector) {
-        this.solicitudes = 0;
-        this.seNotifico = false;
+    constructor(sonido, selector, cantidadNotificaciones) {
         this.sonidoNotificacion = sonido;
         this.selector = selector;
+        this.cantidadNotificaciones = cantidadNotificaciones;
     }
 
-    notificar(cantidadNotificaciones) {
-        if ((cantidadNotificaciones > 0) && (!this.seNotifico)) {
-        	this.seNotifico = true;
+    insertarHtml(html) {
+        $("#contenedor-notificaciones").empty()
+        $("#contenedor-notificaciones").append(html)
+    }
+
+    notificar(cantidadNueva, html) {
+        if (this.hayNotificaciones(cantidadNueva)) {
+            this.actualizarNotificaciones(cantidadNueva)
+            this.insertarHtml(html)
             this.reproducirSonido();
-            this.incrementarSolicitudes();
-            this.agregarCantidad(cantidadNotificaciones);
+            this.mostrarCantidad(cantidadNueva);
         }
     }
 
+    hayNotificaciones(cantidadNueva) {
+        return this.cantidadNotificaciones != cantidadNueva
+    }
+
+    actualizarNotificaciones(cantidadNueva) {
+        this.cantidadNotificaciones = cantidadNueva
+    }
+
     reproducirSonido() {
-    	if (this.solicitudes != 0) {
-    		this.sonidoNotificacion.play()
-    	}
+    	this.sonidoNotificacion.play()
     }
 
-    incrementarSolicitudes() {
-    	this.solicitudes += 1;
-    }
-
-    agregarCantidad(cantidad) {
+    mostrarCantidad(cantidad) {
         this.selector.text(cantidad);
         this.selector.addClass("text-info");
     }
 
     leerNotificaciones() {
-        this.seNotifico = false;
+        this.cantidadNotificaciones = 0;
         this.vaciarCantidad();
     }
 
@@ -43,21 +49,15 @@ class Notificador {
 }
 
 
-// Inicializaciones
-
-const SONIDO_NOTIFICACION = new Audio(SONIDO_NOTIFICACION_URL);
-const SELECTOR_NOTIFICADOR = $('#notificador');
-const NOTIFICADOR = new Notificador(SONIDO_NOTIFICACION, SELECTOR_NOTIFICADOR);
-
 const XHTTP_LECTOR = new XMLHttpRequest();
 const XHTTP_NOTIFICADOR = new XMLHttpRequest();
 XHTTP_NOTIFICADOR.onreadystatechange = function() {
-        cantidadNotificaciones = this.responseText;
-        NOTIFICADOR.notificar(cantidadNotificaciones);
+        json = JSON.parse(this.responseText);
+        let cantidadNotificaciones = json['cantidad'];
+        let html = json['notificaciones_html'];
+        NOTIFICADOR.notificar(cantidadNotificaciones, html);
     };
 
-
-// Eventos
 
 setInterval(function() {
 	XHTTP_NOTIFICADOR.open("GET", "/cantidadNotificacionesSinLeer");

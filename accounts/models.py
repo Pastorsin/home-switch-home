@@ -87,7 +87,8 @@ class CustomUser(AbstractUser):
             )
 
     def notificaciones_sin_leer(self):
-        return self.notificaciones().filter(leida=False)
+        return self.notificaciones().filter(
+            leida=False).order_by('creacion')
 
     def leer_notificaciones(self):
         self.notificaciones_sin_leer().update(leida=True)

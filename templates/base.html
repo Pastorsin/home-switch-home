@@ -118,27 +118,8 @@
 								</span>
 								<i class='fas fa-bell'></i>
 							</a>
-							<div class="dropdown-menu dropdown-menu-right dropdown-secondary notificacion">
-								<small>
-								{% if user.notificaciones %}
-									{% for notificacion in user.notificaciones %}
-										<a class="dropdown-item" href="{{notificacion.get_absolute_url}}">
-											Semana: <span class="text-{{ notificacion.leida|yesno:'secondary,primary' }}">{{notificacion.semana}}</span>
-											de la residencia: <span class="text-{{ notificacion.leida|yesno:'secondary,primary' }}">{{notificacion.residencia}}</span>
-											<div class="text-center">
-												<strong class="text-{{ notificacion.leida|yesno:'secondary,danger' }}">
-													{{notificacion|upper}}
-												</strong>
-											</div>
-										</a>
-										<div class="dropdown-divider"></div>
-									{% endfor %}
-								{% else %}
-									<a class="dropdown-item"href="#">
-										Sin notificaciones
-									</a>
-								{% endif %}
-								</small>
+							<div class="dropdown-menu dropdown-menu-right dropdown-secondary notificacion" id="contenedor-notificaciones">
+								{% include 'listado_notificaciones.html' %}
 							</div>
 						</div>
 					</li>
@@ -228,10 +209,13 @@
 	    </script>
 
 	    {% if not user.is_staff and user.is_authenticated %}
-	    	<script> 
-	    		const SONIDO_NOTIFICACION_URL = "{% static 'base/sonido-notificacion.mp3' %}"
+	    	<script src="{% static 'base/notificaciones.js' %}">
 	    	</script>
-	    	<script src="{% static 'base/notificaciones.js' %}"></script>
+	    	<script type="text/javascript">
+					const SONIDO_NOTIFICACION = new Audio("{% static 'base/sonido-notificacion.mp3' %}");
+					const SELECTOR_NOTIFICADOR = $('#notificador');
+		    		const NOTIFICADOR = new Notificador(SONIDO_NOTIFICACION, SELECTOR_NOTIFICADOR, {{user.notificaciones_sin_leer.count}} );
+	    	</script>
 	    {% endif %}
 
 		{% block script %}{% endblock script %}

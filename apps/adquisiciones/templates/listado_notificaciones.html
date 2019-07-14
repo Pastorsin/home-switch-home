@@ -1,0 +1,20 @@
+<small>
+{% if user.notificaciones %}
+	{% for notificacion in user.notificaciones %}
+		<a class="dropdown-item" href="{{notificacion.get_absolute_url}}">
+			Semana: <span class="text-{{ notificacion.leida|yesno:'secondary,primary' }}">{{notificacion.semana}}</span>
+			de la residencia: <span class="text-{{ notificacion.leida|yesno:'secondary,primary' }}">{{notificacion.residencia}}</span>
+			<div class="text-center">
+				<strong class="text-{{ notificacion.leida|yesno:'secondary,danger' }}">
+					{{notificacion|upper}}
+				</strong>
+			</div>
+		</a>
+		<div class="dropdown-divider"></div>
+	{% endfor %}
+{% else %}
+	<a class="dropdown-item"href="#">
+		Sin notificaciones
+	</a>
+{% endif %}
+</small>

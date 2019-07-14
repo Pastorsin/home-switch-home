@@ -1,5 +1,7 @@
+import json
 from django.views import View
 from django.views.generic import DetailView
+from django.template import loader
 from django.http import HttpResponseRedirect, HttpResponse
 from residencias.models import Residencia
 from .models import Subasta, EnEspera, Reservada, CompraDirecta, Hotsale
@@ -143,15 +145,25 @@ class LeerNotificacionesView(View):
     def get(self, request, *args, **kwargs):
         usuario_conectado = self.request.user
         usuario_conectado.leer_notificaciones()
-        return HttpResponse(
-            usuario_conectado.notificaciones_sin_leer().count()
-        )
+        return HttpResponse()
 
 
 class NotificacionesSinLeer(View):
 
-    def get(self, request, *args, **kwargs):
+    def notificaciones_html(self):
+        template = loader.get_template('listado_notificaciones.html')
+        contexto = {
+            'user': self.request.user
+        }
+        return template.render(contexto)
+
+    def cantidad_notificaciones(self):
         usuario_conectado = self.request.user
-        return HttpResponse(
-            usuario_conectado.notificaciones_sin_leer().count()
-        )
+        return usuario_conectado.notificaciones_sin_leer().count()
+
+    def get(self, request, *args, **kwargs):
+        contexto = {
+            'notificaciones_html': self.notificaciones_html(),
+            'cantidad': self.cantidad_notificaciones()
+        }
+        return HttpResponse(json.dumps(contexto))
