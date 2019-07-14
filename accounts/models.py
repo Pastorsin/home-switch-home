@@ -96,9 +96,10 @@ class CustomUser(AbstractUser):
     def tiene_notificaciones_sin_leer(self):
         return self.notificaciones_sin_leer().exists()
 
-    def eliminar_notificacion(self, mensaje):
+    def eliminar_notificacion(self, mensaje, residencia):
         self.notificaciones().filter(
-            mensaje=mensaje).delete()
+            mensaje=mensaje,
+            semana__residencia=residencia).delete()
 
     def tengo_notificacion(self, mensaje, semana):
         return self.notificaciones().filter(

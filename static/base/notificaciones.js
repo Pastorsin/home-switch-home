@@ -29,6 +29,7 @@ class Notificador {
     }
 
     reproducirSonido() {
+        console.log(this.cantidadNotificaciones)
     	this.sonidoNotificacion.play()
     }
 

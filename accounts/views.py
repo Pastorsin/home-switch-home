@@ -3,6 +3,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .forms import TarjetaForm, AdminCreationForm, PublicUserChangeForm
@@ -168,9 +169,10 @@ class AdminSignUpView(SuccessMessageMixin, CreateView):
     success_message = 'Administrador creado correctamente'
 
 
-class ListarUsuariosView(ListView):
+class ListarUsuariosView(LoginRequiredMixin, ListView):
     model = CustomUser
     template_name = 'listadoUsuarios.html'
+    success_message = 'Adminsitrador eliminado correctamente'
 
     def get_context_data(self, **kwargs):
         context = super(ListarUsuariosView, self).get_context_data(**kwargs)
@@ -181,7 +183,8 @@ class ListarUsuariosView(ListView):
                                                     is_active=True)
 
         context['usuario'] = filtered_users.order_by('first_name', 'last_name')
-        context['administrador'] = filtered_admins.order_by('first_name', 'last_name')
+        context['administrador'] = filtered_admins.order_by(
+            'first_name', 'last_name')
         return context
 
     def get(self, request, *args, **kwargs):
@@ -191,4 +194,7 @@ class ListarUsuariosView(ListView):
             user_pk = get_keys.pop()
             user = CustomUser.objects.get(pk=user_pk)
             user.eliminar()
+            messages.success(request, self.success_message)
+            if self.request.user == user:
+                return HttpResponseRedirect(reverse_lazy('home'))
         return super(ListarUsuariosView, self).get(request, *args, **kwargs)

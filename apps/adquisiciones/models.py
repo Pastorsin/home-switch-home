@@ -529,7 +529,7 @@ class Puja(models.Model):
         return reserva
 
     def notificar_pujador(self, mensaje, semana):
-        self.comprador().eliminar_notificacion(mensaje)
+        self.comprador().eliminar_notificacion(mensaje, semana.residencia)
         self.comprador().agregar_notificacion(mensaje, semana)
 
     def comprador(self):

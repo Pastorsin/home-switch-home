@@ -23,19 +23,16 @@
                                 <div class="userData ml-3 text-left">
                                     <h2 class="d-block text-primary" style="font-size: 1.5rem; font-weight: bold">{{usuario.first_name}} {{usuario.last_name}}</h2>
                                     <h5 class="d-block">{{usuario.usuarioestandar.edad}} Años</h5>
+                                    <hr>
+                                    <h6 class="text-info font-weight-bold">Usuario {{ usuario.usuarioestandar.es_premium| yesno:"premium, estándar" }}</h6>
                                     {% if user.is_staff %}
-                                    <h6 class="text-info font-weight-bold">El usuario {{ usuario.usuarioestandar.es_premium| yesno:"es premium, es estándar" }}</h6>
-                                      <hr>
                                       <form action="{% url 'verPerfil' usuario.pk %}" method="post"> {% csrf_token %}
                                             <input type="submit" class="btn btn-success" name="cambiar_categoria" value="Cambiar categoria"></input>
                                       </form>
-                                    {% else %}
-                                      {% if not usuario.usuarioestandar.es_premium %}
-                                        <hr>
+                                    {% elif not usuario.usuarioestandar.es_premium %}
                                         <div>
                                           <a class="btn btn-warning" href="{% url 'premium_info' %}">Ser Premium</a>
                                         </div>
-                                      {% endif %}
                                     {% endif %}
                                 </div>
                                 <div class="ml-auto">

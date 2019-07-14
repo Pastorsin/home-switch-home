@@ -19,7 +19,7 @@
 		<li class="list-group-item text-dark">Fecha de ingreso: <span class="text-danger">{{compradirecta.semana.fecha_inicio}}</span></li>
 		<li class="list-group-item text-dark">Fecha de desalojo: <span class="text-danger">{{compradirecta.semana.fecha_fin}}</span></li>
 		<li class="list-group-item text-dark">Precio: <span class="text-success">¡Gratis!</span></li>
-		{% if user.es_premium %}		
+		{% if user.usuarioestandar.es_premium %}		
 			<li class="list-group-item text-dark bg-dark">
 	 			<form method="post">
 				{% csrf_token %}

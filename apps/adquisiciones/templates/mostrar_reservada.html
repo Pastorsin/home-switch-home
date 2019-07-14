@@ -19,7 +19,7 @@
  			<span class="text-danger">{{reservada.semana.comprador.nombre_completo}}</span>
  		</li>
  		<li class="list-group-item text-secondary">Monto pagado: 
- 			{% if reservada.semana.comprador.es_premium %}
+ 			{% if reservada.precio_actual == reservada.semana.precio_base %}
  				<span class="text-info">Adquirida por membresía premium</span>
  			{% else %}
  				<span class="text-success">${{reservada.precio_actual}}</span>

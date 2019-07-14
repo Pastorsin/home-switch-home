@@ -135,16 +135,19 @@ class ListadoResidenciasView(ListView):
             context['form'] = self.form_class()
         return context
 
+    def get_queryset(self):
+        return Residencia.objects.filter(eliminada=False)
+
     def post(self, request, *args, **kwargs):
         busqueda = self.form_class(request.POST)
         if busqueda.is_valid():
-            self.object_list = self.get_query_set(busqueda.data)
+            self.object_list = self.get_queryset_busqueda(busqueda.data)
         else:
             self.object_list = self.model.objects.all()
         context = self.get_context_data(form=busqueda)
         return self.render_to_response(context)
 
-    def get_query_set(self, busqueda):
+    def get_queryset_busqueda(self, busqueda):
         pais = busqueda['pais']
         provincia = busqueda['provincia']
         ciudad = busqueda['ciudad']
@@ -159,6 +162,7 @@ class ListadoResidenciasView(ListView):
                  Q(content_type__model='hotsale')) &
                 Q(fecha_inicio__range=[fecha_inicio, fecha_hasta])
             )
+        print(Residencia.objects.filter(eliminada=True))
         return Residencia.objects.filter(
             ubicacion__pais__startswith=pais,
             ubicacion__provincia__startswith=provincia,
