@@ -109,22 +109,3 @@
   {% endif %}
 
 {% endblock main_section %}
-
-{% block title_content %}
-	<h2>Controles!</h2>
-{% endblock %}
-
-{% block body_content %}
-	<form method="post">
-		{% csrf_token %}
-      	<button name="lunes" class="btn btn-success shadow">Abrir subasta</button>
-      	<button name="jueves" class="btn btn-success shadow">Cerrar subasta</button>
-      	<button name="reiniciar" class="btn btn-danger shadow">Reiniciar</button>
-	</form>
-{% endblock body_content %}
-
-{% block footer_content %}
-	{% language 'es' %}
-	<div class="bg-dark"> <span class="text-light">Hoy es el día: </span> <span class="text-warning">{% now "l d F Y H:i" %} </span></div>
-	{% endlanguage %}
-{% endblock %}

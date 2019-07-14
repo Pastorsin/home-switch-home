@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'adquisiciones.apps.AdquisicionesConfig',
     'accounts.apps.AccountsConfig',
     'estaticas.apps.EstaticasConfig',
+    'demo.apps.DemoConfig',
     # Default apps
     'django.contrib.admin',
     'django.contrib.auth',

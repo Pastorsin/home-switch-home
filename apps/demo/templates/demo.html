@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %} Demo 3 {% endblock title %}
+
+	
+{% block title_content %} 
+	<h3>
+		<img src="https://im.ezgif.com/tmp/ezgif-1-656f223b3f3f.gif" width="80px">
+		Nave del tiempo
+		<img src="https://im.ezgif.com/tmp/ezgif-1-656f223b3f3f.gif" width="80px">
+	</h3> 
+{% endblock title_content %}
+
+{% block body_content %}
+	<form method="post" class="list-group">
+		{% csrf_token %}
+		<div class="list-group-item bg-secundario">
+      		<p>¡Vamos al lunes de la semana próxima!</p>
+      		<button name="lunes" class="btn btn-success shadow">Abrir subasta</button>
+      	</div>
+		<div class="list-group-item bg-secundario">
+	      	<p>¡Vamos al jueves de la semana próxima!</p>
+	      	<button name="jueves" class="btn btn-success shadow">Cerrar subasta</button>
+		</div>
+		<div class="list-group-item bg-primario">
+	      	<p class="text-light">¡Vamos muy, pero muy lejos!</p>      	
+	      	<button name="lejos" class="btn btn-warning shadow">Ir muy lejos</button>
+		</div>
+		<div class="list-group-item bg-dark">
+      		<p>¡Volvamos al presente!</p>
+      		<button name="reiniciar" class="btn btn-danger shadow">Reiniciar</button>
+		</div>
+	</form>
+{% endblock body_content %}
+
+{% block footer_content %}
+	<div class="bg-dark"> <span class="text-light">Hoy es el día: </span> <span class="text-warning">{% now "l d F Y H:i" %} </span></div>
+{% endblock footer_content %}
