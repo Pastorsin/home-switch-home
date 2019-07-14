@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
- Registro 
+ Registro
 {% endblock title %}
 
 {% block title_content %}
@@ -73,14 +73,14 @@
             </div>
           {% endfor %}
 
-        {% endfor %}                
+        {% endfor %}
       </div>
     </div>
 
     <button type="submit" class="btn btn-primary">Registrarse!</button>
   </form>
 
-  
+
 {% endblock body_content %}
 
 {% block script %}
@@ -110,13 +110,13 @@
   document.getElementById('id_fecha_vencimiento').dispatchEvent(changeEvent);
   document.getElementById('id_cvc').dispatchEvent(changeEvent);
   document.getElementById('id_numero').dispatchEvent(blurEvent);
-</script>        
+</script>
 {% endblock script %}
 
 {% block style %}
 <style type="text/css">
-  @media only screen 
-  and (min-device-width : 320px) 
+  @media only screen
+  and (min-device-width : 320px)
   and (max-device-width : 480px) {
      .jp-card-front {
         max-width: 84%;
