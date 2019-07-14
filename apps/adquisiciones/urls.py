@@ -2,6 +2,7 @@ from django.urls import path
 from .views import MostrarSubastaView, SemanasView, MostrarCompraDirectaView
 from .views import MostrarEnEsperaView, MostrarReservadaView
 from .views import MostrarHotsaleView, LeerNotificacionesView
+from .views import NotificacionesSinLeer
 
 urlpatterns = [
     path('subasta/<int:pk>/',
@@ -30,5 +31,9 @@ urlpatterns = [
 
     path('leerNotificaciones',
          LeerNotificacionesView.as_view(),
-         name='leer_notificaciones')
+         name='leer_notificaciones'),
+
+    path('cantidadNotificacionesSinLeer',
+         NotificacionesSinLeer.as_view(),
+         name='notificaciones_sin_leer')
 ]

@@ -146,3 +146,12 @@ class LeerNotificacionesView(View):
         return HttpResponse(
             usuario_conectado.notificaciones_sin_leer().count()
         )
+
+
+class NotificacionesSinLeer(View):
+
+    def get(self, request, *args, **kwargs):
+        usuario_conectado = self.request.user
+        return HttpResponse(
+            usuario_conectado.notificaciones_sin_leer().count()
+        )

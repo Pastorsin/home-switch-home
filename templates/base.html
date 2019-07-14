@@ -215,24 +215,25 @@
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+	    <!-- Scripts -->
 	    <script type="text/javascript">
 	    	$(document).ready(function(){
+
 			    $("input, textarea, select").focus(function(){
 			      $("p").css("color", "#c3cbd8");
 			      $(this).parent().siblings("p").css("color", "#00e3ff");
 			    })
-
-			    $("#campana").click(function(){
-			    	var xhttp = new XMLHttpRequest();
-			    	xhttp.open("GET", "/leerNotificaciones")
-			    	xhttp.onreadystatechange = function() {
-			    		$("#notificador").text(this.responseText)
-			    		$("#notificador").removeClass()
-			    	}
-			    	xhttp.send()
-			    })
 		  	});
 	    </script>
+
+	    {% if not user.is_staff and user.is_authenticated %}
+	    	<script> 
+	    		const SONIDO_NOTIFICACION_URL = "{% static 'base/sonido-notificacion.mp3' %}"
+	    	</script>
+	    	<script src="{% static 'base/notificaciones.js' %}"></script>
+	    {% endif %}
+
 		{% block script %}{% endblock script %}
 	</body>
 </html>
