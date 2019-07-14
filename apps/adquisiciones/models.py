@@ -678,7 +678,7 @@ class Notificacion(models.Model):
         on_delete=models.CASCADE
     )
     creacion = models.DateTimeField(
-        default=datetime.now()
+        default=datetime.now
     )
     leida = models.BooleanField(
         default=False
