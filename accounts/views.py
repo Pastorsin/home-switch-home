@@ -172,7 +172,7 @@ class AdminSignUpView(SuccessMessageMixin, CreateView):
 class ListarUsuariosView(LoginRequiredMixin, ListView):
     model = CustomUser
     template_name = 'listadoUsuarios.html'
-    success_message = 'Adminsitrador eliminado correctamente'
+    success_message = 'Administrador eliminado correctamente'
 
     def get_context_data(self, **kwargs):
         context = super(ListarUsuariosView, self).get_context_data(**kwargs)
