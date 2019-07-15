@@ -19,8 +19,15 @@ class CustomUserForm:
 
     def clean_dni(self):
         data = self.cleaned_data['dni']
+        print(data)
         if not (len(data) == 8 and data.isdigit()):
             raise ValidationError('El DNI debe tener 8 digitos sin separadores. Ej: 11222333')
+        return data
+
+    def clean_foto(self):
+        data = self.cleaned_data['foto']
+        if not data:
+            data = 'http://sport-werkt.nl/wp-content/uploads/2018/12/profile.png'
         return data
 
 class CustomUserCreationForm(UserCreationForm, CustomUserForm):

@@ -11,6 +11,7 @@ class CustomUser(AbstractUser):
         null=True,
     )
     foto = models.URLField(
+        help_text='** Campo opcional',
         null=True,
         blank=True
     )
@@ -22,7 +23,8 @@ class CustomUser(AbstractUser):
         default=2
     )
     dni = models.CharField(
-        help_text='Ingrese los digitos sin separadores ni espacios por favor. Ej: 11222333',
+        help_text='Ingrese los digitos sin separadores \
+        ni espacios por favor. Ej: 11222333',
         max_length=8,
         null=True,
     )
@@ -52,9 +54,10 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return 'Usuario {} {} con creditos: {}'.format(
-                self.first_name, self.last_name, self.creditos)
+            self.first_name, self.last_name, self.creditos)
 
     def edad(self):
         today = date.today()
-        return today.year - self.fecha_nacimiento.year - ((today.month, today.day) < (self.fecha_nacimiento.month, self.fecha_nacimiento.day))    
-
+        return today.year - self.fecha_nacimiento.year - \
+            ((today.month, today.day) <
+             (self.fecha_nacimiento.month, self.fecha_nacimiento.day))
