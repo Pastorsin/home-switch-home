@@ -1,13 +1,14 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %} Demo 3 {% endblock title %}
 
 	
 {% block title_content %} 
 	<h3>
-		<img src="https://im.ezgif.com/tmp/ezgif-1-656f223b3f3f.gif" width="80px">
+		<img src="{% static 'demo/nave.gif' %}" width="80px">
 		Nave del tiempo
-		<img src="https://im.ezgif.com/tmp/ezgif-1-656f223b3f3f.gif" width="80px">
+		<img src="{% static 'demo/nave.gif' %}" width="80px">
 	</h3> 
 {% endblock title_content %}
 
