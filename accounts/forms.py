@@ -139,3 +139,7 @@ class AdminCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = CustomUser
         fields = ('first_name', 'last_name', 'email',)
+        widgets = {
+                'first_name': forms.TextInput(attrs={'required': True}),
+                'last_name': forms.TextInput(attrs={'required': True}),
+        }
