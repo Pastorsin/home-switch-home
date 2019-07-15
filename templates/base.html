@@ -110,6 +110,14 @@
 
 					<!-- Notificaciones -->
 					{% if not user.is_staff and user.is_authenticated %}
+					<li class="nav-item my-1">
+							<div class="nav-link text-warning">
+								<span>
+									{{user.usuarioestandar.creditos}}
+								</span>
+								<i class="fas fa-copyright text-warning"></i>
+							</div>
+					</li>
 					<li class="nav-item dropdown my-1">
 						<div>
 							<a class="nav-link dropdown-toggle" id="campana" data-toggle="dropdown" href="#">
