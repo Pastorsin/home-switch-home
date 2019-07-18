@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import MostrarSubastaView, SemanasView, MostrarCompraDirectaView
 from .views import MostrarEnEsperaView, MostrarReservadaView
-from .views import MostrarHotsaleView
+from .views import MostrarHotsaleView, LeerNotificacionesView
 
 urlpatterns = [
     path('subasta/<int:pk>/',
@@ -26,5 +26,9 @@ urlpatterns = [
 
     path('residencia/<int:pk>/semanas',
          SemanasView.as_view(),
-         name='listado_semanas')
+         name='listado_semanas'),
+
+    path('leerNotificaciones',
+         LeerNotificacionesView.as_view(),
+         name='leer_notificaciones')
 ]

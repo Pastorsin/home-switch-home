@@ -73,7 +73,35 @@ class CustomUser(AbstractUser):
         return reverse('verPerfil', args=[str(self.pk)])
 
     def notificaciones(self):
-        pass
+        from adquisiciones.models import Notificacion
+        return Notificacion.objects.filter(usuario=self)
+
+    def agregar_notificacion(self, mensaje, semana):
+        from adquisiciones.models import Notificacion
+        if not self.tengo_notificacion(mensaje, semana):
+            Notificacion.objects.create(
+                mensaje=mensaje,
+                semana=semana,
+                usuario=self
+            )
+
+    def notificaciones_sin_leer(self):
+        return self.notificaciones().filter(leida=False)
+
+    def leer_notificaciones(self):
+        self.notificaciones_sin_leer().update(leida=True)
+
+    def tiene_notificaciones_sin_leer(self):
+        return self.notificaciones_sin_leer().exists()
+
+    def eliminar_notificacion(self, mensaje):
+        self.notificaciones().filter(
+            mensaje=mensaje).delete()
+
+    def tengo_notificacion(self, mensaje, semana):
+        return self.notificaciones().filter(
+            mensaje=mensaje,
+            semana__residencia=semana.residencia).exists()
 
 
 class Admin(models.Model):
@@ -157,7 +185,3 @@ class UsuarioEstandar(models.Model):
     def incrementar_credito(self):
         self.creditos += 1
         self.save()
-
-    def notificaciones(self):
-        from adquisiciones.models import Notificacion
-        return Notificacion.objects.filter(semana__in=self.semanas_seguidas())

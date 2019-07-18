@@ -1,5 +1,6 @@
+from django.views import View
 from django.views.generic import DetailView
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from residencias.models import Residencia
 from .models import Subasta, EnEspera, Reservada, CompraDirecta, Hotsale
 from .models import CreditosInsuficientes, Semana
@@ -122,3 +123,13 @@ class SemanasView(DetailView):
             semana.agregar_seguidor(self.request.user)
         else:
             semana.eliminar_seguidor(self.request.user)
+
+
+class LeerNotificacionesView(View):
+
+    def get(self, request, *args, **kwargs):
+        usuario_conectado = self.request.user
+        usuario_conectado.leer_notificaciones()
+        return HttpResponse(
+            usuario_conectado.notificaciones_sin_leer().count()
+        )

@@ -119,13 +119,15 @@
 					<li class="nav-item dropdown my-1">
 						<div>
 							<a class="nav-link dropdown-toggle" id="campana" data-toggle="dropdown" href="#">
-								<span id="notificador">{{user.usuarioestandar.notificaciones.count}}</span>
+								<span id="notificador" {% if user.tiene_notificaciones_sin_leer %} class="text-info" {% endif %}>
+									{{user.notificaciones_sin_leer.count}}
+								</span>
 								<i class='fas fa-bell'></i>
 							</a>
 							<div class="dropdown-menu dropdown-menu-right dropdown-secondary notificacion">
 								<small>
-								{% if user.usuarioestandar.notificaciones %}
-									{% for notificacion in user.usuarioestandar.notificaciones %}
+								{% if user.notificaciones %}
+									{% for notificacion in user.notificaciones %}
 										<a class="dropdown-item" href="{{notificacion.get_absolute_url}}">									
 											La semana: <span class="text-primary">{{notificacion.semana}}</span>
 											de la residencia: <span class="text-primary">{{notificacion.residencia}}</span>
@@ -225,9 +227,13 @@
 			    })
 
 			    $("#campana").click(function(){
-			    	var xhr = new XMLHttpRequest();
-			    	xhr.open("GET", "leerNotificaciones", false)
-			    	xhr.send()
+			    	var xhttp = new XMLHttpRequest();
+			    	xhttp.open("GET", "/leerNotificaciones")
+			    	xhttp.onreadystatechange = function() {
+			    		$("#notificador").text(this.responseText)
+			    		$("#notificador").removeClass()
+			    	}
+			    	xhttp.send()
 			    })
 		  	});
 	    </script>

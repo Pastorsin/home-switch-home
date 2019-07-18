@@ -8,7 +8,7 @@ from residencias.models import Residencia
 from django.urls import reverse
 from django.db import models
 
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 
 
 class EventoNoPermitido(Exception):
@@ -159,11 +159,12 @@ class Semana(models.Model):
     def es_seguida_por(self, usuario):
         return usuario in self.seguidores.all()
 
-    def agregar_notificacion(self, mensaje):
-        Notificacion.objects.create(
-            mensaje=mensaje,
-            semana=self
-        )
+    def notificar_seguidores(self, mensaje):
+        for seguidor in self.seguidores.all():
+            seguidor.agregar_notificacion(
+                mensaje=mensaje,
+                semana=self
+            )
 
     def notificaciones(self):
         return self.notificacion_set.all()
@@ -306,7 +307,7 @@ class CompraDirecta(Estado):
 
     def abrir_subasta(self):
         subasta = Subasta.objects.create()
-        self.semana.agregar_notificacion(self.NOTIFICACION)
+        self.semana.notificar_seguidores(self.NOTIFICACION)
         self.semana.cambiar_estado(subasta)
         return 'Se ha puesto la semana en subasta correctamente'
 
@@ -357,10 +358,12 @@ class Subasta(Estado):
         null=True,
         blank=True
     )
-    NOTIFICACION_GANADOR = 'Ha cerrado su subasta, \
-        ¡HAY UN GANADOR!'
-    NOTIFICACION_NO_GANADOR = 'Ha cerrado su subasta, \
-        no hay ganadores.. :('
+    # Notificaciones
+    NOTIFICACION_CIERRE = 'Se ha cerrado la subasta. {}'
+    NOTIFICACION_GANADOR = NOTIFICACION_CIERRE.format('¡Hay ganador!')
+    NOTIFICACION_NO_GANADOR = NOTIFICACION_CIERRE.format('¡No hay ganador!')
+    NOTIFICACION_PUJA = '¡Han superado tu puja!'
+    NOTIFICACION_PUJADOR_GANADOR = '¡Ganaste! Felicitaciones'
 
     def __str__(self):
         return 'Subasta'
@@ -392,6 +395,11 @@ class Subasta(Estado):
         return self.puja_actual().pujador
 
     def nueva_puja(self, pujador, monto):
+        if self.hay_pujas() and not self.puja_actual().pujador_es(pujador):
+            self.puja_actual().notificar_pujador(
+                mensaje=self.NOTIFICACION_PUJA,
+                semana=self.semana
+            )
         Puja.objects.create(
             pujador=pujador,
             monto=monto,
@@ -415,13 +423,38 @@ class Subasta(Estado):
 
     def cerrar_subasta(self):
         if self.hay_pujas_validas():
-            reservada = self.puja_ganadora().generar_reserva(self.semana)
-            self.semana.agregar_notificacion(self.NOTIFICACION_GANADOR)
+            self.notificar(
+                mensaje=self.NOTIFICACION_GANADOR
+            )
+            self.puja_ganadora().notificar_pujador(
+                mensaje=self.NOTIFICACION_PUJADOR_GANADOR,
+                semana=self.semana
+            )
+            reservada = self.puja_ganadora().generar_reserva(
+                self.semana
+            )
             self.semana.cambiar_estado(reservada)
         else:
+            self.notificar(
+                mensaje=self.NOTIFICACION_NO_GANADOR
+            )
             en_espera = EnEspera.objects.create()
-            self.semana.agregar_notificacion(self.NOTIFICACION_NO_GANADOR)
             self.semana.cambiar_estado(en_espera)
+
+    def notificar(self, mensaje):
+        self.semana.notificar_seguidores(
+            mensaje=mensaje
+        )
+        self.notificar_pujadores(
+            mensaje=mensaje
+        )
+
+    def notificar_pujadores(self, mensaje):
+        for puja in self.pujas:
+            puja.notificar_pujador(
+                mensaje=mensaje,
+                semana=self.semana
+            )
 
     def hay_pujas_validas(self):
         return bool(self.pujas_validas())
@@ -487,8 +520,15 @@ class Puja(models.Model):
         self.pujador.decrementar_credito()
         return reserva
 
+    def notificar_pujador(self, mensaje, semana):
+        self.comprador().eliminar_notificacion(mensaje)
+        self.comprador().agregar_notificacion(mensaje, semana)
+
     def comprador(self):
         return CustomUser.objects.get(pk=self.pujador.pk)
+
+    def pujador_es(self, otro_pujador):
+        return self.pujador == otro_pujador
 
 
 class EnEspera(Estado):
@@ -625,9 +665,19 @@ class Notificacion(models.Model):
         Semana,
         on_delete=models.CASCADE,
     )
+    usuario = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE
+    )
+    creacion = models.DateTimeField(
+        default=datetime.now()
+    )
     leida = models.BooleanField(
         default=False
     )
+
+    class Meta():
+        ordering = ['-creacion']
 
     @property
     def residencia(self):
