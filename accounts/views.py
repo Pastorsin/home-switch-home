@@ -7,7 +7,7 @@ from django.contrib import messages
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .forms import TarjetaForm, AdminCreationForm, PublicUserChangeForm
 from .models import CustomUser, Tarjeta
-from adquisiciones.models import Semana
+from adquisiciones.models import Semana, Puja
 
 
 class UserSignUpView(CreateView):
@@ -150,10 +150,14 @@ class MisSubastasView(ListView):
     template_name = 'mis_subastas.html'
 
     def get_queryset(self):
-        usuario = self.request.user
+        usuario = self.request.user.usuarioestandar
+        subastas_pk = Puja.objects.filter(
+            pujador=usuario).values(
+            'subasta__pk'
+        )
         return Semana.objects.filter(
             content_type__model='subasta',
-            comprador=usuario
+            estado_id__in=subastas_pk
         )
 
 
@@ -163,12 +167,15 @@ class AdminSignUpView(SuccessMessageMixin, CreateView):
     template_name = 'admin_signup.html'
     success_message = 'Administrador creado correctamente'
 
-class ListarUsuariosView(ListView):    
+
+class ListarUsuariosView(ListView):
     model = CustomUser
     template_name = 'listadoUsuarios.html'
 
-    def get_context_data(self,**kwargs):
+    def get_context_data(self, **kwargs):
         context = super(ListarUsuariosView, self).get_context_data(**kwargs)
-        context['usuario'] = CustomUser.objects.filter(is_staff=False, is_active=True).order_by('first_name','last_name')
-        context['administrador'] = CustomUser.objects.filter(is_staff=True, is_superuser=False).order_by('first_name','last_name')
-        return context    
+        context['usuario'] = CustomUser.objects.filter(
+            is_staff=False, is_active=True).order_by('first_name', 'last_name')
+        context['administrador'] = CustomUser.objects.filter(
+            is_staff=True, is_superuser=False).order_by('first_name', 'last_name')
+        return context
