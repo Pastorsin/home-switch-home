@@ -2,52 +2,39 @@
 
 {% block title %}Home Page{% endblock title %}
 
-{% block body_content %}
+{% block title_content %}
+	<h2>Bienvenido!</h2>	
+{% endblock %}
 
-		<style type="text/css">
-			#container{
-		    position: absolute;
-		    top: 50%;
-		    left: 50%;
-		    transform: translateX(-50%) translateY(-50%);
-			}
-			body{
-				background-image: linear-gradient(to bottom,
-                                  rgba(86,102,125,0.9) 0%,
-                                  rgba(86,102,125,0.9) 100%),
-                                  url("https://a-static.besthdwallpaper.com/casa-en-una-residencia-papel-pintado-1920x1080-4500_48.jpg");
-			}
-		</style>
-		<main>
-	    <div id="container" class="container">
-	      <div class="row">
-	        <div class="col-sm-8 offset-sm-2 p-4 text-center">
-	          <div class="m-0 pb-2 bg-dark rounded-top shadow">
-	            <h2 style="font-family: 'Open Sans', sans-serif;">Bienvenido!</h2>
-	          </div >
-	        <form method="post">
-	        {% csrf_token %}
-	          <div class="bg-contenido-form m-0 p-4 rounded shadow">
-	          	<div class="col-md-8 d-inline-flex">
-		          	<div class="col-md-6 ml-auto mr-auto">
-		          		<button name='visitante' class="btn btn-light shadow">Entrar como Usuario Visitante</button>
-		          	</div>
-		          	<div class="col-md-6 ml-auto mr-auto">
-		          		<button name='estandar' class="btn btn-info shadow">Entrar como Usuario Estándar</button>
-		          	</div>
-		          </div>
-	          	<div class="col-md-8 d-inline-flex mt-4">
-		          	<div class="col-md-6 ml-auto mr-auto">
-		          		<button name='premium' class="btn btn-danger shadow">Entrar como Usuario Premium</button>
-		          	</div>
-		          	<div class="col-md-6 ml-auto mr-auto">
-		          		<button name='admin' class="btn btn-warning shadow">Entrar como Administrador</button>
-		          	</div>
-	          	</div>
-	          </div>
-	        </form>
-	        </div>
+{% block body_content %}
+	<form method="post">
+	{% csrf_token %}
+	  	<div class="col-md-8 d-inline-flex">
+	      	<div class="col-md-6 ml-auto mr-auto">
+	      		<button name='visitante' class="btn btn-light shadow">Entrar como Usuario Visitante</button>
+	      	</div>
+	      	<div class="col-md-6 ml-auto mr-auto">
+	      		<button name='estandar' class="btn btn-info shadow">Entrar como Usuario Estándar</button>
+	      	</div>
 	      </div>
-	    </div>
-    </main>
+	  	<div class="col-md-8 d-inline-flex mt-4">
+	      	<div class="col-md-6 ml-auto mr-auto">
+	      		<button name='premium' class="btn btn-primary shadow">Entrar como Usuario Premium</button>
+	      	</div>
+	      	<div class="col-md-6 ml-auto mr-auto">
+	      		<button name='admin' class="btn btn-warning shadow">Entrar como Administrador</button>
+	      	</div>
+	  	</div>
+	      <hr>
+	      	<button name="lunes" class="btn btn-success shadow">Abrir subasta</button>
+	      	<button name="jueves" class="btn btn-success shadow">Cerrar subasta</button>
+	      	<button name="reiniciar" class="btn btn-danger shadow">Reiniciar</button>
+	</form>
 {% endblock body_content %}
+
+{% block footer_content %}
+	{% load i18n %}
+	{% language 'es' %}
+	<div class="bg-dark"> <span class="text-light">Hoy es el día: </span> <span class="text-warning">{% now "l d F Y H:i" %} </span></div>
+	{% endlanguage %}
+{% endblock %}
