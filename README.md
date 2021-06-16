@@ -1,6 +1,9 @@
 # Ingenieria-de-software-II
 Proyecto para la materia Ingeniería de Software II de la Facultad de Informática UNLP
 
+## Documentación
+La documentación se puede encontrar en el siguiente [link](https://github.com/Pastorsin/home-switch-home/wiki)
+
 ## Ejecución
 ### Local
 1. Instale las dependencias   
